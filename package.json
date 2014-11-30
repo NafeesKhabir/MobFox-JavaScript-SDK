@@ -1,0 +1,23 @@
+{
+  "name": "MobFox-JavaScript-SDK",
+  "version": "1.0.0",
+  "description": "Mobfox Tag",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mobfox/MobFox-JavaScript-SDK.git"
+  },
+  "author": "nabriski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mobfox/MobFox-JavaScript-SDK/issues"
+  },
+  "homepage": "https://github.com/mobfox/MobFox-JavaScript-SDK",
+  "dependencies": {
+    "qs": "^2.3.3",
+    "superagent": "^0.21.0"
+  }
+}
