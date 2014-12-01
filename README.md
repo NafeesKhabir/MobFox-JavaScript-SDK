@@ -4,7 +4,7 @@ MobFox-JavaScript-SDK
  MobFox JavaScript SDK supporting Banner Ads, Video Ads, and Native Ads  http://www.mobfox.com
 
 
-== WIP Docs ==
+## WIP Docs
 ```html
 <script id="mobfoxConfig">
     window.mobfoxConfig = {
