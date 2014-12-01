@@ -13,23 +13,34 @@ superagent
     });
 */
 
+var adVar = "adResponse_" + String(Math.random()).slice(2) ;
 var script = document.createElement("script");
 document.body.appendChild(script);
+
 var params = {
     r_type : 'banner',
     u : window.navigator.userAgent,
-    i : "8.8.8.8",
+    //i : "8.8.8.8",
     s: 'fe96717d9875b9da4339ea5367eff1ec',
     m : 'test',
     rt : 'javascript',
     v : '3.0',
     'adspace.width' : 320,
     'adspace.height' : 50,
-    jsvar : "adResponse"
+    jsvar : adVar
 };
 
 script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
 
 script.onload = function(){
-    console.log("koko");
+
+    var iframe = document.createElement("iframe");
+    iframe.width= 320;
+    iframe.height= 50;
+    iframe.src= ["data:text/html;charset=utf-8,","<html>",window[adVar][0].content,"</html>"].join("\n");
+    //iframe.innerHTML= ["<html>",window[adVar][0].content,"</html>"].join("\n");
+    document.body.appendChild(iframe);
+    iframe.style.margin = "0px";
+    iframe.style.padding= "0px";
+    iframe.style.border= "none";
 };

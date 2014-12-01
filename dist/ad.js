@@ -1,7 +1,7 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/index.js":[function(require,module,exports){
 module.exports = require('./lib/');
 
-},{"./lib/":2}],2:[function(require,module,exports){
+},{"./lib/":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/index.js"}],"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/index.js":[function(require,module,exports){
 // Load modules
 
 var Stringify = require('./stringify');
@@ -18,7 +18,7 @@ module.exports = {
     parse: Parse
 };
 
-},{"./parse":3,"./stringify":4}],3:[function(require,module,exports){
+},{"./parse":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/parse.js","./stringify":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/stringify.js"}],"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/parse.js":[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -177,7 +177,7 @@ module.exports = function (str, options) {
     return Utils.compact(obj);
 };
 
-},{"./utils":5}],4:[function(require,module,exports){
+},{"./utils":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/utils.js"}],"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/stringify.js":[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -256,7 +256,7 @@ module.exports = function (obj, options) {
     return keys.join(delimiter);
 };
 
-},{"./utils":5}],5:[function(require,module,exports){
+},{"./utils":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/utils.js"}],"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/utils.js":[function(require,module,exports){
 // Load modules
 
 
@@ -390,7 +390,7 @@ exports.isBuffer = function (obj) {
         obj.constructor.isBuffer(obj));
 };
 
-},{}],6:[function(require,module,exports){
+},{}],"/home/itamar/MobFox-JavaScript-SDK/src/index.js":[function(require,module,exports){
 var Qs = require('qs');
 /*
 var superagent = require('superagent');
@@ -406,25 +406,36 @@ superagent
     });
 */
 
+var adVar = "adResponse_" + String(Math.random()).slice(2) ;
 var script = document.createElement("script");
 document.body.appendChild(script);
+
 var params = {
     r_type : 'banner',
     u : window.navigator.userAgent,
-    i : "8.8.8.8",
+    //i : "8.8.8.8",
     s: 'fe96717d9875b9da4339ea5367eff1ec',
     m : 'test',
     rt : 'javascript',
     v : '3.0',
     'adspace.width' : 320,
     'adspace.height' : 50,
-    jsvar : "adResponse"
+    jsvar : adVar
 };
 
 script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
 
 script.onload = function(){
-    console.log("koko");
+
+    var iframe = document.createElement("iframe");
+    iframe.width= 320;
+    iframe.height= 50;
+    iframe.src= ["data:text/html;charset=utf-8,","<html>",window[adVar][0].content,"</html>"].join("\n");
+    //iframe.innerHTML= ["<html>",window[adVar][0].content,"</html>"].join("\n");
+    document.body.appendChild(iframe);
+    iframe.style.margin = "0px";
+    iframe.style.padding= "0px";
+    iframe.style.border= "none";
 };
 
-},{"qs":1}]},{},[6]);
+},{"qs":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/index.js"}]},{},["/home/itamar/MobFox-JavaScript-SDK/src/index.js"]);
