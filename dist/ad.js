@@ -391,39 +391,64 @@ exports.isBuffer = function (obj) {
 };
 
 },{}],"/home/itamar/MobFox-JavaScript-SDK/src/index.js":[function(require,module,exports){
-var Qs      = require('qs'),
-    confE   = document.getElementById("mobfoxConfig"),
-    adVar   = "adResponse_" + String(Math.random()).slice(2),
-    script  = document.createElement("script");
+(function(){
+    var Qs      = require('qs'),
+        confE   = document.getElementById("mobfoxConfig"),
+        mobfoxVar   = "mobfox_" + String(Math.random()).slice(2);
 
-confE.parentNode.insertBefore(script,confE);
+    //-------------------------------------------
+    function retrieve(){
 
-var params = {
-    r_type  : mobfoxConfig.type,
-    u       : window.navigator.userAgent,
-    //i : "8.8.8.8",
-    s       : mobfoxConfig.publisherID,
-    m       : 'test',
-    rt      : 'javascript',
-    v       : '3.0',
-    'adspace.width' : mobfoxConfig.width,
-    'adspace.height' : mobfoxConfig.height,
-    jsvar : adVar
-};
+        var script  = document.createElement("script"),
+            params = {
+                r_type  : mobfoxConfig.type,
+                u       : window.navigator.userAgent,
+                //i : "8.8.8.8",
+                s       : mobfoxConfig.publisherID,
+                m       : 'test',
+                rt      : 'javascript',
+                v       : '3.0',
+                'adspace.width' : mobfoxConfig.width,
+                'adspace.height' : mobfoxConfig.height,
+                jsvar : mobfoxVar
+            };
 
-script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
+        confE.parentNode.insertBefore(script,confE);
+        script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
 
-script.onload = function(){
+        script.onload = function(){
 
-    var iframe = document.createElement("iframe");
-    iframe.width= mobfoxConfig.width;
-    iframe.height= mobfoxConfig.height;
-    iframe.src= ["data:text/html;charset=utf-8,","<html>",window[adVar][0].content,"</html>"].join("\n");
-    //iframe.innerHTML= ["<html>",window[adVar][0].content,"</html>"].join("\n");
-    confE.parentNode.insertBefore(iframe,confE);
-    iframe.style.margin = "0px";
-    iframe.style.padding= "0px";
-    iframe.style.border= "none";
-};
+            if(!window[mobfoxVar]){
+                script.parentNode.removeChild(script);
+                return;
+            }
+
+            var iframe = document.getElementById(mobfoxVar);
+            if(iframe){
+                iframe.parentNode.removeChild(iframe);
+            }
+
+            iframe = document.createElement("iframe");
+            iframe.id = mobfoxVar;
+            iframe.width= mobfoxConfig.width;
+            iframe.height= mobfoxConfig.height;
+            //iframe.innerHTML= ["<html>",window[mobfoxVar][0].content,"</html>"].join("\n");
+            iframe.src= ["data:text/html;charset=utf-8,","<html>",window[mobfoxVar][0].content,"</html>"].join("\n");
+            confE.parentNode.insertBefore(iframe,confE);
+            iframe.style.margin = "0px";
+            iframe.style.padding= "0px";
+            iframe.style.border= "none";
+          
+            script.parentNode.removeChild(script);
+        };
+    }
+    //-------------------------------------------
+
+    if(mobfoxConfig.refresh){
+        setInterval(retrieve,mobfoxConfig.refresh);
+    }
+    retrieve();
+
+})();
 
 },{"qs":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/index.js"}]},{},["/home/itamar/MobFox-JavaScript-SDK/src/index.js"]);
