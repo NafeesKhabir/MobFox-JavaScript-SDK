@@ -394,7 +394,8 @@ exports.isBuffer = function (obj) {
 (function(){
     var Qs      = require('qs'),
         confE   = document.getElementById("mobfoxConfig"),
-        mobfoxVar   = "mobfox_" + String(Math.random()).slice(2);
+        mobfoxVar   = "mobfox_" + String(Math.random()).slice(2),
+        refreshInterval;
 
     //-------------------------------------------
     function retrieve(){
@@ -403,9 +404,9 @@ exports.isBuffer = function (obj) {
             params = {
                 r_type  : mobfoxConfig.type,
                 u       : window.navigator.userAgent,
-                //i : "8.8.8.8",
                 s       : mobfoxConfig.publisherID,
-                m       : 'test',
+                //m       : 'test',
+                m       : 'live',
                 rt      : 'javascript',
                 v       : '3.0',
                 'adspace.width' : mobfoxConfig.width,
@@ -419,7 +420,18 @@ exports.isBuffer = function (obj) {
         script.onload = function(){
 
             if(!window[mobfoxVar]){
+
+                window.clearInterval(refreshInterval);
+
                 script.parentNode.removeChild(script);
+                if(mobfoxConfig.passback){
+                    if(typeof(mobfoxConfig.passback) === "function"){
+                        mobfoxConfig.passback();
+                    }
+                    else if(typeof(mobfoxConfig.passback) === "string"){
+                        eval(mobfoxConfig.passback+"()"); 
+                    }
+                }
                 return;
             }
 
@@ -445,7 +457,7 @@ exports.isBuffer = function (obj) {
     //-------------------------------------------
 
     if(mobfoxConfig.refresh){
-        setInterval(retrieve,mobfoxConfig.refresh);
+        refreshInterval = setInterval(retrieve,mobfoxConfig.refresh);
     }
     retrieve();
 
