@@ -1,10 +1,11 @@
-var page = require('webpage').create();
-var url = 'http://127.0.0.1:8080/passback.html';
+var page = require('webpage').create(),
+    chai = require('./chai.js'),
+    url = 'http://127.0.0.1:8080/passback.html';
 
+chai.should();
 
 page.onConsoleMessage = function(msg, lineNum, sourceId) {
-    console.log("yoyoy");
-    console.log(msg === "nothing to show here.");
+    msg.should.equal("nothing to show here.");
 };
 
 page.open(url, function (status) {
