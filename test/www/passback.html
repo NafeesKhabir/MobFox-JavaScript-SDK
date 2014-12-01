@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <span>Before</span>
+    <script id="mobfoxConfig">
+
+        window.mobfoxConfig = {
+            width       : 320,
+            height      : 50,
+            publisherID : 'nonexistent-publisher',
+            type        : 'banner',
+            passback    : function(){
+                //.. let page show
+                console.log("nothing to show here.");
+            }
+        }
+    </script>
+    <script type='text/javascript' src='ad.js'></script>
+    <span>After</span>
+</body>
+</html>
