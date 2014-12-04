@@ -8,18 +8,40 @@
     function retrieve(){
 
         var script  = document.createElement("script"),
+            options = [
+                "o_androidid",
+                "o_androidimei",
+                "o_iosadvid",
+                "o_andadvid",
+                "longitude",
+                "latitude",
+                "demo.gender",
+                "demo.keyword",
+                "demo.age",
+                "adspace.strict",
+                "no_markup",
+                "s_subid",
+                "allow_mr",
+                "r_floor" 
+            ],
             params = {
                 r_type  : mobfoxConfig.type,
                 u       : window.navigator.userAgent,
                 s       : mobfoxConfig.publisherID,
-                //m       : 'test',
-                m       : 'live',
+                m       : mobfoxConfig.debug ? 'test' : 'live',
                 rt      : 'javascript',
                 v       : '3.0',
                 'adspace.width' : mobfoxConfig.width,
                 'adspace.height' : mobfoxConfig.height,
                 jsvar : mobfoxVar
             };
+
+   
+        options.forEach(function(o){
+            if(typeof(mobfoxConfig[o]) !== 'undefined'){
+                params[o] = mobfoxConfig[o];
+            }
+        });
 
         confE.parentNode.insertBefore(script,confE);
         script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
