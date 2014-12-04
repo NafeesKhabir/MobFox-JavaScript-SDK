@@ -4,7 +4,7 @@ MobFox-JavaScript-SDK
  MobFox JavaScript SDK supporting Banner Ads, Video Ads, and Native Ads  http://www.mobfox.com
 
 
-## WIP Docs
+## wip Docs
 ```html
 <script id="mobfoxConfig">
     window.mobfoxConfig = {
@@ -21,3 +21,23 @@ MobFox-JavaScript-SDK
 <script type='text/javascript' src='../dist/ad.js'></script>
 
 ```
+
+### Optional Parameters
+
+For the documentation of each option please refer to [API Doc](http://dev.mobfox.com/index.php?title=Ad_Request_API)
+
+ * o_androidid
+ * o_androidimei
+ * o_iosadvid
+ * o_andadvid
+ * longitude
+ * latitude
+ * demo.gender
+ * demo.keyword
+ * demo.age
+ * adspace.strict
+ * no_markup
+ * s_subid
+ * allow_mr
+ * r_floor
+
