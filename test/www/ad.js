@@ -397,16 +397,80 @@ exports.isBuffer = function (obj) {
         mobfoxVar   = "mobfox_" + String(Math.random()).slice(2),
         refreshInterval;
 
+    createAd = {
+        banner : function(ad,ad_id,confElement){
+            var iframe = document.getElementById(mobfoxVar);
+            if(iframe){
+                iframe.parentNode.removeChild(iframe);
+            }
+
+            iframe = document.createElement("iframe");
+            iframe.id = ad_id;
+            iframe.width= mobfoxConfig.width;
+            iframe.height= mobfoxConfig.height;
+            iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
+            confE.parentNode.insertBefore(iframe,confElement);
+            iframe.style.margin = "0px";
+            iframe.style.padding= "0px";
+            iframe.style.border= "none";
+        },
+        interstitial : function(ad,ad_id,confElement){
+            var adContainer = document.getElementById('mobfox_interstitial');
+            if(adContainer){
+                adContainer.parentNode.removeChild(iframe);
+            }
+
+            adContainer = document.createElement('iframe'); 
+            adContainer.style.width  = window.innerWidth + "px";
+            adContainer.style.height = window.innerHeight + "px";
+            adContainer.style.zIndex = "1000000";
+            adContainer.style.backgroundColor = "transparent";
+            adContainer.style.position = "fixed";
+            adContainer.style.left = "0px";
+            adContainer.style.top = "0px";
+            adContainer.style.margin = "0px";
+            adContainer.style.padding= "0px";
+            adContainer.style.border= "none";
+            document.body.appendChild(adContainer);
+            
+            adContainer.contentWindow.document.body.style.margin = "0px";
+            var iframe = adContainer.contentWindow.document.createElement('iframe');
+            iframe.id = ad_id;
+            iframe.width= mobfoxConfig.width;
+            iframe.height= mobfoxConfig.height;
+            iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
+            adContainer.contentWindow.document.body.appendChild(iframe);
+            iframe.style.margin = "0px auto";
+            iframe.style.padding= "0px";
+            iframe.style.border= "none";
+            iframe.style.display= "block";
+        }
+    }; 
     //-------------------------------------------
     function retrieve(){
 
         var script  = document.createElement("script"),
+            options = [
+                "o_androidid",
+                "o_androidimei",
+                "o_iosadvid",
+                "o_andadvid",
+                "longitude",
+                "latitude",
+                "demo.gender",
+                "demo.keyword",
+                "demo.age",
+                "adspace.strict",
+                "no_markup",
+                "s_subid",
+                "allow_mr",
+                "r_floor" 
+            ],
             params = {
-                r_type  : mobfoxConfig.type,
+                r_type  : 'banner',//mobfoxConfig.type,
                 u       : window.navigator.userAgent,
                 s       : mobfoxConfig.publisherID,
-                //m       : 'test',
-                m       : 'live',
+                m       : mobfoxConfig.debug ? 'test' : 'live',
                 rt      : 'javascript',
                 v       : '3.0',
                 'adspace.width' : mobfoxConfig.width,
@@ -414,11 +478,19 @@ exports.isBuffer = function (obj) {
                 jsvar : mobfoxVar
             };
 
+   
+        options.forEach(function(o){
+            if(typeof(mobfoxConfig[o]) !== 'undefined'){
+                params[o] = mobfoxConfig[o];
+            }
+        });
+
         confE.parentNode.insertBefore(script,confE);
+        //var start = (new Date()).getTime();
         script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
 
         script.onload = function(){
-
+            //var end = (new Date()).getTime();
             if(!window[mobfoxVar]){
 
                 window.clearInterval(refreshInterval);
@@ -435,22 +507,8 @@ exports.isBuffer = function (obj) {
                 return;
             }
 
-            var iframe = document.getElementById(mobfoxVar);
-            if(iframe){
-                iframe.parentNode.removeChild(iframe);
-            }
+            createAd[mobfoxConfig.type](window[mobfoxVar][0].content,mobfoxVar,confE);
 
-            iframe = document.createElement("iframe");
-            iframe.id = mobfoxVar;
-            iframe.width= mobfoxConfig.width;
-            iframe.height= mobfoxConfig.height;
-            //iframe.innerHTML= ["<html>",window[mobfoxVar][0].content,"</html>"].join("\n");
-            iframe.src= ["data:text/html;charset=utf-8,","<html>",window[mobfoxVar][0].content,"</html>"].join("\n");
-            confE.parentNode.insertBefore(iframe,confE);
-            iframe.style.margin = "0px";
-            iframe.style.padding= "0px";
-            iframe.style.border= "none";
-          
             script.parentNode.removeChild(script);
         };
     }
