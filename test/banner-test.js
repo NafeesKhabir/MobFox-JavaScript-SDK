@@ -9,9 +9,6 @@ page.open(url);
 
 page.onResourceReceived = function(response) {
     if(response.url.match(/http\:\/\/my\.mobfox\.com\/request\.php/)){
-        setInterval(function(){
-            
-        },100);
         setTimeout(function(){
             var id = page.evaluate(function() {
                 return document.querySelector(".mobfox_iframe").id;
@@ -29,7 +26,7 @@ page.onResourceReceived = function(response) {
             test.equal(width,"320");
             test.equal(height,"50");
             test.done();
-        },1000);
+        },100);
     }
 };
 
