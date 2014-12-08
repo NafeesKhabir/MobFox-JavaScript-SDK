@@ -11,45 +11,52 @@ phantom.onError = function(msg, trace) {
     });
   }
   console.error(msgStack.join('\n').red);
-  console.log("Test failed".red);
+  console.log("✗ failed".red.bold);
   phantom.exit(1);
 };
 //-----------------------------------------------------
 var test = {
+    name : function(name){
+        console.log(" - Running test: "+name.bold);
+    },
     expect : function(total){
         this.total = total;
         this.count = 0;
-
     },
     done : function(){
-        if(this.total){
-            console.log("Number of expected assertions ({{total}}) is different from number of actual assertions {{count}}.".red
+        if(this.failed) return;
+        if(this.total && this.total !== this.count){
+            console.log("Number of expected assertions ({{total}}) is different from number of actual assertions ({{count}}).".red
                 .replace('{{total}}',this.total)
                 .replace('{{count}}',this.count)
             );
-            console.log("Test failed".red);
+            console.log("✗ failed".red.bold);
             phantom.exit(1);
         }
-        console.log("Test passed".green);
+        console.log("✓ passed".green);
         phantom.exit();
     }
 };
-
+//----------------------------------------------
 ['ok','equal'].forEach(function(verb){
     test.__defineGetter__(verb, function(){
         var self = this;
         return function(){
+            var args = Array.prototype.slice.call(arguments);
             try{
-                chai.assert[verb].apply(null,arguments);
+                chai.assert[verb].apply(null,args);
+                if(typeof(self.count)==='number'){
+                    self.count++;
+                }
             }
             catch(e){
-                setTimeout(function(){
+                self.failed = true;//flag to wait for exception to propogate
+                return setTimeout(function(){
                     throw e;
                 },1);
             }
-            if(self.count) self.count++;
         };
     });
 });
-
+//----------------------------------------------
 module.exports = Object.create(test);

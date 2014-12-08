@@ -1,7 +1,7 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/index.js":[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = require('./lib/');
 
-},{"./lib/":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/index.js"}],"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/index.js":[function(require,module,exports){
+},{"./lib/":2}],2:[function(require,module,exports){
 // Load modules
 
 var Stringify = require('./stringify');
@@ -18,7 +18,7 @@ module.exports = {
     parse: Parse
 };
 
-},{"./parse":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/parse.js","./stringify":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/stringify.js"}],"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/parse.js":[function(require,module,exports){
+},{"./parse":3,"./stringify":4}],3:[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -177,7 +177,7 @@ module.exports = function (str, options) {
     return Utils.compact(obj);
 };
 
-},{"./utils":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/utils.js"}],"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/stringify.js":[function(require,module,exports){
+},{"./utils":5}],4:[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -256,7 +256,7 @@ module.exports = function (obj, options) {
     return keys.join(delimiter);
 };
 
-},{"./utils":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/utils.js"}],"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/lib/utils.js":[function(require,module,exports){
+},{"./utils":5}],5:[function(require,module,exports){
 // Load modules
 
 
@@ -390,7 +390,7 @@ exports.isBuffer = function (obj) {
         obj.constructor.isBuffer(obj));
 };
 
-},{}],"/home/itamar/MobFox-JavaScript-SDK/src/index.js":[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function(){
     var Qs      = require('qs'),
         confE   = document.getElementById("mobfoxConfig"),
@@ -406,6 +406,7 @@ exports.isBuffer = function (obj) {
 
             iframe = document.createElement("iframe");
             iframe.id = ad_id;
+            iframe.className = "mobfox_iframe"; 
             iframe.width= mobfoxConfig.width;
             iframe.height= mobfoxConfig.height;
             iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
@@ -470,6 +471,7 @@ exports.isBuffer = function (obj) {
                 r_type  : 'banner',//mobfoxConfig.type,
                 u       : window.navigator.userAgent,
                 s       : mobfoxConfig.publisherID,
+                p       : window.location.href,
                 m       : mobfoxConfig.debug ? 'test' : 'live',
                 rt      : 'javascript',
                 v       : '3.0',
@@ -521,4 +523,4 @@ exports.isBuffer = function (obj) {
 
 })();
 
-},{"qs":"/home/itamar/MobFox-JavaScript-SDK/node_modules/qs/index.js"}]},{},["/home/itamar/MobFox-JavaScript-SDK/src/index.js"]);
+},{"qs":1}]},{},[6]);
