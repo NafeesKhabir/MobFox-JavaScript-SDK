@@ -445,6 +445,18 @@ exports.isBuffer = function (obj) {
             iframe.style.padding= "0px";
             iframe.style.border= "none";
             iframe.style.display= "block";
+
+            var button = adContainer.contentWindow.document.createElement('button');
+            adContainer.contentWindow.document.body.appendChild(button);
+            button.innerHTML = "X";
+            button.onclick = function(){
+               adContainer.parentNode.removeChild(adContainer); 
+            };
+            button.style.position   = "absolute";
+            button.style.width      = "50px";
+            button.style.height     = "50px";
+            button.style.top        = "10px";
+            button.style.right      = "10px";
         }
     }; 
     //-------------------------------------------
