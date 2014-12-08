@@ -1,14 +1,20 @@
-var page = require('webpage').create(),
-    chai = require('./chai.js'),
-    url = 'http://127.0.0.1:8080/passback.html';
+var page    = require('webpage').create(),
+    url     = 'http://127.0.0.1:8080/passback.html';
+    test    = require('./lib/harness.js');
 
-chai.should();
-
+test.expect(2);
 page.onConsoleMessage = function(msg, lineNum, sourceId) {
-    msg.should.equal("nothing to show here.");
+    test.equal(msg,"nothing to show here.");
 };
 
 page.open(url, function (status) {
-  phantom.exit();
+    test.done();
 });
 
+page.onResourceRequested = function(requestData, networkRequest) {
+  console.log('^ '+requestData.url);
+};
+
+page.onResourceReceived = function(response) {
+  console.log("> "+response.url);
+};
