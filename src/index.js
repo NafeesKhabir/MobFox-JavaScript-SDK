@@ -13,6 +13,7 @@
 
             iframe = document.createElement("iframe");
             iframe.id = ad_id;
+            iframe.className = "mobfox_iframe"; 
             iframe.width= mobfoxConfig.width;
             iframe.height= mobfoxConfig.height;
             iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
