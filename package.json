@@ -19,5 +19,8 @@
   "dependencies": {
     "qs": "^2.3.3",
     "superagent": "^0.21.0"
+  },
+  "devDependencies": {
+    "knox": "^0.9.1"
   }
 }
