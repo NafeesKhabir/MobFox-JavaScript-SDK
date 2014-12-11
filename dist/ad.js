@@ -450,10 +450,11 @@ module.exports = {
            adContainer.parentNode.removeChild(adContainer); 
         };
         button.style.position   = "absolute";
-        button.style.width      = "50px";
-        button.style.height     = "50px";
+        button.style.width      = "40px";
+        button.style.height     = "40px";
         button.style.top        = "10px";
         button.style.right      = "10px";   
+        button.style.fontSize   = "2em";
     }
 
 };
