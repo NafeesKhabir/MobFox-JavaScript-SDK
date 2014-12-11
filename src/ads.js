@@ -62,6 +62,10 @@ module.exports = {
         button.style.top        = "10px";
         button.style.right      = "10px";   
         button.style.fontSize   = "2em";
+
+        setTimeout(function(){
+           adContainer.parentNode.removeChild(adContainer); 
+        },16000);
     }
 
 };
