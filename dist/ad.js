@@ -419,6 +419,7 @@ module.exports = {
         }
 
         adContainer = document.createElement('iframe'); 
+        adContainer.id = "mobfox_interstitial";
         adContainer.style.width  = window.innerWidth + "px";
         adContainer.style.height = window.innerHeight + "px";
         adContainer.style.zIndex = "1000000";
@@ -434,6 +435,7 @@ module.exports = {
         adContainer.contentWindow.document.body.style.margin = "0px";
         var iframe = adContainer.contentWindow.document.createElement('iframe');
         iframe.id = ad_id;
+        iframe.className = "mobfox_iframe";
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
         iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
@@ -446,7 +448,6 @@ module.exports = {
         var button = adContainer.contentWindow.document.createElement('canvas');
         adContainer.contentWindow.document.body.appendChild(button);
 
-        button.innerHTML = "X";
         button.onclick = function(){
            adContainer.parentNode.removeChild(adContainer); 
         };
@@ -457,6 +458,8 @@ module.exports = {
         button.style.right      = "10px";   
         button.width = 40;
         button.height = 40;
+        button.style.cursor = "pointer";
+        button.id = "mobfox_dismiss"; 
 
         var ctx = button.getContext('2d');
         ctx.rect(0,0,40,40);
@@ -469,19 +472,19 @@ module.exports = {
         ctx.rect(0,0,40,40);
         ctx.stroke();
 
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 8;
         ctx.beginPath();
 
-        ctx.moveTo(8, 8);
-        ctx.lineTo(32, 32);
+        ctx.moveTo(10, 10);
+        ctx.lineTo(30, 30);
 
-        ctx.moveTo(8, 32);
-        ctx.lineTo(32, 8);
+        ctx.moveTo(10, 30);
+        ctx.lineTo(30, 10);
         ctx.stroke();
 
         setTimeout(function(){
            adContainer.parentNode.removeChild(adContainer); 
-        },16000);
+        },160000);
     }
 
 };
