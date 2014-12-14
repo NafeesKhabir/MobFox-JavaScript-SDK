@@ -50,8 +50,9 @@ module.exports = {
         iframe.style.border= "none";
         iframe.style.display= "block";
 
-        var button = adContainer.contentWindow.document.createElement('button');
+        var button = adContainer.contentWindow.document.createElement('canvas');
         adContainer.contentWindow.document.body.appendChild(button);
+
         button.innerHTML = "X";
         button.onclick = function(){
            adContainer.parentNode.removeChild(adContainer); 
@@ -61,7 +62,29 @@ module.exports = {
         button.style.height     = "40px";
         button.style.top        = "10px";
         button.style.right      = "10px";   
-        button.style.fontSize   = "2em";
+        button.width = 40;
+        button.height = 40;
+
+        var ctx = button.getContext('2d');
+        ctx.rect(0,0,40,40);
+        ctx.fillStyle="#fff";
+        ctx.fill();
+
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 4;
+
+        ctx.rect(0,0,40,40);
+        ctx.stroke();
+
+        ctx.lineWidth = 10;
+        ctx.beginPath();
+
+        ctx.moveTo(8, 8);
+        ctx.lineTo(32, 32);
+
+        ctx.moveTo(8, 32);
+        ctx.lineTo(32, 8);
+        ctx.stroke();
 
         setTimeout(function(){
            adContainer.parentNode.removeChild(adContainer); 
