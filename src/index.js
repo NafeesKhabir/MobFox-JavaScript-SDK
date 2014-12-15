@@ -32,7 +32,7 @@
             params = {
                 r_type  : 'banner',//mobfoxConfig.type,
                 u       : window.navigator.userAgent,
-                s       : mobfoxConfig.publisherID,
+                s       : mobfoxConfig.publicationID,
                 p       : window.location.href,
                 m       : mobfoxConfig.debug ? 'test' : 'live',
                 rt      : 'javascript',
