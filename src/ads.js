@@ -11,7 +11,12 @@ module.exports = {
         iframe.className = "mobfox_iframe"; 
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
-        iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
+        if(ad.indexOf("body") >= 0){
+            iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
+        }
+        else{
+            iframe.src= ["data:text/html;charset=utf-8,","<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
+        }
         confElement.parentNode.insertBefore(iframe,confElement);
         iframe.style.margin = "0px";
         iframe.style.padding= "0px";
