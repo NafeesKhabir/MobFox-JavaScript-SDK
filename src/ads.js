@@ -50,7 +50,14 @@ module.exports = {
         iframe.className = "mobfox_iframe";
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
-        iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
+
+        if(ad.indexOf("body") >= 0){
+            iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
+        }
+        else{
+            iframe.src= ["data:text/html;charset=utf-8,","<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
+        }
+
         adContainer.contentWindow.document.body.appendChild(iframe);
         iframe.style.margin = "0px auto";
         iframe.style.padding= "0px";
