@@ -51,7 +51,18 @@
 
         confE.parentNode.insertBefore(script,confE);
         //var start = (new Date()).getTime();
-        script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
+        if(mobfoxConfig.publicationID === "test"){
+            if(mobfoxConfig.type === "interstitial"){
+                script.src = "/js/response-inter.js";
+            }
+            else{
+                script.src = "/js/response-banner.js";
+            }
+            mobfoxVar = "mobfox_test";
+        }
+        else{
+            script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
+        }
 
         script.onload = function(){
             //var end = (new Date()).getTime();
