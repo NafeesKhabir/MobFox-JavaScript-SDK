@@ -30,15 +30,21 @@
             background:gold;
         }
     </style>
+    <script type="text/javascript" src="js/qurl.js"></script>
 </head>
 <body>
     <h1 class="red">Text</h1>
     <h1 class="blue">Text</h1>
     <script id="mobfoxConfig">
+
+        var url     = Qurl.create(),
+            testID  = url.query("testID");
+
         window.mobfoxConfig = {
             width       : 320,
             height      : 50,
             publicationID : 'test',
+            testID      : testID, 
             type        : 'banner'
         }
     </script>
