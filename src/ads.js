@@ -1,3 +1,26 @@
+var cleanAd = function(ad){
+    
+    var cleaned;
+    if(ad.indexOf("</html>") > 0){
+        /*var end = ad.match(/<\/html>(.*)$/);
+        if(end){
+            var pixel = end[1];
+            console.log(pixel);
+            cleaned = ad.replace(pixel,"");
+        }*/
+        cleaned = ad;
+    }
+    else if(ad.indexOf("</body>") > 0){
+        cleaned = ["<html>",ad,"</html>"].join("\n");
+    }
+    else{
+        cleaned = ["<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
+    }
+
+    console.log(cleaned);
+    return cleaned;
+};
+//----------------------------------------------------------------
 module.exports = {
 
     createBanner : function(ad,ad_id,confElement){
@@ -11,16 +34,21 @@ module.exports = {
         iframe.className = "mobfox_iframe"; 
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
-        if(ad.indexOf("body") >= 0){
-            iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
-        }
-        else{
-            iframe.src= ["data:text/html;charset=utf-8,","<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
-        }
+
+        iframe.src = "data:text/html;charset=utf-8," + cleanAd(ad);
+
         confElement.parentNode.insertBefore(iframe,confElement);
+
+        /*var iFrameDoc = document.getElementById(ad_id).contentWindow.document;
+        iFrameDoc.write(cleanAd(ad));
+        iFrameDoc.close();*/
+
         iframe.style.margin = "0px";
         iframe.style.padding= "0px";
         iframe.style.border= "none";   
+
+        iframe.scrolling = "no";
+        iframe.style.overflow = "hidden";
     },
 
     createInterstitial : function(ad,ad_id,confElement){
@@ -45,24 +73,27 @@ module.exports = {
         document.body.appendChild(adContainer);
         
         adContainer.contentWindow.document.body.style.margin = "0px";
+
         var iframe = adContainer.contentWindow.document.createElement('iframe');
         iframe.id = ad_id;
         iframe.className = "mobfox_iframe";
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
-
-        if(ad.indexOf("body") >= 0){
-            iframe.src= ["data:text/html;charset=utf-8,","<html>",ad,"</html>"].join("\n");
-        }
-        else{
-            iframe.src= ["data:text/html;charset=utf-8,","<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
-        }
-
+        iframe.src = "data:text/html;charset=utf-8, "+escape(cleanAd(ad));
         adContainer.contentWindow.document.body.appendChild(iframe);
+
+        /*var iFrameDoc = iframe.contentWindow.document;
+        iFrameDoc.write(cleanAd(ad));
+        iFrameDoc.close();*/
+
+
         iframe.style.margin = "0px auto";
         iframe.style.padding= "0px";
         iframe.style.border= "none";
         iframe.style.display= "block";
+
+        iframe.scrolling = "no";
+        iframe.style.overflow = "hidden";
 
         var button = adContainer.contentWindow.document.createElement('canvas');
         adContainer.contentWindow.document.body.appendChild(button);
@@ -103,7 +134,7 @@ module.exports = {
 
         setTimeout(function(){
            adContainer.parentNode.removeChild(adContainer); 
-        },160000);
+        },16000);
     }
 
 };
