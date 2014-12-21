@@ -53,7 +53,12 @@
         //var start = (new Date()).getTime();
         if(mobfoxConfig.publicationID === "test"){
             if(mobfoxConfig.type === "interstitial"){
-                script.src = "/js/response-inter.js";
+                if(mobfoxConfig.testID){
+                    script.src = "/js/response-inter-"+mobfoxConfig.testID+".js";
+                }
+                else{
+                    script.src = "/js/response-inter.js";
+                }
             }
             else{
                 script.src = "/js/response-banner.js";

@@ -17,7 +17,6 @@ var cleanAd = function(ad){
         cleaned = ["<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
     }
 
-    console.log(cleaned);
     return cleaned;
 };
 //----------------------------------------------------------------
