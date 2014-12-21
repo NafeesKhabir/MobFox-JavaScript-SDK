@@ -3,7 +3,7 @@ var page    =   require('webpage').create(),
     test    =   require('./lib/harness.js');
     gotIt   =   false;
 
-test.name('interstitial test callback');
+test.name('interstitial test static');
 test.expect(7);
 
 page.open(url);
