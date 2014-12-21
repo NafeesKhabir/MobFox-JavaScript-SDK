@@ -61,7 +61,12 @@
                 }
             }
             else{
-                script.src = "/js/response-banner.js";
+                if(mobfoxConfig.testID){
+                    script.src = "/js/response-banner-"+mobfoxConfig.testID+".js";
+                }
+                else{
+                    script.src = "/js/response-banner.js";
+                }
             }
             mobfoxVar = "mobfox_test";
         }
