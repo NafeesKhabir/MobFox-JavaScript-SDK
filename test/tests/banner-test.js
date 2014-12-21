@@ -2,7 +2,7 @@ var page    =   require('webpage').create(),
     url     =   'http://127.0.0.1:8080/banner-test.html',
     test    =   require('./lib/harness.js');
 
-test.name('banner test callback');
+test.name('banner test');
 test.expect(4);
 
 page.open(url);
