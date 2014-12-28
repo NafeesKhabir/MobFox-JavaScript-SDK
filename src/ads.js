@@ -168,7 +168,7 @@ module.exports = {
         adContainer.contentWindow.document.body.appendChild(iframe);
 
         //center it
-        adContainer.style.left = ((window.innerWidth - adContainer.contentWindow.innerWidth) / 2) + "px";
+        adContainer.style.left = ((window.innerWidth - parseInt(adContainer.style.width)) / 2) + "px";
 
         iframe.style.margin = "0px auto";
         iframe.style.padding= "0px";
