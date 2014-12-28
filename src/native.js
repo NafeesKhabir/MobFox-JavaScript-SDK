@@ -1,14 +1,10 @@
 (function(){
 
     var Qs                  = require('qs'),
+        superagent          = require('superagent'),
         createNativeAd      = require('./native-ads.js').createNativeAd,
         confE               = document.getElementById("mobfoxConfig"),
-        mobfoxVar           = "mobfox_" + String(Math.random()).slice(2); 
-    //-------------------------------------------
-    function retrieve(){
-
-        var script  = document.createElement("script"),
-            options = [
+        options = [
                 "o_androidid",
                 "o_androidimei",
                 "o_iosadvid",
@@ -23,8 +19,8 @@
                 "s_subid",
                 "allow_mr",
                 "r_floor" 
-            ],
-            params = {
+        ],
+        params = {
                 /*r_type  : 'native',
                 r_resp  : 'json',
                 u       : window.navigator.userAgent,
@@ -50,7 +46,7 @@
                 i       : "8.8.8.8",
                 u     : 'Mozilla/5.0%20(iPhone;%20U;%20CPU%20iPhone%20OS%203_0%20like%20Mac%20OS%20X;%20en-us)%20AppleWebKit/528.18%20(KHTML,%20like%20Gecko)%20Version/4.0%20Mobile/7A341%20Safari/528.16',
                 o_iosadvid : '68753A44-4D6F-1226-9C60-0050E4C00067'
-            };
+        };
    
         options.forEach(function(o){
             if(typeof(mobfoxConfig[o]) !== 'undefined'){
@@ -58,33 +54,11 @@
             }
         });
 
-        confE.parentNode.insertBefore(script,confE);
-        script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
-        script.onload = function(){
-            //var end = (new Date()).getTime();
-            if(!window[mobfoxVar]){
-
-                window.clearInterval(refreshInterval);
-
-                script.parentNode.removeChild(script);
-                if(mobfoxConfig.passback){
-                    if(typeof(mobfoxConfig.passback) === "function"){
-                        mobfoxConfig.passback();
-                    }
-                    else if(typeof(mobfoxConfig.passback) === "string"){
-                        eval(mobfoxConfig.passback+"()"); 
-                    }
-                }
-                return;
-            }
-
-            createNativeAd(window[mobfoxVar][0].content,mobfoxVar,confE);
-
-            script.parentNode.removeChild(script);
-        };
-    }
-    //-------------------------------------------
-
-    retrieve();
+        superagent
+            .get('http://my.mobfox.com/request.php?' + Qs.stringify(params))
+            .end(function(res){
+                console.log(res.body);
+                //createNativeAd(window[mobfoxVar][0].content,mobfoxVar,confE);
+            });
 
 })();
