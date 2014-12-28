@@ -7,7 +7,8 @@
         refreshInterval,
         createAd = {
             banner          : ads.createBanner,
-            interstitial    : ads.createInterstitial
+            interstitial    : ads.createInterstitial,
+            floating        : ads.createFloating
         }; 
     //-------------------------------------------
     function retrieve(){
