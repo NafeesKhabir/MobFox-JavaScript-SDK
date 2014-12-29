@@ -57,8 +57,7 @@
         superagent
             .get('http://my.mobfox.com/request.php?' + Qs.stringify(params))
             .end(function(res){
-                console.log(res.body);
-                //createNativeAd(window[mobfoxVar][0].content,mobfoxVar,confE);
+                createNativeAd(res.body,mobfoxConfig);
             });
 
 })();

@@ -3,18 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        #example{
+            width:300px;
+            height:300px;
+            background:blue;
+            border:3px solid black;
+        }
+    </style>
 </head>
 <body>
-    <span>Before</span>
+    <div id="example">
+        
+    </div>
     <script id="mobfoxConfig">
 
        window.mobfoxConfig = {
             publicationID: 'fe96717d9875b9da4339ea5367eff1ec',
             debug : true,
+            referenceE : document.getElementById("example"),
+            type:"image"
         }
 
     </script>
-    <script type='text/javascript' src='../../dist/native.js'></script>
-    <span>After</span>
+    <script type='text/javascript' src='native.js'></script>
 </body>
 </html>
