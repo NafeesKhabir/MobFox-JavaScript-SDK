@@ -19,7 +19,7 @@ MobFox JavaScript SDK supporting Banner Ads, Video Ads, and Native Ads  http://w
         }
     }
 </script>
-<script type='text/javascript' src='../dist/ad.js'></script>
+<script type='text/javascript' src='http://my.mobfox.com/ad_sdk.js'></script>
 
 ```
 
