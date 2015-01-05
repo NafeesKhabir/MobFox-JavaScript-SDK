@@ -1,10 +1,11 @@
 MobFox-JavaScript-SDK
 =====================
 
- MobFox JavaScript SDK supporting Banner Ads, Video Ads, and Native Ads  http://www.mobfox.com
+MobFox JavaScript SDK supporting Banner Ads, Video Ads, and Native Ads  http://www.mobfox.com
 
 
-## wip Docs
+## How To Use
+
 ```html
 <script id="mobfoxConfig">
     window.mobfoxConfig = {
@@ -21,6 +22,10 @@ MobFox-JavaScript-SDK
 <script type='text/javascript' src='../dist/ad.js'></script>
 
 ```
+
+* ```type``` - can be ```'banner'``` or ```'interstitial'```
+* ```refresh``` - optional. Number of milliseconds before the ad will be refreshed.
+* ```passback``` - optional. This function will be called in case no ad is returned.
 
 #### Optional Parameters
 
@@ -41,3 +46,5 @@ For the documentation of each option please refer to the [API Doc](http://dev.mo
  * ```allow_mr```
  * ```r_floor```
 
+
+### Native Ads - TBD
