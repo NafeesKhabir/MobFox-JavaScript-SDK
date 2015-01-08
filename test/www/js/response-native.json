@@ -1,0 +1,32 @@
+{
+    "imageassets": {
+        "icon": {
+            "url": "http://creative2cdn.mobfox.com/782e0e323ecd8fd929ecb72dd542d3be.gif",
+            "width": "512",
+            "height": "512"
+        },
+        "main": {
+            "url": "http://creative2cdn.mobfox.com/d11cdef67a6a8cbdec2cc79b35d8f09b.gif",
+            "width": "320",
+            "height": "480"
+        }
+    },
+    "textassets": {
+        "headline": "Hotels.com Hotel booking and last minute hotel deals",
+        "description": "The best way to book your perfect hotel! \nThe brand new design includes bigger images...",
+        "cta": "Install Now",
+        "rating": "5",
+        "advertiser": "Hotels.com, L.P."
+    },
+    "trackers": [
+        {
+            "type": "impression",
+            "url": "http://my.mobfox.com/rtb.impression.pixel.php?rid=bb0530caa0c16728e5ebd9cf42f4c7d5&price=0.10"
+        },
+        {
+            "type": "impression",
+            "url": "http://my.mobfox.com/exchange.pixel.php?h=532cfbf4b486c2bc1b7b1eaf28eee8b5"
+        }
+    ],
+    "click_url": "http://my.mobfox.com/exchange.click.php?h=532cfbf4b486c2bc1b7b1eaf28eee8b5"
+}
