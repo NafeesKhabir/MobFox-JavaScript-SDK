@@ -18,7 +18,8 @@
                 "no_markup",
                 "s_subid",
                 "allow_mr",
-                "r_floor" 
+                "r_floor",
+                "testURL"
         ],
         params = {
                 /*r_type  : 'native',
@@ -49,15 +50,34 @@
         };
    
         options.forEach(function(o){
-            console.log([o,mobfoxConfig[o]].join(" : "));
             if(typeof(mobfoxConfig[o]) !== 'undefined'){
                 params[o] = mobfoxConfig[o];
             }
         });
 
+      
+        var url =params.testURL || 'http://my.mobfox.com/request.php';
         superagent
-            .get('http://my.mobfox.com/request.php?' + Qs.stringify(params))
-            .end(function(res){
+            .get(url + '?' + Qs.stringify(params))
+            .end(function(err,res){
+
+                if(err || res.error){
+                    console.log(["Mobfox Error: ",err || res.error].join(""));
+                }
+                //call impression
+                try{
+                    var imp = document.createElement("script");
+                    imp.src = res.body.trackers[0].url;
+                    imp.onload = function(){
+                        document.body.removeChild(imp);
+                    };
+                    document.body.appendChild(imp);
+                }
+                catch(e){
+                    console.log("Mobfox: Unable to call impression:");
+                    console.log(e);
+                }
+
                 createNativeAd(res.body,mobfoxConfig);
             });
 
