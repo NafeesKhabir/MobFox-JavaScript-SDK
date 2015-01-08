@@ -64,14 +64,17 @@
                 if(err || res.error){
                     console.log(["Mobfox Error: ",err || res.error].join(""));
                 }
-                //call impression
+                //call impression pixels
                 try{
-                    var imp = document.createElement("script");
-                    imp.src = res.body.trackers[0].url;
-                    imp.onload = function(){
-                        document.body.removeChild(imp);
-                    };
-                    document.body.appendChild(imp);
+                    res.body.trackers.forEach(function(t){
+                        var imp = document.createElement("script");
+                        imp.src = t.url;
+                        imp.onload = function(){
+                            document.body.removeChild(imp);
+                        };
+                        document.body.appendChild(imp);
+                    });
+                    
                 }
                 catch(e){
                     console.log("Mobfox: Unable to call impression:");
