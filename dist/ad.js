@@ -443,7 +443,7 @@ module.exports = {
         iframe.style.overflow = "hidden";
     },
 
-    createInterstitial : function(ad,ad_id,confElement){
+    createInterstitial : function(ad,ad_id,confElement,timeout){
             
         var adContainer = document.getElementById('mobfox_interstitial');
         if(adContainer){
@@ -526,7 +526,7 @@ module.exports = {
 
         setTimeout(function(){
            adContainer.parentNode.removeChild(adContainer); 
-        },16000);
+        },timeout || 16000);
     },
 
     createFloating : function(ad,ad_id,confElement){
@@ -656,6 +656,7 @@ module.exports = {
                 v       : '3.0',
                 'adspace.width' : mobfoxConfig.width,
                 'adspace.height' : mobfoxConfig.height,
+                timeout : mobfoxConfig.timeout,
                 jsvar : mobfoxVar
             };
 
@@ -709,7 +710,7 @@ module.exports = {
                 return;
             }
 
-            createAd[mobfoxConfig.type](window[mobfoxVar][0].content,mobfoxVar,confE);
+            createAd[mobfoxConfig.type](window[mobfoxVar][0].content,mobfoxVar,confE,params.timeout);
 
             script.parentNode.removeChild(script);
         };
