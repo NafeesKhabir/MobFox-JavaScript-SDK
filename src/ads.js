@@ -50,7 +50,7 @@ module.exports = {
         iframe.style.overflow = "hidden";
     },
 
-    createInterstitial : function(ad,ad_id,confElement){
+    createInterstitial : function(ad,ad_id,confElement,timeout){
             
         var adContainer = document.getElementById('mobfox_interstitial');
         if(adContainer){
@@ -133,7 +133,7 @@ module.exports = {
 
         setTimeout(function(){
            adContainer.parentNode.removeChild(adContainer); 
-        },16000);
+        },timeout || 16000);
     },
 
     createFloating : function(ad,ad_id,confElement){

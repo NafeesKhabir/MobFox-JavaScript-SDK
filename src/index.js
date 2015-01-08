@@ -40,6 +40,7 @@
                 v       : '3.0',
                 'adspace.width' : mobfoxConfig.width,
                 'adspace.height' : mobfoxConfig.height,
+                timeout : mobfoxConfig.timeout,
                 jsvar : mobfoxVar
             };
 
@@ -93,7 +94,7 @@
                 return;
             }
 
-            createAd[mobfoxConfig.type](window[mobfoxVar][0].content,mobfoxVar,confE);
+            createAd[mobfoxConfig.type](window[mobfoxVar][0].content,mobfoxVar,confE,params.timeout);
 
             script.parentNode.removeChild(script);
         };
