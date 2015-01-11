@@ -23,7 +23,7 @@ page.onResourceReceived = function(response) {
             });
 
             var beforeMobfoxConfig = page.evaluate(function(){
-                return document.querySelector(".mobfox_iframe").nextSibling.id === "mobfoxConfig" ;
+                return document.querySelector(".mobfox_iframe").parentNode.nextSibling.id === "mobfoxConfig" ;
             });
             test.ok(id.match(/^mobfox_\d+$/));
             test.equal(width,"320");
