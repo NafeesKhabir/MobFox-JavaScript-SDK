@@ -94,7 +94,7 @@
                 return;
             }
 
-            createAd[mobfoxConfig.type](window[mobfoxVar][0].content,mobfoxVar,confE,params.timeout);
+            createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,params.timeout);
 
             script.parentNode.removeChild(script);
         };

@@ -1,4 +1,5 @@
-var cleanAd = function(ad){
+var extractClickURL = require('./extractClickURL.js'),
+    cleanAd = function(ad){
     
     var cleaned;
     if(ad.indexOf("</html>") > 0){
@@ -22,32 +23,59 @@ var cleanAd = function(ad){
 //----------------------------------------------------------------
 module.exports = {
 
-    createBanner : function(ad,ad_id,confElement){
+    createBanner : function(ad,ad_id,confElement,mobfoxClickURL){
         var iframe = document.getElementById(ad_id);
         if(iframe){
             iframe.parentNode.removeChild(iframe);
         }
 
-        iframe = document.createElement("iframe");
-        iframe.id = ad_id;
-        iframe.className = "mobfox_iframe"; 
-        iframe.width= mobfoxConfig.width;
-        iframe.height= mobfoxConfig.height;
+        containerDiv = document.createElement("div");
+        containerDiv.style.margin = "0px";
+        containerDiv.style.padding= "0px";
+        containerDiv.style.border= "none";   
+        containerDiv.style.cursor= "pointer";   
 
-        iframe.src = "data:text/html;charset=utf-8," + cleanAd(ad);
+        containerDiv.id = "container_"+ad_id;
+        confElement.parentNode.insertBefore(containerDiv,confElement);
 
-        confElement.parentNode.insertBefore(iframe,confElement);
+        var cleaned = cleanAd(ad.content);
 
-        /*var iFrameDoc = document.getElementById(ad_id).contentWindow.document;
-        iFrameDoc.write(cleanAd(ad));
-        iFrameDoc.close();*/
+        extractClickURL(cleaned,function(err,clickURL){
 
-        iframe.style.margin = "0px";
-        iframe.style.padding= "0px";
-        iframe.style.border= "none";   
+            containerDiv.onclick = function(){
+                if(!clickURL){
+                    window.location.href = ad.url;
+                    return;
+                }
 
-        iframe.scrolling = "no";
-        iframe.style.overflow = "hidden";
+                var registerMobfoxClick = document.createElement("script");
+                registerMobfoxClick.src = ad.url;
+                registerMobfoxClick.onload = registerMobfoxClick.onerror = function(){
+                    window.location.href = clickURL;
+                };
+                document.body.appendChild(registerMobfoxClick);
+            };
+
+            iframe = document.createElement("iframe");
+            iframe.id = ad_id;
+            iframe.className = "mobfox_iframe"; 
+            iframe.width= mobfoxConfig.width;
+            iframe.height= mobfoxConfig.height;
+            iframe.style.pointerEvents = "none";
+
+            iframe.src = "data:text/html;charset=utf-8," + cleaned;
+
+            containerDiv.appendChild(iframe);
+
+            iframe.style.margin = "0px";
+            iframe.style.padding= "0px";
+            iframe.style.border= "none";   
+
+            iframe.scrolling = "no";
+            iframe.style.overflow = "hidden";
+        });
+
+        
     },
 
     createInterstitial : function(ad,ad_id,confElement,timeout){
@@ -78,7 +106,7 @@ module.exports = {
         iframe.className = "mobfox_iframe";
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
-        iframe.src = "data:text/html;charset=utf-8, "+escape(cleanAd(ad));
+        iframe.src = "data:text/html;charset=utf-8, "+escape(cleanAd(ad.content));
         adContainer.contentWindow.document.body.appendChild(iframe);
 
         /*var iFrameDoc = iframe.contentWindow.document;
@@ -164,7 +192,7 @@ module.exports = {
         iframe.className = "mobfox_iframe";
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
-        iframe.src = "data:text/html;charset=utf-8, "+escape(cleanAd(ad));
+        iframe.src = "data:text/html;charset=utf-8, "+escape(cleanAd(ad.content));
         adContainer.contentWindow.document.body.appendChild(iframe);
 
         //center it
