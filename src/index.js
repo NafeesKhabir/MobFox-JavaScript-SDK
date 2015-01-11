@@ -28,7 +28,8 @@
                 "no_markup",
                 "s_subid",
                 "allow_mr",
-                "r_floor" 
+                "r_floor" ,
+                "testURL"
             ],
             params = {
                 r_type  : 'banner',//mobfoxConfig.type,
@@ -53,28 +54,9 @@
 
         confE.parentNode.insertBefore(script,confE);
         //var start = (new Date()).getTime();
-        if(mobfoxConfig.publicationID === "test"){
-            if(mobfoxConfig.type === "interstitial"){
-                if(mobfoxConfig.testID){
-                    script.src = "/js/response-inter-"+mobfoxConfig.testID+".js";
-                }
-                else{
-                    script.src = "/js/response-inter.js";
-                }
-            }
-            else{
-                if(mobfoxConfig.testID){
-                    script.src = "/js/response-banner-"+mobfoxConfig.testID+".js";
-                }
-                else{
-                    script.src = "/js/response-banner.js";
-                }
-            }
-            mobfoxVar = "mobfox_test";
-        }
-        else{
-            script.src = 'http://my.mobfox.com/request.php?' + Qs.stringify(params);
-        }
+
+        var url = params.testURL || 'http://my.mobfox.com/request.php';
+        script.src = url + '?' + Qs.stringify(params);
 
         script.onload = function(){
             //var end = (new Date()).getTime();
