@@ -10,7 +10,7 @@ page.open(url);
 var received = false;
 page.onResourceReceived = function(response) {
 
-    if(response.url.match(/\/js\/response\-banner\.js$/) && !received){
+    if(response.url.match(/\/js\/response\-banner\.js/) && !received){
         received = true;
         setTimeout(function(){
 
