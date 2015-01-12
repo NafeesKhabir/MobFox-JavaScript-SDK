@@ -52,6 +52,10 @@
             }
         });
 
+        if(params.testURL){
+            params.jsvar = mobfoxVar = "mobfox_test";
+        }
+
         confE.parentNode.insertBefore(script,confE);
         //var start = (new Date()).getTime();
 

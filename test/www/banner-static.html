@@ -38,13 +38,13 @@
     <script id="mobfoxConfig">
 
         var url     = Qurl.create(),
-            testID  = url.query("testID");
+            testURL  = url.query("testURL");
 
         window.mobfoxConfig = {
             width       : 320,
             height      : 50,
             publicationID : 'test',
-            testID      : testID, 
+            testURL : testURL || "js/response-banner.js",
             type        : 'banner'
         }
     </script>

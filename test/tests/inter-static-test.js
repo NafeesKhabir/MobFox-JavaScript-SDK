@@ -10,7 +10,7 @@ page.open(url);
 
 page.onResourceReceived = function(response) {
 
-    if(!gotIt && response.url.match(/\/js\/response\-inter\.js$/)){
+    if(!gotIt && response.url.match(/\/js\/response\-inter\.js/)){
 
         gotIt = true;
 
