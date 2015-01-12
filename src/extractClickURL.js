@@ -5,6 +5,8 @@ var htmlparser = require("htmlparser");
 module.exports = function(html,cb){
     var handler = new htmlparser.DefaultHandler(function (error, dom) {
 
+        if(error) return cb();
+
         var nodes = dom,
             node = nodes.filter(function(n){
                 return n.name === "html";
