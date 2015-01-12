@@ -1,6 +1,8 @@
 var fs              = require('fs'),
+    path            = require('path'),
     extractClickURL = require("../../src/extractClickURL");
 
+process.chdir(path.dirname(module.filename));
 //---------------------------------------------------
 exports.testExtractGotoURL = function(test){
     test.expect(1);
