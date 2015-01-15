@@ -1,98 +1,60 @@
 var page    =   require('webpage').create(),
     url     =   'http://127.0.0.1:8080/floating-test.html',
     test    =   require('./lib/harness.js');
-    gotIt   =   false;
 
 test.name('floating test');
-test.expect(11);
-
-page.viewportSize = {
-  width: 320,
-  height: 480
-};
+test.expect(4);
 
 page.open(url);
 
+var received = false;
 page.onResourceReceived = function(response) {
 
-    if(!gotIt && response.url.match(/http\:\/\/my\.mobfox\.com\/request\.php/)){
-
-        gotIt = true;
-
-        page.injectJs("js/simulate.js");
-
-
+    if(response.url.match(/\/js\/response\-banner\.js/) && !received){
+        received = true;
         setTimeout(function(){
 
-            var container = page.evaluate(function(){
-                var container = document.querySelector("#mobfox_floating");
-
-                return {
-                    style: {
-                        left    : container.style.left,
-                        bottom : container.style.bottom
-                    },
-                    innerWidth : container.innerWidth
-                };
+            var id = page.evaluate(function() {
+                var container   = document.querySelector("#mobfox_floating"),
+                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                return ad.id;
             });
 
-            test.equal(container.style.left,"10px");
-            test.equal(container.style.bottom,"0px");
-
-            var ad = page.evaluate(function() {
-
-                var container = document.querySelector("#mobfox_floating"),
-                    ad = container.contentWindow.document.querySelector(".mobfox_iframe");
-
-                return {
-                    id : ad.id,
-                    width : ad.width,
-                    height : ad.height
-                };
+            var width = page.evaluate(function() {
+                var container   = document.querySelector("#mobfox_floating"),
+                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                return ad.width;
             });
 
-            var button = page.evaluate(function() {
-                var container = document.querySelector("#mobfox_floating");
-                    button = container.contentWindow.document.querySelector("#mobfox_dismiss");
-
-                return {
-                    width : button.width,
-                    height : button.height,
-                    style  : {
-                        width   : button.style.width,
-                        height  : button.style.height
-                    },
-                    tag    : button.tagName
-                };
-
+            var height = page.evaluate(function() {
+                var container   = document.querySelector("#mobfox_floating"),
+                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                return ad.height;
             });
 
-            test.ok(ad.id.match(/^mobfox_\d+$/));
-            test.equal(ad.width,"300");
-            test.equal(ad.height,"50");
+            test.ok(id.match(/^mobfox_test$/));
+            test.equal(width,"320");
+            test.equal(height,"50");
 
-
-            test.equal(button.width,"40");
-            test.equal(button.height,"40");
-            test.equal(button.style.width,"20px");
-            test.equal(button.style.height,"20px");
-
-            test.equal(button.tag.toLowerCase(),"canvas");
-
-            page.evaluate(function() {
-                simulate(document.querySelector("#mobfox_floating").contentWindow.document.querySelector("#mobfox_dismiss"), "click");
+            page.evaluate(function(){
+                var evt = document.createEvent("MouseEvents");
+                evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                var container   = document.querySelector("#mobfox_floating"),
+                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                ad.dispatchEvent(evt);
             });
-
-            container = page.evaluate(function(){
-                return document.querySelector("#mobfox_floating");
-            });
-            test.ok(!container);
-            test.done();
 
         },100);
     }
 };
 
+page.onNavigationRequested = function(url, type, willNavigate, main) {
+
+  if(url==="http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f"){
+    test.equal(url,"http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f","Navigate to landing page.");
+    test.done();
+  }
+};
 /*page.onResourceRequested = function(requestData, networkRequest) {
   console.log('^ '+requestData.url);
 };
