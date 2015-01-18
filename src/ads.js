@@ -24,35 +24,35 @@ var extractClickURL = require('./extractClickURL.js'),
 module.exports = {
 
     createBanner : function(ad,ad_id,confElement,mobfoxClickURL){
+
+        if(confElement.parentNode.tagName.toLowerCase() === "head"){
+            confElement = document.body; 
+        }
+
         var iframe = document.getElementById(ad_id);
         if(iframe){
             iframe.parentNode.removeChild(iframe);
         }
 
-        var containerDiv = document.createElement("div");
-        containerDiv.style.margin = "0px";
-        containerDiv.style.padding= "0px";
-        containerDiv.style.border= "none";   
-        containerDiv.style.cursor= "pointer";   
+        var containerAnchor = document.createElement("a");
+        containerAnchor.style.margin = "0px";
+        containerAnchor.style.padding= "0px";
+        containerAnchor.style.border= "none";   
+        containerAnchor.style.cursor= "pointer";   
+        containerAnchor.style.display= "block";   
 
-        containerDiv.id = "container_"+ad_id;
-        confElement.parentNode.insertBefore(containerDiv,confElement);
+        containerAnchor.id = "container_"+ad_id;
+        containerAnchor.target = "_top";
+        confElement.parentNode.insertBefore(containerAnchor,confElement);
 
         var cleaned = cleanAd(ad.content);
 
         extractClickURL(cleaned,function(err,clickURL){
 
-            containerDiv.onclick = function(){
-                if(!clickURL){
-                    window.location.href = ad.url;
-                    return;
-                }
-
+            containerAnchor.href = clickURL || ad.url;
+            containerAnchor.onclick = function(){
                 var registerMobfoxClick = document.createElement("script");
                 registerMobfoxClick.src = ad.url;
-                registerMobfoxClick.onload = registerMobfoxClick.onerror = function(){
-                    window.location.href = clickURL;
-                };
                 document.body.appendChild(registerMobfoxClick);
             };
 
@@ -65,7 +65,7 @@ module.exports = {
 
             iframe.src = "data:text/html;charset=utf-8," + cleaned;
 
-            containerDiv.appendChild(iframe);
+            containerAnchor.appendChild(iframe);
 
             iframe.style.margin = "0px";
             iframe.style.padding= "0px";
