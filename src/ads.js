@@ -257,6 +257,7 @@ module.exports = {
 
             iframe.scrolling = "no";
             iframe.style.overflow = "hidden";
+            iframe.style.pointerEvents = "none";
 
             if(mobfoxConfig.closeButton === false) return;
 
