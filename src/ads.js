@@ -3,7 +3,7 @@ var extractClickURL = require('./extractClickURL.js'),
     
     var cleaned;
 
-    if(ad.indexOf("<iframe>") >=0){
+    if(ad.indexOf("<iframe") >=0){
         cleaned = ad;
     }
     else if(ad.indexOf("</html>") > 0){
