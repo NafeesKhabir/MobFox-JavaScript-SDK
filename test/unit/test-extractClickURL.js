@@ -31,3 +31,12 @@ exports.testExtractNoURL = function(test){
     });
 };
 //---------------------------------------------------
+exports.testExtractNuggetsIFrameURL = function(test){
+    test.expect(1);
+    var html = fs.readFileSync("ads/nuggets-iframe.html",{encoding:"utf-8"});
+    extractClickURL(html,function(err,clickURL){
+        test.equal(clickURL,"http://tracker.mtrtb.com/tracker/click/?d=ZMdXVpZD1iOTY5YWZkNy05ZmQxLTExZTQtOTNkZi0wYTJiNmNkNTNlZTEmY2FtcGFpZ25faWQ9MTAwJmNjcmlkPTEzMSZiaWRfdHM9MTQyMTY2ODM4MzU2NyZkcGlkc2hhMT0mY2FtcGFpZ25faWQ9MTAw");
+        test.done();
+    });
+};
+//---------------------------------------------------
