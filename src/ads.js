@@ -21,11 +21,76 @@ var extractClickURL = require('./extractClickURL.js'),
     return cleaned;
 };
 //----------------------------------------------------------------
+function addCloseButton(iframe,options){
+
+    options = options || {};
+    var button = iframe.contentWindow.document.createElement('canvas');
+
+    iframe.contentWindow.document.body.appendChild(button);
+    button.onclick = function(){
+       iframe.parentNode.removeChild(iframe); 
+    };
+    button.style.position   = "absolute";
+    button.style.width      =  (options.width || 40) + "px";
+    button.style.height     =  (options.height || 40) + "px";
+    button.style.top        =  (options.top || 10 ) + "px";
+    button.style.right      =  (options.right || 10) + "px";   
+    button.width = 40;
+    button.height = 40;
+    button.style.cursor = "pointer";
+    button.id = "mobfox_dismiss"; 
+
+    var ctx = button.getContext('2d');
+    ctx.rect(0,0,40,40);
+    ctx.fillStyle="#fff";
+    ctx.fill();
+
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 4;
+
+    ctx.rect(0,0,40,40);
+    ctx.stroke();
+
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+
+    ctx.moveTo(10, 10);
+    ctx.lineTo(30, 30);
+
+    ctx.moveTo(10, 30);
+    ctx.lineTo(30, 10);
+    ctx.stroke();
+}
+//----------------------------------------------------------------
+function createOnClickCallback(mobfoxClickURL,starboltClickURL){
+
+    return function(){
+        var anchor = document.createElement("a");
+        anchor.href=  starboltClickURL || mobfoxClickURL;
+        anchor.target = "_top";
+        document.body.appendChild(anchor);
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+        if(!starboltClickURL){
+            anchor.dispatchEvent(evt);
+            return;
+        }
+
+        var registerMobfoxClick = document.createElement("script");
+        registerMobfoxClick.src = mobfoxClickURL;
+        registerMobfoxClick.onload = registerMobfoxClick.onerror = function(){
+            anchor.dispatchEvent(evt);
+        };
+        document.body.appendChild(registerMobfoxClick);
+    };
+}
+//----------------------------------------------------------------
 module.exports = {
 
     createBanner : function(ad,ad_id,confElement,mobfoxClickURL){
 
-        if(confElement.parentNode.tagName.toLowerCase() === "head"){
+        if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
         }
 
@@ -47,27 +112,7 @@ module.exports = {
 
         extractClickURL(cleaned,function(err,clickURL){
 
-            containerDiv.onclick = function(){
-
-                var anchor = document.createElement("a");
-                anchor.href= clickURL || ad.url;
-                anchor.target = "_top";
-                document.body.appendChild(anchor);
-                var evt = document.createEvent("MouseEvents");
-                evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-
-                if(!clickURL){
-                    anchor.dispatchEvent(evt);
-                    return;
-                }
-
-                var registerMobfoxClick = document.createElement("script");
-                registerMobfoxClick.src = ad.url;
-                registerMobfoxClick.onload = registerMobfoxClick.onerror = function(){
-                    anchor.dispatchEvent(evt);
-                };
-                document.body.appendChild(registerMobfoxClick);
-            };
+            containerDiv.onclick = createOnClickCallback(ad.url,clickURL); 
 
             iframe = document.createElement("iframe");
             iframe.id = ad_id;
@@ -93,6 +138,10 @@ module.exports = {
 
     createInterstitial : function(ad,ad_id,confElement,timeout){
             
+        if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
+            confElement = document.body; 
+        }
+
         var adContainer = document.getElementById('mobfox_interstitial');
         if(adContainer){
             adContainer.parentNode.removeChild(iframe);
@@ -127,21 +176,8 @@ module.exports = {
 
         extractClickURL(cleaned,function(err,clickURL){
 
-            containerDiv.onclick = function(){
-                if(!clickURL){
-                    window.location.href = ad.url;
-                    return;
-                }
-
-                var registerMobfoxClick = document.createElement("script");
-                registerMobfoxClick.src = ad.url;
-                registerMobfoxClick.onload = registerMobfoxClick.onerror = function(){
-                    window.location.href = clickURL;
-                };
-                document.body.appendChild(registerMobfoxClick);
-            };
-
-
+            containerDiv.onclick = createOnClickCallback(ad.url,clickURL); 
+            
             var iframe = adContainer.contentWindow.document.createElement('iframe');
             iframe.id = ad_id;
             iframe.className = "mobfox_iframe";
@@ -160,42 +196,7 @@ module.exports = {
             iframe.scrolling = "no";
             iframe.style.overflow = "hidden";
 
-            var button = adContainer.contentWindow.document.createElement('canvas');
-            adContainer.contentWindow.document.body.appendChild(button);
-
-            button.onclick = function(){
-               adContainer.parentNode.removeChild(adContainer); 
-            };
-            button.style.position   = "absolute";
-            button.style.width      = "40px";
-            button.style.height     = "40px";
-            button.style.top        = "10px";
-            button.style.right      = "10px";   
-            button.width = 40;
-            button.height = 40;
-            button.style.cursor = "pointer";
-            button.id = "mobfox_dismiss"; 
-
-            var ctx = button.getContext('2d');
-            ctx.rect(0,0,40,40);
-            ctx.fillStyle="#fff";
-            ctx.fill();
-
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 4;
-
-            ctx.rect(0,0,40,40);
-            ctx.stroke();
-
-            ctx.lineWidth = 8;
-            ctx.beginPath();
-
-            ctx.moveTo(10, 10);
-            ctx.lineTo(30, 30);
-
-            ctx.moveTo(10, 30);
-            ctx.lineTo(30, 10);
-            ctx.stroke();
+            addCloseButton(adContainer);
 
             setTimeout(function(){
                adContainer.parentNode.removeChild(adContainer); 
@@ -204,6 +205,10 @@ module.exports = {
     },
     createFloating : function(ad,ad_id,confElement){
         
+        if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
+            confElement = document.body; 
+        }
+
         var adContainer = document.getElementById('mobfox_floating');
         if(adContainer){
             adContainer.parentNode.removeChild(iframe);
@@ -239,26 +244,14 @@ module.exports = {
 
         extractClickURL(cleaned,function(err,clickURL){
 
-            containerDiv.onclick = function(){
-                if(!clickURL){
-                    window.location.href = ad.url;
-                    return;
-                }
-
-                var registerMobfoxClick = document.createElement("script");
-                registerMobfoxClick.src = ad.url;
-                registerMobfoxClick.onload = registerMobfoxClick.onerror = function(){
-                    window.location.href = clickURL;
-                };
-                document.body.appendChild(registerMobfoxClick);
-            };
+            containerDiv.onclick = createOnClickCallback(ad.url,clickURL); 
 
             var iframe = adContainer.contentWindow.document.createElement('iframe');
             iframe.id = ad_id;
             iframe.className = "mobfox_iframe";
             iframe.width= mobfoxConfig.width;
             iframe.height= mobfoxConfig.height;
-            iframe.src = "data:text/html;charset=utf-8, "+escape(cleanAd(ad.content));
+            iframe.src = "data:text/html;charset=utf-8, "+escape(cleaned);
 
             //center it
             adContainer.style.left = ((window.innerWidth - parseInt(adContainer.style.width)) / 2) + "px";
@@ -274,44 +267,9 @@ module.exports = {
 
             if(mobfoxConfig.closeButton === false) return;
 
-            var button = adContainer.contentWindow.document.createElement('canvas');
-            adContainer.contentWindow.document.body.appendChild(button);
-
             containerDiv.appendChild(iframe);
 
-            button.onclick = function(){
-               adContainer.parentNode.removeChild(adContainer); 
-            };
-            button.style.position   = "absolute";
-            button.style.width      = "20px";
-            button.style.height     = "20px";
-            button.style.top        = "5px";
-            button.style.right      = "5px";   
-            button.width = 40;
-            button.height = 40;
-            button.style.cursor = "pointer";
-            button.id = "mobfox_dismiss"; 
-
-            var ctx = button.getContext('2d');
-            ctx.rect(0,0,40,40);
-            ctx.fillStyle="#fff";
-            ctx.fill();
-
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 4;
-
-            ctx.rect(0,0,40,40);
-            ctx.stroke();
-
-            ctx.lineWidth = 8;
-            ctx.beginPath();
-
-            ctx.moveTo(10, 10);
-            ctx.lineTo(30, 30);
-
-            ctx.moveTo(10, 30);
-            ctx.lineTo(30, 10);
-            ctx.stroke();
+            addCloseButton(adContainer,{width:20,height:20,top:5,right:5});
         });
 
     }
