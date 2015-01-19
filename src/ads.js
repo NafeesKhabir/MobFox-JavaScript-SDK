@@ -34,25 +34,38 @@ module.exports = {
             iframe.parentNode.removeChild(iframe);
         }
 
-        var containerAnchor = document.createElement("a");
-        containerAnchor.style.margin = "0px";
-        containerAnchor.style.padding= "0px";
-        containerAnchor.style.border= "none";   
-        containerAnchor.style.cursor= "pointer";   
-        containerAnchor.style.display= "block";   
+        var containerDiv = document.createElement("div");
+        containerDiv.style.margin = "0px";
+        containerDiv.style.padding= "0px";
+        containerDiv.style.border= "none";   
+        containerDiv.style.cursor= "pointer";   
 
-        containerAnchor.id = "container_"+ad_id;
-        containerAnchor.target = "_top";
-        confElement.parentNode.insertBefore(containerAnchor,confElement);
+        containerDiv.id = "container_"+ad_id;
+        confElement.parentNode.insertBefore(containerDiv,confElement);
 
         var cleaned = cleanAd(ad.content);
 
         extractClickURL(cleaned,function(err,clickURL){
 
-            containerAnchor.href = clickURL || ad.url;
-            containerAnchor.onclick = function(){
+            containerDiv.onclick = function(){
+
+                var anchor = document.createElement("a");
+                anchor.href= clickURL || ad.url;
+                anchor.target = "_top";
+                document.body.appendChild(anchor);
+                var evt = document.createEvent("MouseEvents");
+                evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+                if(!clickURL){
+                    anchor.dispatchEvent(evt);
+                    return;
+                }
+
                 var registerMobfoxClick = document.createElement("script");
                 registerMobfoxClick.src = ad.url;
+                registerMobfoxClick.onload = registerMobfoxClick.onerror = function(){
+                    anchor.dispatchEvent(evt);
+                };
                 document.body.appendChild(registerMobfoxClick);
             };
 
@@ -65,7 +78,7 @@ module.exports = {
 
             iframe.src = "data:text/html;charset=utf-8," + cleaned;
 
-            containerAnchor.appendChild(iframe);
+            containerDiv.appendChild(iframe);
 
             iframe.style.margin = "0px";
             iframe.style.padding= "0px";
