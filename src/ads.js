@@ -2,7 +2,11 @@ var extractClickURL = require('./extractClickURL.js'),
     cleanAd = function(ad){
     
     var cleaned;
-    if(ad.indexOf("</html>") > 0){
+
+    if(ad.indexOf("<iframe>") >=0){
+        cleaned = ad;
+    }
+    else if(ad.indexOf("</html>") > 0){
         /*var end = ad.match(/<\/html>(.*)$/);
         if(end){
             var pixel = end[1];
