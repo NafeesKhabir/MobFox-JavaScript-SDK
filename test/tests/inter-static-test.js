@@ -51,14 +51,20 @@ page.onResourceReceived = function(response) {
             test.equal(button.height,"40");
             test.equal(button.tag.toLowerCase(),"canvas");
 
-            page.evaluate(function() {
-                simulate(document.querySelector("#mobfox_interstitial").contentWindow.document.querySelector("#mobfox_dismiss"), "click");
+            page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js', function() {
+                var offset = page.evaluate(function(){
+                    var iframe = document.querySelector("#mobfox_interstitial").contentWindow.document.querySelector("#mobfox_dismiss") ; 
+                    return $(iframe).offset();
+                });
+                page.sendEvent('click',offset.left,offset.top );
+
+                var container = page.evaluate(function(){
+                    return document.querySelector("#mobfox_interstitial");
+                });
+                test.ok(!container);
+                test.done();
+
             });
-            var container = page.evaluate(function(){
-                return document.querySelector("#mobfox_interstitial");
-            });
-            test.ok(!container);
-            test.done();
 
         },100);
     }

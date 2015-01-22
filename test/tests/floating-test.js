@@ -36,20 +36,21 @@ page.onResourceReceived = function(response) {
             test.equal(width,"320");
             test.equal(height,"50");
 
-            page.evaluate(function(){
-                var evt = document.createEvent("MouseEvents");
-                evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                var container   = document.querySelector("#mobfox_floating"),
-                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
-                ad.dispatchEvent(evt);
+            page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js', function() {
+                var offset = page.evaluate(function(){
+
+                    var container   = document.querySelector("#mobfox_floating");
+                    return $(container).offset();
+                });
+                page.sendEvent('click',offset.left,offset.top );
             });
+
 
         },100);
     }
 };
 
 page.onNavigationRequested = function(url, type, willNavigate, main) {
-
   if(url==="http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f"){
     test.equal(url,"http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f","Navigate to landing page.");
     test.done();
