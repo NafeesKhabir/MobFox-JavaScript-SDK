@@ -7,7 +7,9 @@ test.expect(5);
 
 page.open(url);
 
-var received = false;
+var received = false,
+    navigated=false;
+
 page.onResourceReceived = function(response) {
 
     if(response.url.match(/\/js\/response\-banner\-starbolt\.js/) && !received){
@@ -35,12 +37,14 @@ page.onResourceReceived = function(response) {
             test.equal(height,"50");
             test.ok(beforeMobfoxConfig);
     
-            page.evaluate(function(){
-                var evt = document.createEvent("MouseEvents");
-                evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                var a = document.querySelector(".mobfox_iframe"); 
-                a.dispatchEvent(evt);
+            page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js', function() {
+                var offset = page.evaluate(function(){
+                    var iframe = document.querySelector(".mobfox_iframe"); 
+                    return $(iframe).offset();
+                });
+                page.sendEvent('click',offset.left,offset.top );
             });
+
 
         },100);
     }
@@ -49,7 +53,8 @@ page.onResourceReceived = function(response) {
 page.onNavigationRequested = function(url, type, willNavigate, main) {
 
   var landingPage = "https://play.google.com/store/apps/details?id=com.topgames.FighterCowboy.en";
-  if(url===landingPage){
+  if(url===landingPage && !navigated){
+      navigated = true;
     test.equal(url,landingPage);
     test.done();
   }

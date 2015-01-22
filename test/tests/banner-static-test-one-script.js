@@ -35,13 +35,15 @@ page.onResourceReceived = function(response) {
             test.equal(height,"50");
             test.ok(beforeMobfoxConfig);
 
-
-            page.evaluate(function(){
-                var evt = document.createEvent("MouseEvents");
-                evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                var a = document.querySelector(".mobfox_iframe"); 
-                a.dispatchEvent(evt);
+            page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js', function() {
+                var offset = page.evaluate(function(){
+                    var iframe = document.querySelector(".mobfox_iframe"); 
+                    return $(iframe).offset();
+                });
+                page.sendEvent('click',offset.left,offset.top );
             });
+
+            
 
         },100);
     }

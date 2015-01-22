@@ -42,9 +42,23 @@ page.onResourceReceived = function(response) {
             page.evaluate(function() {
                 simulate(document.querySelector("#mobfox_floating").contentWindow.document.querySelector("#mobfox_dismiss"), "click");
             });
+
+            page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js', function() {
+                var offset = page.evaluate(function(){
+                    var dismiss = document.querySelector("#mobfox_floating").contentWindow.document.querySelector("#mobfox_dismiss");
+                    return $(dismiss).offset();
+                });
+                page.sendEvent('click',offset.left,offset.top );
+            });
+            
             var container = page.evaluate(function(){
                 return document.querySelector("#mobfox_floating");
             });
+
+            
+
+
+
             test.ok(!container);
             test.done();
 
