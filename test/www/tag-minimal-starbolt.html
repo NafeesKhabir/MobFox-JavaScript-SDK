@@ -1,0 +1,16 @@
+<script type="text/javascript" src="js/qurl.js"></script>
+ <script id="mobfoxConfig">
+
+    var url     = Qurl.create(),
+        testURL  = url.query("testURL");
+
+    window.mobfoxConfig = {
+        width       : 320,
+        height      : 50,
+        publicationID : 'test',
+        testURL : testURL || "js/response-banner-starbolt.js",
+        type        : 'banner'
+    }
+</script>
+<script type='text/javascript' src='ad.js'></script>   
+
