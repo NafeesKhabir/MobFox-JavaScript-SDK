@@ -53,13 +53,12 @@ page.onResourceReceived = function(response) {
 
             page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js', function() {
                 var offset = page.evaluate(function(){
-                    var iframe = document.querySelector("#mobfox_interstitial"); 
+                    var container = document.querySelector("#mobfox_interstitial"),
+                        iframe = container.contentWindow.document.querySelector(".mobfox_iframe");
                     return $(iframe).offset();
                 });
                 page.sendEvent('click',offset.left,offset.top );
             });
-
-
 
         },100);
     }
