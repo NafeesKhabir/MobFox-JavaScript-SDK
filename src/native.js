@@ -81,7 +81,13 @@
                     console.log(e);
                 }
 
-                createNativeAd(res.body,mobfoxConfig);
+                if(mobfoxConfig.type === 'image'){
+                    createImageAd(res.body,mobfoxConfig);
+                }
+
+                if(mobfoxConfig.type === 'banner'){
+                    createBannerAd(res.body,mobfoxConfig);
+                }
             });
 
 })();
