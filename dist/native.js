@@ -1665,51 +1665,53 @@ module.exports = function(arr, fn, initial){
   return curr;
 };
 },{}],9:[function(require,module,exports){
-module.exports = {
 
-    createNativeAd : function(adData,options){
+var nativeBannerTmpl = require('./templates/native-banner.tmpl');
+//--------------------------------------------------------------
+module.exports.createImageAd = function(adData,options){
         
-        if(options.type === 'image'){
+        var ref             = options.referenceE,
+            doppleganger    = document.createElement("a"),
+            img             = document.createElement("img"),
+            title           = document.createElement("div");
 
-            var ref             = options.referenceE,
-                doppleganger    = document.createElement("a"),
-                img             = document.createElement("img"),
-                title           = document.createElement("div");
+        doppleganger.href           = adData.click_url;
+        doppleganger.style.width    = ref.offsetWidth + "px";
+        doppleganger.style.height   = ref.offsetHeight + "px";
+        doppleganger.style.display  = "block";
+        doppleganger.style.position = "relative";
+        ref.parentNode.insertBefore(doppleganger,ref);
 
-            doppleganger.href           = adData.click_url;
-            doppleganger.style.width    = ref.offsetWidth + "px";
-            doppleganger.style.height   = ref.offsetHeight + "px";
-            doppleganger.style.display  = "block";
-            doppleganger.style.position = "relative";
-            ref.parentNode.insertBefore(doppleganger,ref);
-
-            if(options.replace){
-                ref.parentNode.removeChild(ref);
-            }
-
-            doppleganger.appendChild(img);
-            img.style.width     = "100%";
-            img.style.height    = "100%";
-            img.src = adData.imageassets.icon.url;
-
-            doppleganger.appendChild(title);
-            title.innerHTML         = [adData.textassets.headline,"-",adData.textassets.cta].join(" ");
-            title.style.height      = "20%";
-            title.style.position    = "absolute";
-            title.style.top         = "0px";
-            title.style.width       = "100%";
-            title.style.background  = "#fff";
-            title.style.opacity     = "0.7";
-            title.style.color       = "#000";
-            title.style.lineHeight  = title.offsetHeight+"px";
-            title.style.fontSize    = (title.offsetHeight * 0.5)+"px";
-            title.style.fontWeight  = "bold";
-            title.style.textAlign   = "center";
+        if(options.replace){
+            ref.parentNode.removeChild(ref);
         }
-    }
-};
 
-},{}],10:[function(require,module,exports){
+        doppleganger.appendChild(img);
+        img.style.width     = "100%";
+        img.style.height    = "100%";
+        img.src = adData.imageassets.icon.url;
+
+        doppleganger.appendChild(title);
+        title.innerHTML         = [adData.textassets.headline,"-",adData.textassets.cta].join(" ");
+        title.style.height      = "20%";
+        title.style.position    = "absolute";
+        title.style.top         = "0px";
+        title.style.width       = "100%";
+        title.style.background  = "#fff";
+        title.style.opacity     = "0.7";
+        title.style.color       = "#000";
+        title.style.lineHeight  = (doppleganger.offsetHeight/5)+"px";
+        title.style.fontSize    = (doppleganger.offsetHeight/10)+"px";
+        title.style.fontWeight  = "bold";
+        title.style.textAlign   = "center";
+};
+//--------------------------------------------------------------
+module.exports.createNativeAd = function(adData,options){
+    
+};
+//--------------------------------------------------------------
+
+},{"./templates/native-banner.tmpl":11}],10:[function(require,module,exports){
 (function(){
 
     var Qs                  = require('qs'),
@@ -1793,9 +1795,18 @@ module.exports = {
                     console.log(e);
                 }
 
-                createNativeAd(res.body,mobfoxConfig);
+                if(mobfoxConfig.type === 'image'){
+                    createImageAd(res.body,mobfoxConfig);
+                }
+
+                if(mobfoxConfig.type === 'banner'){
+                    createBannerAd(res.body,mobfoxConfig);
+                }
             });
 
 })();
 
-},{"./native-ads.js":9,"qs":1,"superagent":6}]},{},[10]);
+},{"./native-ads.js":9,"qs":1,"superagent":6}],11:[function(require,module,exports){
+module.exports = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title></title>\n    <style>\n        html {\n          box-sizing: border-box;\n        }\n\n        *, *:before, *:after {\n          box-sizing: inherit;\n        }\n\n        #container{\n            display:block;\n        }\n\n        img{\n            width:{{image.width}};\n            height:{{image.height}};\n        }\n    </style>\n</head>\n<body>\n    <a id=\"container\" target=\"_top\" href=\"{{click_url}}\">\n\n        <img src=\"{{image.src}}\" alt=\"\">\n        {{# config.headline}}\n            <span>\n                {{headline}}\n            </span>\n        {{/ config.headline}}\n\n        {{# config.cta}}\n            <span>\n                {{cta}}\n            </span>\n        {{/ config.cta}}\n\n        {{# config.description}}\n            <span>\n                {{description}}\n            </span>\n        {{/ config.description}}\n    </a>\n</body>\n</html>\n";
+
+},{}]},{},[10]);

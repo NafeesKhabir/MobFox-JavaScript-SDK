@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        html {
+          box-sizing: border-box;
+        }
+
+        *, *:before, *:after {
+          box-sizing: inherit;
+        }
+
+        #container{
+            display:block;
+        }
+
+        img{
+            width:{{image.width}};
+            height:{{image.height}};
+        }
+    </style>
+</head>
+<body>
+    <a id="container" target="_top" href="{{click_url}}">
+
+        <img src="{{image.src}}" alt="">
+        {{# config.headline}}
+            <span>
+                {{headline}}
+            </span>
+        {{/ config.headline}}
+
+        {{# config.cta}}
+            <span>
+                {{cta}}
+            </span>
+        {{/ config.cta}}
+
+        {{# config.description}}
+            <span>
+                {{description}}
+            </span>
+        {{/ config.description}}
+    </a>
+</body>
+</html>

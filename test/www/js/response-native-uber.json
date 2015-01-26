@@ -1,0 +1,32 @@
+{
+    "imageassets": {
+        "icon": {
+            "url": "http://imgx.jampp.com/imgsrv/tn/150/150/http://cdn.jampp.com/y-VFO2Qhls9V9aY8vBPrTg.jpeg",
+            "width": "150",
+            "height": "150"
+        },
+        "main": {
+            "url": "http://cdn.jampp.com/1200x627_B25qkbB5Lm2nXqsPYsqXFg",
+            "width": "0",
+            "height": "0"
+        }
+    },
+    "textassets": {
+        "rating": "4.0",
+        "advertiser": "Uber",
+        "cta": "Install",
+        "description": "Get a ride in minutes!",
+        "headline": "Uber"
+    },
+    "trackers": [
+        {
+            "type": "impression",
+            "url": "http://rtb-lb.jampp.com/imp.png?act=14205&pr=0.13&h=&wifi=1&lk=4wEAAPBleyJwciI6ICJfX2VWdmdtYnRwWnpDQmo4WG9VY3NwdzkwLS0wR3BuYlBsdEtjVmp3OGZ0SGRkUjZMM2Vxc1EiLCAic3NpZCI6IDU2MTUwNCwgImNsayI6ICJhLTExZWZRbzlGbWhEbk04X19uUVY5YXRNQUE2APADZGlkbSI6IHsiYXBwbGVfaWZhhgDwHjY4NzUzQTQ0LTRENkYtMTIyNi05QzYwLTAwNTBFNEMwMDA2NyJ9LCAiZHR5cDEABj4AMSwgInkA8AZbMi41LCAzNy4zODYwMDE1ODY5LCBLAPECLjA4MzgwMTI3LCAyMzcsIFsGACEiQ48A_wBDYWxpZm9ybmlhIl0sIFscAAjgIk1vdW50YWluIFZpZXcuADEiOC4CAPABIiwgMTQxODgwNSwgOTg3OQ8AEDINAEUxMzksIAHwAjc2MDcxLCAxMjEsIG51bGxdzgABQgEP_gATUSwgImlt_AAQMbkAIWNhPAACcABUImNyIjpiAJAib3MiOiA5MX0%3D&w=&dpid=68753a44-4d6f-1226-9c60-0050e4c00067&instl=&dip=8.8.8.8&src=121"
+        },
+        {
+            "type": "impression",
+            "url": "http://my.mobfox.com/exchange.pixel.php?h=9dc4b4f55e0d4b5e06a7e5da86c65a70"
+        }
+    ],
+    "click_url": "http://my.mobfox.com/exchange.click.php?h=9dc4b4f55e0d4b5e06a7e5da86c65a70"
+}

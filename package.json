@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "knox": "^0.9.1",
-    "shelljs": "^0.3.0"
+    "shelljs": "^0.3.0",
+    "stringify": "^3.1.0"
   }
 }
