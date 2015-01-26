@@ -1,5 +1,4 @@
-
-var nativeBannerTmpl = require('./templates/native-banner.tmpl');
+var mustache = require('mustache');
 //--------------------------------------------------------------
 module.exports.createImageAd = function(adData,options){
         
@@ -39,7 +38,36 @@ module.exports.createImageAd = function(adData,options){
         title.style.textAlign   = "center";
 };
 //--------------------------------------------------------------
+var renderNativeAd = module.exports.renderNativeAd = function(data,tmpl,options){
+
+    var view = {
+            config : options,
+            headline :data.textassets.headline,
+            cta :data.textassets.cta,
+            description :data.textassets.description,
+            image : options.landscape ?data.imageassets.main :data.imageassets.icon,
+            click_url :data.click_url
+    };
+
+    return mustache.render(tmpl, view); 
+};
+//--------------------------------------------------------------
 module.exports.createNativeAd = function(adData,options){
-    
+   
+    var nativeBannerTmpl    = require('./templates/native-banner.tmpl'),
+        ad                  = renderNativeAd(adData,nativeBannerTmpl,options), 
+        ref                 = options.referenceE,
+        doppleganger        = document.createElement("iframe");
+
+        doppleganger.style.width    = ref.offsetWidth + "px";
+        doppleganger.style.height   = ref.offsetHeight + "px";
+
+        
+        if(options.replace){
+            ref.parentNode.removeChild(ref);
+        }
+
+        doppleganger.src = "data:text/html;charset=utf-8," + ad;
+        ref.parentNode.insertBefore(doppleganger,ref);
 };
 //--------------------------------------------------------------
