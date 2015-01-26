@@ -18,6 +18,7 @@
   "homepage": "https://github.com/mobfox/MobFox-JavaScript-SDK",
   "dependencies": {
     "htmlparser": "^1.7.7",
+    "mustache": "^1.0.0",
     "qs": "^2.3.3",
     "superagent": "^0.21.0"
   },
