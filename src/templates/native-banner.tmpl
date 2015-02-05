@@ -17,31 +17,28 @@
         }
 
         img{
-            width:{{image.width}};
-            height:{{image.height}};
+            width:{{image.width}}px;
+            height:{{image.height}}px;
         }
     </style>
 </head>
 <body>
     <a id="container" target="_top" href="{{{click_url}}}">
-
-        <img src="{{{image.url}}}" alt="">
+            <img src="{{{image.url}}}" alt=""/>
         {{# config.headline}}
-            <span>
+            <h3 class="headline">
                 {{headline}}
-            </span>
+            </h3>
         {{/ config.headline}}
-
         {{# config.cta}}
-            <span>
-                {{cta}}
-            </span>
+            <p class="cta">
+                <strong>{{cta}}</strong>
+            </p>
         {{/ config.cta}}
-
         {{# config.description}}
-            <span>
+            <p class="description">
                 {{description}}
-            </span>
+            </p>
         {{/ config.description}}
     </a>
 </body>

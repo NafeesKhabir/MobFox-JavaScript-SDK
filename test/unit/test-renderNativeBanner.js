@@ -1,12 +1,9 @@
 var fs              = require('fs'),
     renderNativeAd  = require('../../src/native-ads').renderNativeAd,
     tmpl            = fs.readFileSync('../../src/templates/native-banner.tmpl',{encoding:"utf-8"}),
-    data            = require('./ads/native.json');
-
-//---------------------------------------------------
-exports.testRenderBannerAdBasic = function(test){
-
-    var options = {
+    data            = require('./ads/native.json'),
+    cheerio = require('cheerio'),
+    options = {
         rt : 'api',
         r_type : 'native',
         v       : '3.0',
@@ -22,7 +19,23 @@ exports.testRenderBannerAdBasic = function(test){
         o_iosadvid : '68753A44-4D6F-1226-9C60-0050E4C00067'
     };
 
-    console.log(renderNativeAd(data,tmpl,options));
+//---------------------------------------------------
+exports.testRenderBannerAdBasic = function(test){
+    var opts = JSON.parse(JSON.stringify(options)); 
+    var ad = renderNativeAd(data,tmpl,opts);
+    $ = cheerio.load(ad);
+    test.equal($("a>img").length,1);
     test.done();
 };
+//---------------------------------------------------
+exports.testRenderBannerAdHeading = function(test){
+    var opts = JSON.parse(JSON.stringify(options)); 
+    opts.headline = true;
+    var ad = renderNativeAd(data,tmpl,opts);
+    $ = cheerio.load(ad);
+    test.equal($("a>img").length,1);
+    test.equal($("a>h3.headline").length,1);
+    test.done();
+};
+//---------------------------------------------------
 

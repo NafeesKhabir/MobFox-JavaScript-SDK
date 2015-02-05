@@ -54,7 +54,6 @@
                 params[o] = mobfoxConfig[o];
             }
         });
-
       
         var url =params.testURL || 'http://my.mobfox.com/request.php';
         superagent
