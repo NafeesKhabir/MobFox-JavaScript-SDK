@@ -34,7 +34,7 @@ exports.testRenderBannerAdHeading = function(test){
     var ad = renderNativeAd(data,tmpl,opts);
     $ = cheerio.load(ad);
     test.equal($("a>img").length,1);
-    test.equal($("a>h3.headline").length,1);
+    test.equal($("a>div.copy>h3.headline").length,1);
     test.done();
 };
 //---------------------------------------------------
