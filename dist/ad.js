@@ -1615,6 +1615,7 @@ module.exports = function(html,cb){
         //var start = (new Date()).getTime();
 
         var url = params.testURL || 'http://my.mobfox.com/request.php';
+        script.type = "text/javascript";
         script.src = url + '?' + Qs.stringify(params);
 
         script.onload = function(){
@@ -1625,7 +1626,13 @@ module.exports = function(html,cb){
 
                 script.parentNode.removeChild(script);
                 if(mobfoxConfig.passback){
-                    if(typeof(mobfoxConfig.passback) === "function"){
+                    if(typeof(mobfoxConfig.passback)==="string" && mobfoxConfig.passback.indexOf("http")===0){
+                        var passbackScript = document.createElement("script");
+                        passbackScript.type = "text/javascript";
+                        passbackScript.src = mobfoxConfig.passback;
+                        confE.parentNode.insertBefore(passbackScript,confE);
+                    }
+                    else if(typeof(mobfoxConfig.passback) === "function"){
                         mobfoxConfig.passback();
                     }
                     else if(typeof(mobfoxConfig.passback) === "string"){
