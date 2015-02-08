@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "cheerio": "^0.18.0",
+    "jsdom": "^3.1.0",
     "knox": "^0.9.1",
     "shelljs": "^0.3.0",
     "stringify": "^3.1.0"

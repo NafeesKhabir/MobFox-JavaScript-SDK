@@ -71,17 +71,12 @@
 
                 script.parentNode.removeChild(script);
                 if(mobfoxConfig.passback){
-                    if(typeof(mobfoxConfig.passback)==="string" && mobfoxConfig.passback.indexOf("http")===0){
-                        var passbackScript = document.createElement("script");
-                        passbackScript.type = "text/javascript";
-                        passbackScript.src = mobfoxConfig.passback;
-                        confE.parentNode.insertBefore(passbackScript,confE);
-                    }
-                    else if(typeof(mobfoxConfig.passback) === "function"){
+                    if(typeof(mobfoxConfig.passback) === "function"){
                         mobfoxConfig.passback();
                     }
                     else if(typeof(mobfoxConfig.passback) === "string"){
-                        eval(mobfoxConfig.passback+"()"); 
+                        //confE.insertAdjacentHTML('afterend',mobfoxConfig.passback);
+                        confE.parentNode.innerHTML+=mobfoxConfig.passback;
                     }
                 }
                 return;
