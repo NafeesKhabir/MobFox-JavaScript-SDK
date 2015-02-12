@@ -1,9 +1,10 @@
 (function(){
 
-    var Qs      = require('qs'),
-        ads     = require('./ads.js'),
-        confE   = document.getElementById("mobfoxConfig"),
-        mobfoxVar   = "mobfox_" + String(Math.random()).slice(2),
+    var Qs              = require('qs'),
+        ads             = require('./ads.js'),
+        appendPassback  = require('./appendPassback.js'),
+        confE           = document.getElementById("mobfoxConfig"),
+        mobfoxVar       = "mobfox_" + String(Math.random()).slice(2),
         refreshInterval,
         createAd = {
             banner          : ads.createBanner,
@@ -75,8 +76,9 @@
                         mobfoxConfig.passback();
                     }
                     else if(typeof(mobfoxConfig.passback) === "string"){
-                        //confE.insertAdjacentHTML('afterend',mobfoxConfig.passback);
-                        confE.parentNode.innerHTML+=mobfoxConfig.passback;
+                        appendPassback(window,confE,mobfoxConfig.passback,function(err){
+                            //...
+                        });
                     }
                 }
                 return;

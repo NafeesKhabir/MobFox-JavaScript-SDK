@@ -45,29 +45,38 @@ var renderNativeAd = module.exports.renderNativeAd = function(data,tmpl,options)
             headline :data.textassets.headline,
             cta :data.textassets.cta,
             description :data.textassets.description,
-            image : options.landscape ?data.imageassets.main :data.imageassets.icon,
+            icon : data.imageassets.icon,
+            main : data.imageassets.main,
             click_url :data.click_url
     };
 
     return mustache.render(tmpl, view); 
 };
 //--------------------------------------------------------------
-module.exports.createNativeAd = function(adData,options){
+module.exports.createBannerAd = function(adData,options){
    
-    var nativeBannerTmpl    = require('./templates/native-banner.tmpl'),
-        ad                  = renderNativeAd(adData,nativeBannerTmpl,options), 
+    var nativeBannerTmpl = require('./templates/native-banner.tmpl');
+    if(options.nativeType === "article"){
+        nativeBannerTmpl = require('./templates/native-banner-article.tmpl');
+    }
+
+    var ad                  = renderNativeAd(adData,nativeBannerTmpl,options), 
         ref                 = options.referenceE,
-        doppleganger        = document.createElement("iframe");
+        doppleganger        = document.createElement(ref.tagName);
 
-        doppleganger.style.width    = ref.offsetWidth + "px";
-        doppleganger.style.height   = ref.offsetHeight + "px";
+    doppleganger.className = ref.className;
 
-        
-        if(options.replace){
-            ref.parentNode.removeChild(ref);
-        }
+    //doppleganger.style.width    = ref.offsetWidth + "px";
+    //doppleganger.style.height   = ref.offsetHeight + "px";
+    doppleganger.style.boxSizing        = "border-box";
+    /*doppleganger.style.clear            = "both";
+    doppleganger.style.marginBottom      = "30px";*/
+    doppleganger.innerHTML              = ad;
+    
+    ref.parentNode.insertBefore(doppleganger,ref.nextSibling);
 
-        doppleganger.src = "data:text/html;charset=utf-8," + ad;
-        ref.parentNode.insertBefore(doppleganger,ref);
+    if(options.replace){
+        ref.parentNode.removeChild(ref);
+    }
 };
 //--------------------------------------------------------------

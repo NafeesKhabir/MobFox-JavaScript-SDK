@@ -1,0 +1,47 @@
+<style scoped>
+    
+        .mobfoxNative *, .mobfoxNative *:before, .mobfoxNative *:after {
+          box-sizing: inherit;
+        }
+
+        .mobfoxNative{
+            display:block;   
+            text-decoration:none;
+            color:inherit;
+        }
+
+        .mobfoxNative .copy{
+        }
+
+        .mobfoxImage{
+            background-image:url({{{main.url}}});
+            background-position:center center;
+            display:block;
+            height:200px;
+            margin-bottom:10px;
+        }
+</style>
+<a class="mobfoxNative" target="_top" href="{{{click_url}}}">
+    {{# config.headline}}
+        <h2 class="headline">
+            {{headline}}
+        </h2>
+    {{/ config.headline}}
+    {{# config.cta}}
+        <p class="cta">
+            <strong>{{cta}}</strong>
+        </p>
+    {{/ config.cta}}
+    <div class="mobfoxImage">
+    </div>
+    <div class="copy">
+        
+        
+        {{# config.description}}
+            <p class="description">
+                {{description}}
+            </p>
+        {{/ config.description}}
+    </div>
+    <div style="clear:both"></div>
+</a>
