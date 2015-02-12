@@ -2,7 +2,8 @@
 
     var Qs                  = require('qs'),
         superagent          = require('superagent'),
-        createNativeAd      = require('./native-ads.js').createNativeAd,
+        createImageAd       = require('./native-ads.js').createImageAd,
+        createBannerAd      = require('./native-ads.js').createBannerAd,
         confE               = document.getElementById("mobfoxConfig"),
         options = [
                 "o_androidid",
@@ -19,7 +20,8 @@
                 "s_subid",
                 "allow_mr",
                 "r_floor",
-                "testURL"
+                "testURL",
+                "nativeType"
         ],
         params = {
                 /*r_type  : 'native',
