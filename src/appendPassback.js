@@ -1,6 +1,25 @@
-var htmlparser  = require("htmlparser");
+//var htmlparser  = require("htmlparser");
 
-module.exports = function(window,refE,passback,cb){
+module.exports = function(window,refE,passback,options,cb){
+
+    var iframe= window.document.createElement("iframe");
+    
+    iframe.src = ["data:text/html;charset=utf-8," ,"<style>body{margin:0;}</style>",passback].join("");
+
+    if(refE){
+        refE.parentNode.insertBefore(iframe,refE);
+    }
+    else{
+        window.document.body.appendChild(iframe);
+    }
+
+    iframe.style.width = options.width+"px";
+    iframe.style.height= options.height+"px";
+    iframe.style.margin = "0px";
+    iframe.style.border= "none";
+    iframe.frameBorder = 0;
+    iframe.scrolling = 0;
+    /*
     var handler = new htmlparser.DefaultHandler(function (error, dom) {
 
         dom.filter(function(node){
@@ -35,40 +54,11 @@ module.exports = function(window,refE,passback,cb){
             });
 
             cb();
-        /*try{
-            if(dom[0].name === 'iframe'){
-                var src = dom[0].attribs.src;
-                return cb(null,url.parse(src,true).query.overrideClickURL);
-            }
-
-            var nodes = dom,
-                node = nodes.filter(function(n){
-                    return n.name === "html";
-                })[0];
-
-            if(node && node.name !== "body"){
-                node = node.children.filter(function(n){
-                    return n.name === "body";
-                })[0];
-            }
-            
-            if(node && node.attribs && node.attribs.onclick){
-                var m = node.attribs.onclick.match(/^gotourl\(\'(.*)\'\)$/);
-                if(m) return cb(null,m[1]);
-            }
-
-            if(node && node.attribs && node.attribs["data-clickurl"]){
-                return cb(null,node.attribs["data-clickurl"]);
-            }
-
-            cb();
-        }
-        catch(e){
-            cb(e);
-        }*/
+        
     });
     var parser = new htmlparser.Parser(handler);
     parser.parseComplete(passback);
+    */
     
 };
 
