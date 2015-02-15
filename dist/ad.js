@@ -1624,7 +1624,7 @@ module.exports = function(html,cb){
     var Qs              = require('qs'),
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
-        confE           = document.getElementById("mobfoxConfig"),
+        confE = document.currentScript && document.currentScript.previousSibling,
         mobfoxVar       = "mobfox_" + String(Math.random()).slice(2),
         refreshInterval,
         createAd = {
@@ -1632,6 +1632,13 @@ module.exports = function(html,cb){
             interstitial    : ads.createInterstitial,
             floating        : ads.createFloating
         }; 
+
+    if(!confE || confE.className.indexOf("mobfoxConfig") < 0){
+        confE = document.querySelector('.mobfoxConfig');
+        if(!confE){
+            confE = document.querySelector("#mobfoxConfig");
+        }
+    }
     //-------------------------------------------
     function retrieve(){
 
