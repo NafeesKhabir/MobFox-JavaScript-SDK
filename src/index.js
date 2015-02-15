@@ -3,7 +3,7 @@
     var Qs              = require('qs'),
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
-        confE = document.currentScript && document.currentScript.previousSibling,
+        confE = document.currentScript && document.currentScript.previousElementSibling,
         mobfoxVar       = "mobfox_" + String(Math.random()).slice(2),
         refreshInterval,
         createAd = {
@@ -18,6 +18,7 @@
             confE = document.querySelector("#mobfoxConfig");
         }
     }
+    eval(confE.innerHTML);
     //-------------------------------------------
     function retrieve(){
 
@@ -61,11 +62,14 @@
         });
 
         if(params.testURL){
-            params.jsvar = mobfoxVar = "mobfox_test";
+            if(!window.mobfoxCount) window.mobfoxCount = 1;
+            params.jsvar = mobfoxVar = "mobfox_test" + (window.mobfoxCount > 1 ? window.mobfoxCount : "");
+            window.mobfoxCount ++;
         }
 
         confE.parentNode.insertBefore(script,confE);
         //var start = (new Date()).getTime();
+
 
         var url = params.testURL || 'http://my.mobfox.com/request.php';
         script.type = "text/javascript";
@@ -91,7 +95,8 @@
                 return;
             }
 
-            createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,params.timeout);
+            mobfoxConfig.timeout = params.timeout;
+            createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig);
 
             script.parentNode.removeChild(script);
         };

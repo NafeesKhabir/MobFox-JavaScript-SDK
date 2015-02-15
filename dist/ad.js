@@ -1315,7 +1315,7 @@ function createOnClickCallback(mobfoxClickURL,starboltClickURL){
 //----------------------------------------------------------------
 module.exports = {
 
-    createBanner : function(ad,ad_id,confElement,mobfoxClickURL){
+    createBanner : function(ad,ad_id,confElement,mobfoxConfig){
 
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
@@ -1362,7 +1362,7 @@ module.exports = {
         
     },
 
-    createInterstitial : function(ad,ad_id,confElement,timeout){
+    createInterstitial : function(ad,ad_id,confElement,mobfoxConfig){
             
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
@@ -1394,7 +1394,7 @@ module.exports = {
         var containerDiv = adContainer.contentWindow.document.createElement("div");
         containerDiv.style.margin = "0px";
         containerDiv.style.padding= "0px";
-        containerDiv.style.border= "none";   
+        containerDiv.style.border= "none";
         containerDiv.style.cursor= "pointer";   
         containerDiv.id = "container_"+ad_id;
 
@@ -1429,10 +1429,10 @@ module.exports = {
 
             setTimeout(function(){
                adContainer.parentNode.removeChild(adContainer); 
-            },timeout || 16000);
+            },mobfoxConfig.timeout || 16000);
        // });
     },
-    createFloating : function(ad,ad_id,confElement){
+    createFloating : function(ad,ad_id,confElement,mobfoxConfig){
         
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
@@ -1624,7 +1624,7 @@ module.exports = function(html,cb){
     var Qs              = require('qs'),
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
-        confE = document.currentScript && document.currentScript.previousSibling,
+        confE = document.currentScript && document.currentScript.previousElementSibling,
         mobfoxVar       = "mobfox_" + String(Math.random()).slice(2),
         refreshInterval,
         createAd = {
@@ -1639,6 +1639,7 @@ module.exports = function(html,cb){
             confE = document.querySelector("#mobfoxConfig");
         }
     }
+    eval(confE.innerHTML);
     //-------------------------------------------
     function retrieve(){
 
@@ -1682,11 +1683,14 @@ module.exports = function(html,cb){
         });
 
         if(params.testURL){
-            params.jsvar = mobfoxVar = "mobfox_test";
+            if(!window.mobfoxCount) window.mobfoxCount = 1;
+            params.jsvar = mobfoxVar = "mobfox_test" + (window.mobfoxCount > 1 ? window.mobfoxCount : "");
+            window.mobfoxCount ++;
         }
 
         confE.parentNode.insertBefore(script,confE);
         //var start = (new Date()).getTime();
+
 
         var url = params.testURL || 'http://my.mobfox.com/request.php';
         script.type = "text/javascript";
@@ -1712,7 +1716,8 @@ module.exports = function(html,cb){
                 return;
             }
 
-            createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,params.timeout);
+            mobfoxConfig.timeout = params.timeout;
+            createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig);
 
             script.parentNode.removeChild(script);
         };
