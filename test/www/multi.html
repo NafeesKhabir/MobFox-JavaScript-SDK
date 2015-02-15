@@ -35,24 +35,28 @@
 <body>
     <h1 class="red">Text</h1>
     <h1 class="blue">Text</h1>
-    <script id="mobfoxConfig">
-        var url     = Qurl.create(),
-            testURL  = url.query("testURL");
-
-        window.mobfoxConfig = {
+    <script class="mobfoxConfig">
+        var mobfoxConfig = {
             width       : 320,
             height      : 50,
             publicationID : 'test',
-            testURL : testURL || "js/response-banner.js",
+            testURL : "js/response-banner.js",
             type        : 'banner'
         }
     </script>
-    <script>
-        var sdk = document.createElement("script");
-        sdk.src = "ad.js";
-        document.body.appendChild(sdk);
-    </script>
+    <script type='text/javascript' src='ad.js'></script>
     <h1 class="green">Text</h1>
+    
+    <script class="mobfoxConfig">
+        var mobfoxConfig = {
+            width       : 300,
+            height      : 250,
+            publicationID : 'test',
+            testURL : "js/300x250_second.js",
+            type        : 'banner'
+        }
+    </script>
+    <script type='text/javascript' src='ad.js'></script>
     <h1 class="gold">Text</h1>
 </body>
 </html>

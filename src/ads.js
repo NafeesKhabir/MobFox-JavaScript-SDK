@@ -95,7 +95,7 @@ function createOnClickCallback(mobfoxClickURL,starboltClickURL){
 //----------------------------------------------------------------
 module.exports = {
 
-    createBanner : function(ad,ad_id,confElement,mobfoxClickURL){
+    createBanner : function(ad,ad_id,confElement,mobfoxConfig){
 
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
@@ -142,7 +142,7 @@ module.exports = {
         
     },
 
-    createInterstitial : function(ad,ad_id,confElement,timeout){
+    createInterstitial : function(ad,ad_id,confElement,mobfoxConfig){
             
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
@@ -174,7 +174,7 @@ module.exports = {
         var containerDiv = adContainer.contentWindow.document.createElement("div");
         containerDiv.style.margin = "0px";
         containerDiv.style.padding= "0px";
-        containerDiv.style.border= "none";   
+        containerDiv.style.border= "none";
         containerDiv.style.cursor= "pointer";   
         containerDiv.id = "container_"+ad_id;
 
@@ -209,10 +209,10 @@ module.exports = {
 
             setTimeout(function(){
                adContainer.parentNode.removeChild(adContainer); 
-            },timeout || 16000);
+            },mobfoxConfig.timeout || 16000);
        // });
     },
-    createFloating : function(ad,ad_id,confElement){
+    createFloating : function(ad,ad_id,confElement,mobfoxConfig){
         
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
