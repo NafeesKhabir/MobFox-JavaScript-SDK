@@ -19,19 +19,19 @@ page.onResourceReceived = function(response) {
 
             var id = page.evaluate(function() {
                 var container   = document.querySelector("#mobfox_floating"),
-                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                    ad          = document.querySelector(".mobfox_iframe");
                 return ad.id;
             });
 
             var width = page.evaluate(function() {
                 var container   = document.querySelector("#mobfox_floating"),
-                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                    ad          = document.querySelector(".mobfox_iframe");
                 return ad.width;
             });
 
             var height = page.evaluate(function() {
                 var container   = document.querySelector("#mobfox_floating"),
-                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                    ad          = document.querySelector(".mobfox_iframe");
                 return ad.height;
             });
 
@@ -40,12 +40,12 @@ page.onResourceReceived = function(response) {
             test.equal(height,"50");
 
             page.evaluate(function() {
-                simulate(document.querySelector("#mobfox_floating").contentWindow.document.querySelector("#mobfox_dismiss"), "click");
+                simulate(document.querySelector("#mobfox_dismiss"), "click");
             });
 
             page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js', function() {
                 var offset = page.evaluate(function(){
-                    var dismiss = document.querySelector("#mobfox_floating").contentWindow.document.querySelector("#mobfox_dismiss");
+                    var dismiss = document.querySelector("#mobfox_dismiss");
                     return $(dismiss).offset();
                 });
                 page.sendEvent('click',offset.left,offset.top );

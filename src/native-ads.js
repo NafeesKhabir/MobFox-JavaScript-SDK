@@ -66,11 +66,7 @@ module.exports.createBannerAd = function(adData,options){
 
     doppleganger.className = ref.className;
 
-    //doppleganger.style.width    = ref.offsetWidth + "px";
-    //doppleganger.style.height   = ref.offsetHeight + "px";
     doppleganger.style.boxSizing        = "border-box";
-    /*doppleganger.style.clear            = "both";
-    doppleganger.style.marginBottom      = "30px";*/
     doppleganger.innerHTML              = ad;
     
     ref.parentNode.insertBefore(doppleganger,ref.nextSibling);
