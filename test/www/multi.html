@@ -31,6 +31,14 @@
         }
     </style>
     <script type="text/javascript" src="js/qurl.js"></script>
+    <script>
+    if(!document.currentScript){;
+        Object.defineProperty(document, "currentScript", { get: function () { 
+            var scripts = Array.prototype.slice.call(document.querySelectorAll(".plugin"));
+            return scripts.slice(-1)[0];
+        } });
+    }
+    </script>
 </head>
 <body>
     <h1 class="red">Text</h1>
@@ -44,7 +52,7 @@
             type        : 'banner'
         }
     </script>
-    <script type='text/javascript' src='ad.js'></script>
+    <script class="plugin" type='text/javascript' src='ad.js'></script>
     <h1 class="green">Text</h1>
     
     <script class="mobfoxConfig">
@@ -56,7 +64,7 @@
             type        : 'banner'
         }
     </script>
-    <script type='text/javascript' src='ad.js'></script>
+    <script class="plugin" type='text/javascript' src='ad.js'></script>
     <h1 class="gold">Text</h1>
 </body>
 </html>
