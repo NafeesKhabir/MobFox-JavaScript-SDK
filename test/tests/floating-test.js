@@ -16,19 +16,19 @@ page.onResourceReceived = function(response) {
 
             var id = page.evaluate(function() {
                 var container   = document.querySelector("#mobfox_floating"),
-                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                    ad          = document.querySelector(".mobfox_iframe");
                 return ad.id;
             });
 
             var width = page.evaluate(function() {
                 var container   = document.querySelector("#mobfox_floating"),
-                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                    ad          = document.querySelector(".mobfox_iframe");
                 return ad.width;
             });
 
             var height = page.evaluate(function() {
                 var container   = document.querySelector("#mobfox_floating"),
-                    ad          = container.contentWindow.document.querySelector(".mobfox_iframe");
+                    ad          = document.querySelector(".mobfox_iframe");
                 return ad.height;
             });
 

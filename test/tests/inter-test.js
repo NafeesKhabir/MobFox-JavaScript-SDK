@@ -21,7 +21,7 @@ page.onResourceReceived = function(response) {
             var ad = page.evaluate(function() {
 
                 var container = document.querySelector("#mobfox_interstitial"),
-                    ad = container.contentWindow.document.querySelector(".mobfox_iframe");
+                    ad = document.querySelector(".mobfox_iframe");
 
                 return {
                     id : ad.id,
@@ -32,7 +32,7 @@ page.onResourceReceived = function(response) {
 
             var button = page.evaluate(function() {
                 var container = document.querySelector("#mobfox_interstitial");
-                    button = container.contentWindow.document.querySelector("#mobfox_dismiss");
+                    button = document.querySelector("#mobfox_dismiss");
 
                 return {
                     width : button.width,
@@ -52,7 +52,7 @@ page.onResourceReceived = function(response) {
             test.equal(button.tag.toLowerCase(),"canvas");
 
             page.evaluate(function() {
-                simulate(document.querySelector("#mobfox_interstitial").contentWindow.document.querySelector("#mobfox_dismiss"), "click");
+                simulate(document.querySelector("#mobfox_dismiss"), "click");
             });
             var container = page.evaluate(function(){
                 return document.querySelector("#mobfox_interstitial");

@@ -21,7 +21,7 @@ page.onResourceReceived = function(response) {
             var ad = page.evaluate(function() {
 
                 var container = document.querySelector("#mobfox_interstitial"),
-                    ad = container.contentWindow.document.querySelector(".mobfox_iframe");
+                    ad = document.querySelector(".mobfox_iframe");
 
                 return {
                     id : ad.id,
@@ -31,8 +31,8 @@ page.onResourceReceived = function(response) {
             });
 
             var button = page.evaluate(function() {
-                var container = document.querySelector("#mobfox_interstitial");
-                    button = container.contentWindow.document.querySelector("#mobfox_dismiss");
+                var container = document.querySelector("#mobfox_interstitial"),
+                    button = document.querySelector("#mobfox_dismiss");
 
                 return {
                     width : button.width,
@@ -53,7 +53,7 @@ page.onResourceReceived = function(response) {
 
             page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js', function() {
                 var offset = page.evaluate(function(){
-                    var iframe = document.querySelector("#mobfox_interstitial").contentWindow.document.querySelector("#mobfox_dismiss") ; 
+                    var iframe = document.querySelector("#mobfox_interstitial #mobfox_dismiss") ; 
                     return $(iframe).offset();
                 });
                 page.sendEvent('click',offset.left,offset.top );
