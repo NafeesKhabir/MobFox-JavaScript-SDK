@@ -5,7 +5,19 @@ var page    =   require('webpage').create(),
 test.name('multi');
 test.expect(3);
 
-page.open(url);
+page.onConsoleMessage = function(msg, lineNum, sourceId) {
+  console.log('CONSOLE: ' + msg);
+};
+
+page.open(url,function(){
+
+    page.evaluate(function(){
+        
+        console.log("defined");
+
+    });
+});
+
 
 var receivedFirst = false,
     receivedSecond = false;
