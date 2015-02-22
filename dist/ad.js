@@ -1510,7 +1510,16 @@ module.exports = function(window,refE,passback,options,cb){
     
     iframe.src = ["data:text/html;charset=utf-8," ,"<style>body{margin:0;}</style>",passback].join("");
 
-    if(refE){
+    if(options.confID){
+        refE = document.querySelector("#mobfoxConf_"+options.confID);
+        if(refE.parentNode === document.head){
+            document.body.appendChild(iframe);
+        }
+        else{
+            refE.parentNode.insertBefore(iframe,refE);
+        }
+    }
+    else if(refE){
         refE.parentNode.insertBefore(iframe,refE);
     }
     else{
@@ -1521,8 +1530,10 @@ module.exports = function(window,refE,passback,options,cb){
     iframe.style.height= options.height+"px";
     iframe.style.margin = "0px";
     iframe.style.border= "none";
+    iframe.style.overflowY =  "hidden";
     iframe.frameBorder = 0;
-    iframe.scrolling = 0;
+    iframe.seamless="seamless";
+    iframe.scrolling = "no";
     /*
     var handler = new htmlparser.DefaultHandler(function (error, dom) {
 
@@ -1621,6 +1632,8 @@ module.exports = function(html,cb){
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
         confE = document.currentScript && document.currentScript.previousElementSibling,
+        confMatch = document.currentScript && document.currentScript.src.match(/conf_id=(\d+)/),
+        confID = confMatch && confMatch[1],
         mobfoxVar       = "mobfox_" + String(Math.random()).slice(2),
         refreshInterval,
         createAd = {
@@ -1629,16 +1642,26 @@ module.exports = function(html,cb){
             floating        : ads.createFloating
         }; 
 
-    if(!confE || confE.className.indexOf("mobfoxConfig") < 0){
-        confE = document.querySelector('.mobfoxConfig');
-        if(!confE){
-            confE = document.querySelector("#mobfoxConfig");
-        }
+    var mobfoxConfig;
+    if(confID){
+        mobfoxConfig = window.mobfoxConfig[confID];
+        confE = document.querySelector('#mobfoxConf_'+confID);
     }
-    eval(confE.innerHTML);
+    else{
+        if(!confE || confE.className.indexOf("mobfoxConfig") < 0){
+            confE = document.querySelector('.mobfoxConfig');
+            if(!confE){
+                confE = document.querySelector("#mobfoxConfig");
+            }
+        }
+
+        if(confE.innerHTML){
+            eval(confE.innerHTML);
+        }
+        mobfoxConfig = window.mobfoxConfig;
+    }
     //-------------------------------------------
     function retrieve(){
-
         var script  = document.createElement("script"),
             options = [
                 "o_androidid",
@@ -1684,27 +1707,25 @@ module.exports = function(html,cb){
             window.mobfoxCount ++;
         }
 
-        confE.parentNode.insertBefore(script,confE);
         //var start = (new Date()).getTime();
 
 
         var url = params.testURL || 'http://my.mobfox.com/request.php';
         script.type = "text/javascript";
-        script.src = url + '?' + Qs.stringify(params);
-
-        script.onload = function(){
+        script.onload = script.onerror = function(){
             //var end = (new Date()).getTime();
+
+            script.parentNode.removeChild(script);
             if(!window[mobfoxVar]){
 
                 window.clearInterval(refreshInterval);
 
-                script.parentNode.removeChild(script);
                 if(mobfoxConfig.passback){
                     if(typeof(mobfoxConfig.passback) === "function"){
                         mobfoxConfig.passback();
                     }
                     else if(typeof(mobfoxConfig.passback) === "string"){
-                        appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height},function(err){
+                        appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height,confID:confID},function(err){
                             //...
                         });
                     }
@@ -1712,11 +1733,15 @@ module.exports = function(html,cb){
                 return;
             }
 
+
             mobfoxConfig.timeout = params.timeout;
             createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig);
 
-            script.parentNode.removeChild(script);
         };
+
+        script.src = url + '?' + Qs.stringify(params);
+        document.head.appendChild(script);
+
     }
     //-------------------------------------------
 
