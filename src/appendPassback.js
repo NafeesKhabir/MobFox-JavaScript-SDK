@@ -6,7 +6,16 @@ module.exports = function(window,refE,passback,options,cb){
     
     iframe.src = ["data:text/html;charset=utf-8," ,"<style>body{margin:0;}</style>",passback].join("");
 
-    if(refE){
+    if(options.confID){
+        refE = document.querySelector("#mobfoxConf_"+options.confID);
+        if(refE.parentNode === document.head){
+            document.body.appendChild(iframe);
+        }
+        else{
+            refE.parentNode.insertBefore(iframe,refE);
+        }
+    }
+    else if(refE){
         refE.parentNode.insertBefore(iframe,refE);
     }
     else{
@@ -17,8 +26,10 @@ module.exports = function(window,refE,passback,options,cb){
     iframe.style.height= options.height+"px";
     iframe.style.margin = "0px";
     iframe.style.border= "none";
+    iframe.style.overflowY =  "hidden";
     iframe.frameBorder = 0;
-    iframe.scrolling = 0;
+    iframe.seamless="seamless";
+    iframe.scrolling = "no";
     /*
     var handler = new htmlparser.DefaultHandler(function (error, dom) {
 

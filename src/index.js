@@ -4,6 +4,8 @@
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
         confE = document.currentScript && document.currentScript.previousElementSibling,
+        confMatch = document.currentScript && document.currentScript.src.match(/conf_id=(\d+)/),
+        confID = confMatch && confMatch[1],
         mobfoxVar       = "mobfox_" + String(Math.random()).slice(2),
         refreshInterval,
         createAd = {
@@ -12,16 +14,26 @@
             floating        : ads.createFloating
         }; 
 
-    if(!confE || confE.className.indexOf("mobfoxConfig") < 0){
-        confE = document.querySelector('.mobfoxConfig');
-        if(!confE){
-            confE = document.querySelector("#mobfoxConfig");
-        }
+    var mobfoxConfig;
+    if(confID){
+        mobfoxConfig = window.mobfoxConfig[confID];
+        confE = document.querySelector('#mobfoxConf_'+confID);
     }
-    eval(confE.innerHTML);
+    else{
+        if(!confE || confE.className.indexOf("mobfoxConfig") < 0){
+            confE = document.querySelector('.mobfoxConfig');
+            if(!confE){
+                confE = document.querySelector("#mobfoxConfig");
+            }
+        }
+
+        if(confE.innerHTML){
+            eval(confE.innerHTML);
+        }
+        mobfoxConfig = window.mobfoxConfig;
+    }
     //-------------------------------------------
     function retrieve(){
-
         var script  = document.createElement("script"),
             options = [
                 "o_androidid",
@@ -67,27 +79,25 @@
             window.mobfoxCount ++;
         }
 
-        confE.parentNode.insertBefore(script,confE);
         //var start = (new Date()).getTime();
 
 
         var url = params.testURL || 'http://my.mobfox.com/request.php';
         script.type = "text/javascript";
-        script.src = url + '?' + Qs.stringify(params);
-
-        script.onload = function(){
+        script.onload = script.onerror = function(){
             //var end = (new Date()).getTime();
+
+            script.parentNode.removeChild(script);
             if(!window[mobfoxVar]){
 
                 window.clearInterval(refreshInterval);
 
-                script.parentNode.removeChild(script);
                 if(mobfoxConfig.passback){
                     if(typeof(mobfoxConfig.passback) === "function"){
                         mobfoxConfig.passback();
                     }
                     else if(typeof(mobfoxConfig.passback) === "string"){
-                        appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height},function(err){
+                        appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height,confID:confID},function(err){
                             //...
                         });
                     }
@@ -95,11 +105,15 @@
                 return;
             }
 
+
             mobfoxConfig.timeout = params.timeout;
             createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig);
 
-            script.parentNode.removeChild(script);
         };
+
+        script.src = url + '?' + Qs.stringify(params);
+        document.head.appendChild(script);
+
     }
     //-------------------------------------------
 
