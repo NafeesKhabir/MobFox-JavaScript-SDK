@@ -1,5 +1,4 @@
-var extractClickURL = require('./extractClickURL.js'),
-    cleanAd = function(ad){
+var cleanAd = function(ad){
     
     var cleaned;
 
