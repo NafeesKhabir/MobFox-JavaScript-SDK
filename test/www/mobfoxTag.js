@@ -1,5 +1,8 @@
 (function(){
-    var script = document.currentScript,
+    var script = document.currentScript || (function() {
+            var scripts = document.getElementsByTagName('script');
+            return scripts[scripts.length - 1];
+        })(),
         url     = script.src,
         hash    = url.split("?")[1],
         keyVals = hash.split("&"),

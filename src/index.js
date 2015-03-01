@@ -3,8 +3,12 @@
     var Qs              = require('qs'),
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
-        confE = document.currentScript && document.currentScript.previousElementSibling,
-        confMatch = document.currentScript && document.currentScript.src.match(/conf_id=(\d+)/),
+        curScript = document.currentScript || (function() {
+            var scripts = document.getElementsByTagName('script');
+            return scripts[scripts.length - 1];
+        })(),
+        confE = curScript && curScript.previousElementSibling,
+        confMatch = curScript && curScript.src.match(/conf_id=(\d+)/),
         confID = confMatch && confMatch[1],
         mobfoxVar       = "mobfox_" + String(Math.random()).slice(2),
         refreshInterval,
@@ -19,8 +23,8 @@
         mobfoxConfig = window.mobfoxConfig[confID];
         confE = document.querySelector('#mobfoxConf_'+confID);
     }
-    else if(document.currentScript.dataset.mobfoxconf){
-        confID = document.currentScript.dataset.mobfoxconf;
+    else if(curScript.dataset.mobfoxconf){
+        confID = curScript.dataset.mobfoxconf;
         mobfoxConfig = window.mobfoxConfig[confID];
         confE = document.querySelector("#"+confID);
     }
