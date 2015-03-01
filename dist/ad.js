@@ -709,7 +709,7 @@ module.exports = function(window,refE,passback,options,cb){
     };
 
     if(options.confID){
-        refE = document.querySelector("#mobfoxConf_"+options.confID);
+        refE = document.querySelector("#"+options.confID) || document.querySelector("#mobfoxConf_"+options.confID);
         if(refE.parentNode === document.head){
             document.body.appendChild(iframe);
         }
@@ -756,6 +756,11 @@ module.exports = function(window,refE,passback,options,cb){
     if(confID){
         mobfoxConfig = window.mobfoxConfig[confID];
         confE = document.querySelector('#mobfoxConf_'+confID);
+    }
+    else if(document.currentScript.dataset.mobfoxconf){
+        confID = document.currentScript.dataset.mobfoxconf;
+        mobfoxConfig = window.mobfoxConfig[confID];
+        confE = document.querySelector("#"+confID);
     }
     else{
         if(!confE || confE.className.indexOf("mobfoxConfig") < 0){

@@ -19,6 +19,11 @@
         mobfoxConfig = window.mobfoxConfig[confID];
         confE = document.querySelector('#mobfoxConf_'+confID);
     }
+    else if(document.currentScript.dataset.mobfoxconf){
+        confID = document.currentScript.dataset.mobfoxconf;
+        mobfoxConfig = window.mobfoxConfig[confID];
+        confE = document.querySelector("#"+confID);
+    }
     else{
         if(!confE || confE.className.indexOf("mobfoxConfig") < 0){
             confE = document.querySelector('.mobfoxConfig');
