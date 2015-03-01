@@ -13,7 +13,7 @@ module.exports = function(window,refE,passback,options,cb){
     };
 
     if(options.confID){
-        refE = document.querySelector("#mobfoxConf_"+options.confID);
+        refE = document.querySelector("#"+options.confID) || document.querySelector("#mobfoxConf_"+options.confID);
         if(refE.parentNode === document.head){
             document.body.appendChild(iframe);
         }
