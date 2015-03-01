@@ -92,6 +92,15 @@ function createOnClickCallback(mobfoxClickURL,starboltClickURL){
     };
 }
 //----------------------------------------------------------------
+function writeToIFrame(iframe,html){
+
+            var iframeWin= (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+            iframeWin.document.open();
+            iframeWin.document.write(html);
+            iframeWin.document.close();
+            iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+}
+//----------------------------------------------------------------
 module.exports = {
 
     createBanner : function(ad,ad_id,confElement,mobfoxConfig){
@@ -127,8 +136,11 @@ module.exports = {
             iframe.height= mobfoxConfig.height;
             //iframe.style.pointerEvents = "none";
 
-            iframe.src = "data:text/html;charset=utf-8," + cleaned;
+            //iframe.src = "data:text/html;charset=utf-8," + cleaned;
 
+            iframe.onload = function(){
+                writeToIFrame(iframe,cleaned);
+            };
             containerDiv.appendChild(iframe);
 
             iframe.style.margin = "0px";
@@ -186,13 +198,17 @@ module.exports = {
             iframe.className = "mobfox_iframe";
             iframe.width= mobfoxConfig.width;
             iframe.height= mobfoxConfig.height;
-            iframe.src = "data:text/html;charset=utf-8, "+escape(cleaned);
+            //iframe.src = "data:text/html;charset=utf-8, "+escape(cleaned);
 
            // if(clickURL){
            //     iframe.style.pointerEvents = "none";
            // }
 
             containerDiv.appendChild(iframe);
+
+            iframe.onload = function(){
+                writeToIFrame(iframe,cleaned);
+            };
 
             iframe.style.margin = "0px auto";
             iframe.style.padding= "0px";
@@ -255,7 +271,7 @@ module.exports = {
             iframe.className = "mobfox_iframe";
             iframe.width= mobfoxConfig.width;
             iframe.height= mobfoxConfig.height;
-            iframe.src = "data:text/html;charset=utf-8, "+escape(cleaned);
+            //iframe.src = "data:text/html;charset=utf-8, "+escape(cleaned);
 
             //center it
             adContainer.style.left = ((window.innerWidth - parseInt(adContainer.style.width)) / 2) + "px";
@@ -272,6 +288,10 @@ module.exports = {
             if(mobfoxConfig.closeButton === false) return;
 
             containerDiv.appendChild(iframe);
+
+            iframe.onload = function(){
+                writeToIFrame(iframe,cleaned);
+            };
 
             addCloseButton(adContainer,{width:20,height:20,top:5,right:5});
        // });

@@ -8,7 +8,8 @@
  */
 
 var _addProperty = function (color, func) {
-  String.prototype.__defineGetter__(color, func);
+  //String.prototype.__defineGetter__(color, func);
+  Object.defineProperty(String.prototype, color, { get: func });
 };
 
 /**
