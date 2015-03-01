@@ -12,7 +12,8 @@ page.onResourceReceived = function(response) {
 
     if(response.url.match(/\/js\/response\-banner\-starbolt\.js/) && !received){
         received = true;
-        setTimeout(function(){
+
+        //setTimeout(function(){
 
             var width = page.evaluate(function() {
                 return document.querySelector("iframe").width;
@@ -21,7 +22,6 @@ page.onResourceReceived = function(response) {
             var height = page.evaluate(function() {
                 return document.querySelector("iframe").height;
             });
-
 
             test.equal(width,"320");
             test.equal(height,"50");
@@ -34,7 +34,8 @@ page.onResourceReceived = function(response) {
                 page.sendEvent('click',offset.left+5,offset.top+5 );
             });
 
-        },100);
+       // },100);
+       // console.log("888");
     }
 };
 
@@ -52,3 +53,18 @@ page.onNavigationRequested = function(url, type, willNavigate, main) {
 page.onResourceReceived = function(response) {
   console.log("> "+response.url);
 };*/
+
+page.onError = function(msg, trace) {
+
+  var msgStack = ['ERROR: ' + msg];
+
+  if (trace && trace.length) {
+    msgStack.push('TRACE:');
+    trace.forEach(function(t) {
+      msgStack.push(' -> ' + t.file + ': ' + t.line + (t.function ? ' (in function "' + t.function +'")' : ''));
+    });
+  }
+
+  console.error(msgStack.join('\n'));
+
+};

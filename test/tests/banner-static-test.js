@@ -40,7 +40,7 @@ page.onResourceReceived = function(response) {
                     var iframe = document.querySelector(".mobfox_iframe"); 
                     return $(iframe).offset();
                 });
-                page.sendEvent('click',offset.left,offset.top );
+                page.sendEvent('click',offset.left+5,offset.top +5);
             });
 
         },100);

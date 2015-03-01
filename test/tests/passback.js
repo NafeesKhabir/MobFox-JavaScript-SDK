@@ -6,18 +6,11 @@ test.name('passback callback');
 test.expect(1);
 page.onConsoleMessage = function(msg, lineNum, sourceId) {
     test.equal(msg,"nothing to show here.");
+    test.done();
 };
 
 page.open(url, function (status) {
 });
-
-page.onResourceReceived = function(response) {
-    if(response.url.match(/http\:\/\/my\.mobfox\.com\/request\.php/)){
-        setTimeout(function(){
-            test.done();
-        },1);
-    }
-};
 
 /*page.onResourceRequested = function(requestData, networkRequest) {
   console.log('^ '+requestData.url);
