@@ -699,8 +699,14 @@ module.exports = {
 module.exports = function(window,refE,passback,options,cb){
 
     var iframe= window.document.createElement("iframe");
-    
-    iframe.src = ["data:text/html;charset=utf-8," ,"<style>body{margin:0;}</style>",decodeURIComponent(passback)].join("");
+
+    iframe.onload = function(){
+        var iframeWin= (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+        iframeWin.document.open();
+        iframeWin.document.write(decodeURIComponent(passback));
+        iframeWin.document.close();
+        iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+    };
 
     if(options.confID){
         refE = document.querySelector("#mobfoxConf_"+options.confID);
