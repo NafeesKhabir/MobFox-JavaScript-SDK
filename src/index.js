@@ -20,6 +20,9 @@
         }; 
 
     var mobfoxConfig = URL.parse(curScript.src,true).query;
+    if(mobfoxConfig){//no conf element position it behind script
+        confE = curScript;
+    }
 
     //START: backward compat code
     if(!mobfoxConfig || Object.keys(mobfoxConfig).length === 0 || mobfoxConfig.conf_id){
