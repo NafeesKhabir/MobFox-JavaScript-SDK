@@ -1,7 +1,7 @@
 (function(){
 
-    var Qs              = require('qs'),
-        URL             = require('url'),
+    var Qs              = require('./query-string'),
+        URL             = require('./lite-url').liteURL,
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
         curScript = document.currentScript || (function() {
@@ -19,7 +19,8 @@
             floating        : ads.createFloating
         }; 
 
-    var mobfoxConfig = URL.parse(curScript.src,true).query;
+    var mobfoxConfig = URL(curScript.src).params;
+
     if(mobfoxConfig){//no conf element position it behind script
         confE = curScript;
     }
