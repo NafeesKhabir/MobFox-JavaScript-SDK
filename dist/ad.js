@@ -712,6 +712,9 @@ module.exports = function(window,refE,passback,options,cb){
         }; 
 
     var mobfoxConfig = URL.parse(curScript.src,true).query;
+    if(mobfoxConfig){
+        confE = curScript;
+    }
 
     //START: backward compat code
     if(!mobfoxConfig || Object.keys(mobfoxConfig).length === 0 || mobfoxConfig.conf_id){
