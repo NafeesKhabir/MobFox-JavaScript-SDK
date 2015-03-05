@@ -1,6 +1,7 @@
 (function(){
 
     var Qs              = require('qs'),
+        URL             = require('url'),
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
         curScript = document.currentScript || (function() {
@@ -18,29 +19,34 @@
             floating        : ads.createFloating
         }; 
 
-    var mobfoxConfig;
-    if(confID){
-        mobfoxConfig = window.mobfoxConfig[confID];
-        confE = document.querySelector('#mobfoxConf_'+confID);
-    }
-    else if(curScript.dataset.mobfoxconf){
-        confID = curScript.dataset.mobfoxconf;
-        mobfoxConfig = window.mobfoxConfig[confID];
-        confE = document.querySelector("#"+confID);
-    }
-    else{
-        if(!confE || confE.className.indexOf("mobfoxConfig") < 0){
-            confE = document.querySelector('.mobfoxConfig');
-            if(!confE){
-                confE = document.querySelector("#mobfoxConfig");
-            }
-        }
+    var mobfoxConfig = URL.parse(curScript.src,true).query;
 
-        if(confE.innerHTML){
-            eval(confE.innerHTML);
+    //START: backward compat code
+    if(!mobfoxConfig || Object.keys(mobfoxConfig).length === 0 || mobfoxConfig.conf_id){
+        if(confID){
+            mobfoxConfig = window.mobfoxConfig[confID];
+            confE = document.querySelector('#mobfoxConf_'+confID);
         }
-        mobfoxConfig = window.mobfoxConfig;
+        else if(curScript.dataset.mobfoxconf){
+            confID = curScript.dataset.mobfoxconf;
+            mobfoxConfig = window.mobfoxConfig[confID];
+            confE = document.querySelector("#"+confID);
+        }
+        else{
+            if(!confE || confE.className.indexOf("mobfoxConfig") < 0){
+                confE = document.querySelector('.mobfoxConfig');
+                if(!confE){
+                    confE = document.querySelector("#mobfoxConfig");
+                }
+            }
+
+            if(confE.innerHTML){
+                eval(confE.innerHTML);
+            }
+            mobfoxConfig = window.mobfoxConfig;
+        }
     }
+    //END: backward compat code
     //-------------------------------------------
     function retrieve(){
         var script  = document.createElement("script"),
