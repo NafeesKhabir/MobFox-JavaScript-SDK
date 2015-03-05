@@ -473,9 +473,7 @@ module.exports = {
 
     createBanner : function(ad,ad_id,confElement,mobfoxConfig){
 
-        if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
-            confElement = document.body; 
-        }
+        
 
         var iframe = document.getElementById(ad_id);
         if(iframe){
@@ -489,7 +487,14 @@ module.exports = {
         containerDiv.style.cursor= "pointer";   
 
         containerDiv.id = "container_"+ad_id;
-        confElement.parentNode.insertBefore(containerDiv,confElement);
+
+        if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
+            confElement = document.body; 
+            confElement.appendChild(containerDiv);
+        }
+        else{
+            confElement.parentNode.insertBefore(containerDiv,confElement);
+        }
 
         var cleaned = ad.content;//cleanAd(ad.content);
 
@@ -712,7 +717,7 @@ module.exports = function(window,refE,passback,options,cb){
         }; 
 
     var mobfoxConfig = URL.parse(curScript.src,true).query;
-    if(mobfoxConfig){
+    if(mobfoxConfig){//no conf element position it behind script
         confE = curScript;
     }
 
