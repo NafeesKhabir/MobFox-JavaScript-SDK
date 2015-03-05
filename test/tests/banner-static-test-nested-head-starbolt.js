@@ -31,7 +31,7 @@ page.onResourceReceived = function(response) {
                     var iframe = document.querySelector("iframe"); 
                     return $(iframe).offset();
                 });
-                page.sendEvent('click',offset.left+5,offset.top+5 );
+                page.sendEvent('click',offset.left+15,offset.top+15 );
             });
 
        // },100);
