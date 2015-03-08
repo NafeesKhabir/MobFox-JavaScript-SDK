@@ -74,7 +74,7 @@
             params = {
                 r_type  : 'banner',//mobfoxConfig.type,
                 u       : window.navigator.userAgent,
-                s       : mobfoxConfig.publicationID,
+                s       : mobfoxConfig.publicationID || mobfoxConfig.pid,
                 p       : window.location.href,
                 m       : mobfoxConfig.debug ? 'test' : 'live',
                 rt      : 'javascript',

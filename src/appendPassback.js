@@ -5,11 +5,13 @@ module.exports = function(window,refE,passback,options,cb){
     var iframe= window.document.createElement("iframe");
 
     iframe.onload = function(){
+        if(iframe.passbackLoaded) return;
         var iframeWin= (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
         iframeWin.document.open();
         iframeWin.document.write(decodeURIComponent(passback));
         iframeWin.document.close();
         iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+        iframe.passbackLoaded = true;
     };
 
     if(options.confID){
