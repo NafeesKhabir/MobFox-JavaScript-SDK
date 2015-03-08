@@ -69,11 +69,14 @@ function createOnClickCallback(mobfoxClickURL,starboltClickURL){
 //----------------------------------------------------------------
 function writeToIFrame(iframe,html){
 
+            if(iframe.mobfoxLoaded) return;
+
             var iframeWin= (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
             iframeWin.document.open();
             iframeWin.document.write(html);
             iframeWin.document.close();
             iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+            iframe.mobfoxLoaded = true;
 }
 //----------------------------------------------------------------
 module.exports = {
@@ -81,7 +84,6 @@ module.exports = {
     createBanner : function(ad,ad_id,confElement,mobfoxConfig){
 
         
-
         var iframe = document.getElementById(ad_id);
         if(iframe){
             iframe.parentNode.removeChild(iframe);
