@@ -10,7 +10,7 @@ page.open(url);
 
 page.onResourceReceived = function(response) {
 
-    if(!gotIt && response.url.match(/http\:\/\/my\.mobfox\.com\/request\.php/)){
+    if(!gotIt && response.url.match(/\/js\/response\-inter\.js/)){
 
         gotIt = true;
 
@@ -57,6 +57,7 @@ page.onResourceReceived = function(response) {
                     return document.querySelector("#mobfox_interstitial");
                 });
 
+                console.log(container);
                 test.ok(!container);
                 test.done();
 
