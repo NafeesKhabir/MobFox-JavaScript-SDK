@@ -57,7 +57,6 @@ page.onResourceReceived = function(response) {
                     return document.querySelector("#mobfox_interstitial");
                 });
 
-                console.log(container);
                 test.ok(!container);
                 test.done();
 
