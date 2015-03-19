@@ -1,3 +1,22 @@
+var cleanAd = function(ad){
+    
+    var cleaned;
+
+    if(ad.indexOf("<iframe") >=0){
+        cleaned = ad;
+    }
+    else if(ad.indexOf("</html>") > 0){
+        cleaned = ad;
+    }
+    else if(ad.indexOf("</body>") > 0){
+        cleaned = ["<html>",ad,"</html>"].join("\n");
+    }
+    else{
+        cleaned = ["<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
+    }
+
+    return cleaned;
+};
 //----------------------------------------------------------------
 function addCloseButton(div,options){
 
@@ -105,7 +124,7 @@ module.exports = {
             confElement.parentNode.insertBefore(containerDiv,confElement);
         }
 
-        var cleaned = ad.content;//cleanAd(ad.content);
+        var cleaned = cleanAd(ad.content);
 
         iframe = document.createElement("iframe");
         iframe.id = ad_id;
@@ -129,6 +148,9 @@ module.exports = {
 
     createInterstitial : function(ad,ad_id,confElement,mobfoxConfig){
             
+        if(mobfoxConfig.debug){
+            mobfoxConfig.timeout = 500000;
+        }
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
         }
@@ -152,7 +174,7 @@ module.exports = {
         adContainer.style.border= "none";
         document.body.appendChild(adContainer);
         
-        var cleaned = ad.content;
+        var cleaned = cleanAd(ad.content);
 
         var containerDiv = document.createElement("div");
         containerDiv.style.margin = "0px";
@@ -218,7 +240,7 @@ module.exports = {
         adContainer.style.border= "none";
         document.body.appendChild(adContainer);
         
-        var cleaned = ad.content;
+        var cleaned = cleanAd(ad.content);
 
         var containerDiv = document.createElement("div");
 
