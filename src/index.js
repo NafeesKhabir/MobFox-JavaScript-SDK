@@ -26,7 +26,7 @@
     }
 
     //START: backward compat code
-    if(!mobfoxConfig || Object.keys(mobfoxConfig).length === 0 || mobfoxConfig.conf_id){
+    if(!mobfoxConfig || (!mobfoxConfig.publicationID && !mobfoxConfig.pid)){
         if(confID){
             mobfoxConfig = window.mobfoxConfig[confID];
             confE = document.querySelector('#mobfoxConf_'+confID);
