@@ -42,7 +42,7 @@ page.onResourceReceived = function(response) {
 
             });
 
-            test.ok(ad.id.match(/^mobfox_\d+$/));
+            test.equal(ad.id,"mobfox_test");
             test.equal(ad.width,"320");
             test.equal(ad.height,"480");
 
@@ -59,7 +59,6 @@ page.onResourceReceived = function(response) {
 
                 test.ok(!container);
                 test.done();
-
             },1500);
 
         },100);

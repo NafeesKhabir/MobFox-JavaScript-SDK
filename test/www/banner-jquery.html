@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="mobfoxInterstitial">
+    </div>
+<script>
+function mobfoxInterstitial() {
+    var html = "<script class=\"mobfoxConfig\">var mobfoxConfig = { width: 320, height: 480, timeout: 5000, publicationID: 'test', type: 'banner' ,testURL : 'js/response-inter.js' };<\/script>" + "<script type='text/javascript' src='ad.js'><\/script>";
+
+        $(".mobfoxInterstitial").html(html);
+    } 
+    mobfoxInterstitial();
+
+</script>
+
+</body>
+</html>
+
