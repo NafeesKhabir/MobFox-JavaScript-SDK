@@ -64,7 +64,7 @@
                 "demo.gender",
                 "demo.keyword",
                 "demo.age",
-                "adspace.strict",
+                "adspace_strict",
                 "no_markup",
                 "s_subid",
                 "allow_mr",
@@ -79,8 +79,8 @@
                 m       : mobfoxConfig.debug ? 'test' : 'live',
                 rt      : 'javascript',
                 v       : '3.0',
-                'adspace.width' : mobfoxConfig.width,
-                'adspace.height' : mobfoxConfig.height,
+                'adspace_width' : mobfoxConfig.width,
+                'adspace_height' : mobfoxConfig.height,
                 timeout : mobfoxConfig.timeout,
                 jsvar : mobfoxVar
             };
