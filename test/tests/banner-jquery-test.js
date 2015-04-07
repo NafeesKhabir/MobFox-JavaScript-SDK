@@ -28,7 +28,7 @@ page.onResourceReceived = function(response) {
             });
 
 
-            test.ok(response.url.match(/adspace\.width=320/));
+            test.ok(response.url.match(/adspace_width=320/));
             test.ok(id.match(/^mobfox_test$/));
             test.equal(width,"320");
             test.equal(height,"480");
