@@ -4,20 +4,20 @@
         URL             = require('./lite-url').liteURL,
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
-        curScript = document.currentScript || (function() {
+        curScript       = document.currentScript || (function() {
             var scripts = document.getElementsByTagName('script');
             return scripts[scripts.length - 1];
         })(),
-        confE = curScript && curScript.previousElementSibling,
-        confMatch = curScript && curScript.src.match(/conf_id=(\d+)/),
-        confID = confMatch && confMatch[1],
+        confE           = curScript && curScript.previousElementSibling,
+        confMatch       = curScript && curScript.src.match(/conf_id=(\d+)/),
+        confID          = confMatch && confMatch[1],
         mobfoxVar       = "mobfox_" + String(Math.random()).slice(2),
-        refreshInterval,
-        createAd = {
+        createAd        = {
             banner          : ads.createBanner,
             interstitial    : ads.createInterstitial,
             floating        : ads.createFloating
-        }; 
+        }, 
+        refreshInterval;
 
     var mobfoxConfig = URL(curScript.src).params;
 
@@ -72,17 +72,17 @@
                 "testURL"
             ],
             params = {
-                r_type  : 'banner',//mobfoxConfig.type,
-                u       : window.navigator.userAgent,
-                s       : mobfoxConfig.publicationID || mobfoxConfig.pid,
-                p       : window.location.href,
-                m       : mobfoxConfig.debug ? 'test' : 'live',
-                rt      : 'javascript',
-                v       : '3.0',
-                'adspace_width' : mobfoxConfig.width,
-                'adspace_height' : mobfoxConfig.height,
-                timeout : mobfoxConfig.timeout,
-                jsvar : mobfoxVar
+                r_type                  : 'banner',//mobfoxConfig.type,
+                u                       : window.navigator.userAgent,
+                s                       : mobfoxConfig.publicationID || mobfoxConfig.pid,
+                p                       : window.location.href,
+                m                       : mobfoxConfig.debug ? 'test' : 'live',
+                rt                      : 'javascript',
+                v                       : '3.0',
+                'adspace_width'         : mobfoxConfig.width,
+                'adspace_height'        : mobfoxConfig.height,
+                timeout                 : mobfoxConfig.timeout,
+                jsvar                   : mobfoxVar
             };
 
    
@@ -92,19 +92,23 @@
             }
         });
 
+
         if(params.testURL){
             if(!window.mobfoxCount) window.mobfoxCount = 1;
             params.jsvar = mobfoxVar = "mobfox_test" + (window.mobfoxCount > 1 ? window.mobfoxCount : "");
             window.mobfoxCount ++;
         }
 
-        //var start = (new Date()).getTime();
+        //verify width / height
+        var w = parseInt(params.adspace_width),
+            h = parseInt(params.adspace_height);
 
+        if(w !=w || w < 0) throw "Invalid adspace_width: " + params.adspace_width;
+        if(h !=h || h < 0) throw "Invalid adspace_height: " + params.adspace_height;
 
         var url = params.testURL || 'http://my.mobfox.com/request.php';
         script.type = "text/javascript";
         script.onload = script.onerror = function(){
-            //var end = (new Date()).getTime();
 
             script.parentNode.removeChild(script);
             if(!window[mobfoxVar]){
