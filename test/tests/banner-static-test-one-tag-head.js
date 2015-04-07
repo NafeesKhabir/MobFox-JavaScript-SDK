@@ -2,7 +2,7 @@ var page    =   require('webpage').create(),
     url     =   'http://127.0.0.1:8080/banner-static-one-tag-head.html',
     test    =   require('./lib/harness.js');
 
-test.name('banner static test one tag');
+test.name('banner static test one tag head');
 test.expect(6);
 
 page.open(url);
