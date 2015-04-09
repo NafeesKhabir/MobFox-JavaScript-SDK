@@ -7,25 +7,9 @@ MobFox JavaScript SDK supporting Banner Ads, Video Ads, and Native Ads  http://w
 ## How To Use
 
 ```html
-<script id="mobfoxConfig">
-    window.mobfoxConfig = {
-        width           : 320,
-        height          : 50,
-        publicationID   : 'fe96717d9875b9da4339ea5367eff1ec',
-        type            : 'banner',
-        refresh         : 3000,         // <-- get new ad every 3 seconds
-        passback        : function(){   // <-- call this if no ad is available
-            console.log("nothing to show here.");
-        }
-    }
-</script>
-<script type='text/javascript' src='http://my.mobfox.com/ad_sdk.js'></script>
-
+<script class="mobfoxConfig" src="http://my.mobfox.com/ad_sdk.js?cb=CACHEBUSTER&referrer=REFERRER_URL&width=320&height=50&pid=fe96717d9875b9da4339ea5367eff1ec&type=banner&refresh=3000"></script>
 ```
-
-* ```type``` - can be ```'banner'``` or ```'interstitial'```
-* ```refresh``` - optional. Number of milliseconds before the ad will be refreshed.
-* ```passback``` - optional. This function will be called in case no ad is returned.
+You can use the Mobfox [Tag Generator]() to easily create tags.
 
 #### Optional Parameters
 
@@ -40,11 +24,17 @@ For the documentation of each option please refer to the [API Doc](http://dev.mo
  * ```demo.gender```
  * ```demo.keyword```
  * ```demo.age```
- * ```adspace.strict```
+ * ```adspace_strict```
  * ```no_markup```
  * ```s_subid```
  * ```allow_mr```
  * ```r_floor```
 
 
-### Native Ads - TBD
+### Building
+
+You will need first to install [NodeJS](https://nodejs.org/) and [Browserify](http://browserify.org/). Then run ```make.sh```.
+
+### Testing
+
+You will need first to install [NodeJS](https://nodejs.org/) and [SlimerJS](http://slimerjs.org/). Then run ```test/run.js```.
