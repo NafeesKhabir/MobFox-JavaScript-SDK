@@ -37,8 +37,8 @@ For the documentation of each option please refer to the [API Doc](http://dev.mo
 
 ### Building
 
-You will need first to install [NodeJS](https://nodejs.org/) and [Browserify](http://browserify.org/). Then run ```make.sh```.
+You will need to first to install [NodeJS](https://nodejs.org/) and [Browserify](http://browserify.org/). Then run ```make.sh```.
 
 ### Testing
 
-You will need first to install [NodeJS](https://nodejs.org/) and [SlimerJS](http://slimerjs.org/). Then run ```test/run.js```.
+You will need tp first to install [NodeJS](https://nodejs.org/) and [SlimerJS](http://slimerjs.org/). Then run ```test/run.js```.
