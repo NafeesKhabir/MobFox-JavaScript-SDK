@@ -6,8 +6,12 @@ MobFox JavaScript SDK supporting Banner Ads, Video Ads, and Native Ads  http://w
 
 ## How To Use
 
-```html
-<script class="mobfoxConfig" src="http://my.mobfox.com/ad_sdk.js?cb=CACHEBUSTER&referrer=REFERRER_URL&width=320&height=50&pid=fe96717d9875b9da4339ea5367eff1ec&type=banner&refresh=3000"></script>
+```HTML
+<script 
+    class="mobfoxConfig" 
+    src="http://my.mobfox.com/ad_sdk.js?cb=CACHEBUSTER&referrer=REFERRER_URL&width=320&height=50&pid=fe96717d9875b9da4339ea5367eff1ec&type=banner&refresh=3000"
+>
+</script>
 ```
 You can use the Mobfox [Tag Generator]() to easily create tags.
 
