@@ -445,88 +445,95 @@
   Writer.prototype.renderTokens = function (tokens, context, partials, originalTemplate) {
     var buffer = '';
 
-    // This function is used to render an arbitrary template
-    // in the current context by higher-order sections.
-    var self = this;
-    function subRender(template) {
-      return self.render(template, context, partials);
-    }
-
-    var token, value;
+    var token, symbol, value;
     for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+      value = undefined;
       token = tokens[i];
+      symbol = token[0];
 
-      switch (token[0]) {
-      case '#':
-        value = context.lookup(token[1]);
+      if (symbol === '#') value = this._renderSection(token, context, partials, originalTemplate);
+      else if (symbol === '^') value = this._renderInverted(token, context, partials, originalTemplate);
+      else if (symbol === '>') value = this._renderPartial(token, context, partials, originalTemplate);
+      else if (symbol === '&') value = this._unescapedValue(token, context);
+      else if (symbol === 'name') value = this._escapedValue(token, context);
+      else if (symbol === 'text') value = this._rawValue(token);
 
-        if (!value)
-          continue;
-
-        if (isArray(value)) {
-          for (var j = 0, valueLength = value.length; j < valueLength; ++j) {
-            buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate);
-          }
-        } else if (typeof value === 'object' || typeof value === 'string') {
-          buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate);
-        } else if (isFunction(value)) {
-          if (typeof originalTemplate !== 'string')
-            throw new Error('Cannot use higher-order sections without the original template');
-
-          // Extract the portion of the original template that the section contains.
-          value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender);
-
-          if (value != null)
-            buffer += value;
-        } else {
-          buffer += this.renderTokens(token[4], context, partials, originalTemplate);
-        }
-
-        break;
-      case '^':
-        value = context.lookup(token[1]);
-
-        // Use JavaScript's definition of falsy. Include empty arrays.
-        // See https://github.com/janl/mustache.js/issues/186
-        if (!value || (isArray(value) && value.length === 0))
-          buffer += this.renderTokens(token[4], context, partials, originalTemplate);
-
-        break;
-      case '>':
-        if (!partials)
-          continue;
-
-        value = isFunction(partials) ? partials(token[1]) : partials[token[1]];
-
-        if (value != null)
-          buffer += this.renderTokens(this.parse(value), context, partials, value);
-
-        break;
-      case '&':
-        value = context.lookup(token[1]);
-
-        if (value != null)
-          buffer += value;
-
-        break;
-      case 'name':
-        value = context.lookup(token[1]);
-
-        if (value != null)
-          buffer += mustache.escape(value);
-
-        break;
-      case 'text':
-        buffer += token[1];
-        break;
-      }
+      if (value !== undefined)
+        buffer += value;
     }
 
     return buffer;
   };
 
+  Writer.prototype._renderSection = function (token, context, partials, originalTemplate) {
+    var self = this;
+    var buffer = '';
+    var value = context.lookup(token[1]);
+
+    // This function is used to render an arbitrary template
+    // in the current context by higher-order sections.
+    function subRender(template) {
+      return self.render(template, context, partials);
+    }
+
+    if (!value) return;
+
+    if (isArray(value)) {
+      for (var j = 0, valueLength = value.length; j < valueLength; ++j) {
+        buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate);
+      }
+    } else if (typeof value === 'object' || typeof value === 'string' || typeof value === 'number') {
+      buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate);
+    } else if (isFunction(value)) {
+      if (typeof originalTemplate !== 'string')
+        throw new Error('Cannot use higher-order sections without the original template');
+
+      // Extract the portion of the original template that the section contains.
+      value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender);
+
+      if (value != null)
+        buffer += value;
+    } else {
+      buffer += this.renderTokens(token[4], context, partials, originalTemplate);
+    }
+    return buffer;
+  };
+
+  Writer.prototype._renderInverted = function(token, context, partials, originalTemplate) {
+    var value = context.lookup(token[1]);
+
+    // Use JavaScript's definition of falsy. Include empty arrays.
+    // See https://github.com/janl/mustache.js/issues/186
+    if (!value || (isArray(value) && value.length === 0))
+      return this.renderTokens(token[4], context, partials, originalTemplate);
+  };
+
+  Writer.prototype._renderPartial = function(token, context, partials) {
+    if (!partials) return;
+
+    var value = isFunction(partials) ? partials(token[1]) : partials[token[1]];
+    if (value != null)
+      return this.renderTokens(this.parse(value), context, partials, value);
+  };
+
+  Writer.prototype._unescapedValue = function(token, context) {
+    var value = context.lookup(token[1]);
+    if (value != null)
+      return value;
+  };
+
+  Writer.prototype._escapedValue = function(token, context) {
+    var value = context.lookup(token[1]);
+    if (value != null)
+      return mustache.escape(value);
+  };
+
+  Writer.prototype._rawValue = function(token) {
+    return token[1];
+  };
+
   mustache.name = "mustache.js";
-  mustache.version = "1.0.0";
+  mustache.version = "1.2.0";
   mustache.tags = [ "{{", "}}" ];
 
   // All high-level mustache.* functions use this writer.
@@ -630,7 +637,7 @@ internals.parseValues = function (str, options) {
             var key = Utils.decode(part.slice(0, pos));
             var val = Utils.decode(part.slice(pos + 1));
 
-            if (!obj.hasOwnProperty(key)) {
+            if (!Object.prototype.hasOwnProperty.call(obj, key)) {
                 obj[key] = val;
             }
             else {
@@ -767,11 +774,21 @@ var Utils = require('./utils');
 
 var internals = {
     delimiter: '&',
-    indices: true
+    arrayPrefixGenerators: {
+        brackets: function (prefix, key) {
+            return prefix + '[]';
+        },
+        indices: function (prefix, key) {
+            return prefix + '[' + key + ']';
+        },
+        repeat: function (prefix, key) {
+            return prefix;
+        }
+    }
 };
 
 
-internals.stringify = function (obj, prefix, options) {
+internals.stringify = function (obj, prefix, generateArrayPrefix) {
 
     if (Utils.isBuffer(obj)) {
         obj = obj.toString();
@@ -799,13 +816,11 @@ internals.stringify = function (obj, prefix, options) {
     var objKeys = Object.keys(obj);
     for (var i = 0, il = objKeys.length; i < il; ++i) {
         var key = objKeys[i];
-        if (!options.indices &&
-            Array.isArray(obj)) {
-
-            values = values.concat(internals.stringify(obj[key], prefix, options));
+        if (Array.isArray(obj)) {
+            values = values.concat(internals.stringify(obj[key], generateArrayPrefix(prefix, key), generateArrayPrefix));
         }
         else {
-            values = values.concat(internals.stringify(obj[key], prefix + '[' + key + ']', options));
+            values = values.concat(internals.stringify(obj[key], prefix + '[' + key + ']', generateArrayPrefix));
         }
     }
 
@@ -817,7 +832,6 @@ module.exports = function (obj, options) {
 
     options = options || {};
     var delimiter = typeof options.delimiter === 'undefined' ? internals.delimiter : options.delimiter;
-    options.indices = typeof options.indices === 'boolean' ? options.indices : internals.indices;
 
     var keys = [];
 
@@ -827,10 +841,23 @@ module.exports = function (obj, options) {
         return '';
     }
 
+    var arrayFormat;
+    if (options.arrayFormat in internals.arrayPrefixGenerators) {
+        arrayFormat = options.arrayFormat;
+    }
+    else if ('indices' in options) {
+        arrayFormat = options.indices ? 'indices' : 'repeat';
+    }
+    else {
+        arrayFormat = 'indices';
+    }
+
+    var generateArrayPrefix = internals.arrayPrefixGenerators[arrayFormat];
+
     var objKeys = Object.keys(obj);
     for (var i = 0, il = objKeys.length; i < il; ++i) {
         var key = objKeys[i];
-        keys = keys.concat(internals.stringify(obj[key], key, options));
+        keys = keys.concat(internals.stringify(obj[key], key, generateArrayPrefix));
     }
 
     return keys.join(delimiter);
@@ -2313,11 +2340,7 @@ module.exports.createBannerAd = function(adData,options){
 
     doppleganger.className = ref.className;
 
-    //doppleganger.style.width    = ref.offsetWidth + "px";
-    //doppleganger.style.height   = ref.offsetHeight + "px";
     doppleganger.style.boxSizing        = "border-box";
-    /*doppleganger.style.clear            = "both";
-    doppleganger.style.marginBottom      = "30px";*/
     doppleganger.innerHTML              = ad;
     
     ref.parentNode.insertBefore(doppleganger,ref.nextSibling);
@@ -2328,7 +2351,13 @@ module.exports.createBannerAd = function(adData,options){
 };
 //--------------------------------------------------------------
 
-},{"./templates/native-banner-article.tmpl":12,"./templates/native-banner.tmpl":13,"mustache":1}],11:[function(require,module,exports){
+},{"./templates/native-banner-article.tmpl":11,"./templates/native-banner.tmpl":12,"mustache":1}],11:[function(require,module,exports){
+module.exports = "<style scoped>\n    \n        .mobfoxNative *, .mobfoxNative *:before, .mobfoxNative *:after {\n          box-sizing: inherit;\n        }\n\n        .mobfoxNative{\n            display:block;   \n            text-decoration:none;\n            color:inherit;\n        }\n\n        .mobfoxNative .copy{\n        }\n\n        .mobfoxImage{\n            background-image:url({{{main.url}}});\n            background-position:center center;\n            display:block;\n            height:200px;\n            margin-bottom:10px;\n        }\n</style>\n<a class=\"mobfoxNative\" target=\"_top\" href=\"{{{click_url}}}\">\n    {{# config.headline}}\n        <h2 class=\"headline\">\n            {{headline}}\n        </h2>\n    {{/ config.headline}}\n    {{# config.cta}}\n        <p class=\"cta\">\n            <strong>{{cta}}</strong>\n        </p>\n    {{/ config.cta}}\n    <div class=\"mobfoxImage\">\n    </div>\n    <div class=\"copy\">\n        {{# config.description}}\n            <p class=\"description\">\n                {{description}}\n            </p>\n        {{/ config.description}}\n    </div>\n    <div style=\"clear:both\"></div>\n</a>\n";
+
+},{}],12:[function(require,module,exports){
+module.exports = "<style scoped>\n    \n        .mobfoxNative *, .mobfoxNative *:before, .mobfoxNative *:after {\n          box-sizing: inherit;\n        }\n\n        .mobfoxNative{\n            display:block;   \n            padding:1em 0;\n            text-decoration:none;\n            color:inherit;\n        }\n\n        .mobfoxNative>img{\n            border-width: 1px;\n            border-style: solid;\n            width:20%;\n            float:left;\n        }\n\n        .mobfoxNative .copy{\n            margin-left:3%;\n            width:72%;\n            float:left;\n        }\n\n        .mobfoxNative p.cta{\n            font-weight:bold;\n        }\n</style>\n<a class=\"mobfoxNative\" target=\"_top\" href=\"{{{click_url}}}\">\n    <img src=\"{{{icon.url}}}\" alt=\"\"/>\n    <div class=\"copy\">\n        {{# config.headline}}\n            <h2 class=\"headline\">\n                {{headline}}\n            </h2>\n        {{/ config.headline}}\n        {{# config.cta}}\n            <p class=\"cta\">\n                <strong>{{cta}}</strong>\n            </p>\n        {{/ config.cta}}\n        {{# config.description}}\n            <p class=\"description\">\n                {{description}}\n            </p>\n        {{/ config.description}}\n    </div>\n    <div style=\"clear:both\"></div>\n</a>\n";
+
+},{}],13:[function(require,module,exports){
 (function(){
 
     var Qs                  = require('qs'),
@@ -2424,10 +2453,4 @@ module.exports.createBannerAd = function(adData,options){
 
 })();
 
-},{"./native-ads.js":10,"qs":2,"superagent":7}],12:[function(require,module,exports){
-module.exports = "<style scoped>\n    \n        .mobfoxNative *, .mobfoxNative *:before, .mobfoxNative *:after {\n          box-sizing: inherit;\n        }\n\n        .mobfoxNative{\n            display:block;   \n            text-decoration:none;\n            color:inherit;\n        }\n\n        .mobfoxNative .copy{\n        }\n\n        .mobfoxImage{\n            background-image:url({{{main.url}}});\n            background-position:center center;\n            display:block;\n            height:200px;\n            margin-bottom:10px;\n        }\n</style>\n<a class=\"mobfoxNative\" target=\"_top\" href=\"{{{click_url}}}\">\n    {{# config.headline}}\n        <h2 class=\"headline\">\n            {{headline}}\n        </h2>\n    {{/ config.headline}}\n    {{# config.cta}}\n        <p class=\"cta\">\n            <strong>{{cta}}</strong>\n        </p>\n    {{/ config.cta}}\n    <div class=\"mobfoxImage\">\n    </div>\n    <div class=\"copy\">\n        {{# config.description}}\n            <p class=\"description\">\n                {{description}}\n            </p>\n        {{/ config.description}}\n    </div>\n    <div style=\"clear:both\"></div>\n</a>\n";
-
-},{}],13:[function(require,module,exports){
-module.exports = "<style scoped>\n    \n        .mobfoxNative *, .mobfoxNative *:before, .mobfoxNative *:after {\n          box-sizing: inherit;\n        }\n\n        .mobfoxNative{\n            display:block;   \n            padding:1em 0;\n            text-decoration:none;\n            color:inherit;\n        }\n\n        .mobfoxNative>img{\n            border-width: 1px;\n            border-style: solid;\n            width:20%;\n            float:left;\n        }\n\n        .mobfoxNative .copy{\n            margin-left:3%;\n            width:72%;\n            float:left;\n        }\n\n        .mobfoxNative p.cta{\n            font-weight:bold;\n        }\n</style>\n<a class=\"mobfoxNative\" target=\"_top\" href=\"{{{click_url}}}\">\n    <img src=\"{{{icon.url}}}\" alt=\"\"/>\n    <div class=\"copy\">\n        {{# config.headline}}\n            <h2 class=\"headline\">\n                {{headline}}\n            </h2>\n        {{/ config.headline}}\n        {{# config.cta}}\n            <p class=\"cta\">\n                <strong>{{cta}}</strong>\n            </p>\n        {{/ config.cta}}\n        {{# config.description}}\n            <p class=\"description\">\n                {{description}}\n            </p>\n        {{/ config.description}}\n    </div>\n    <div style=\"clear:both\"></div>\n</a>\n";
-
-},{}]},{},[11]);
+},{"./native-ads.js":10,"qs":2,"superagent":7}]},{},[13]);
