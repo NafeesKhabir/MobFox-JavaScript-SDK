@@ -1,0 +1,475 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<!-- saved from url=(0029)http://search.4shared.com/q/1 -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./4shared.com_files/analytics.js"></script><script type="text/javascript" async="" src="./4shared.com_files/show_ads.js"></script>  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"> <meta name="format-detection" content="telephone=no"> <meta name="format-detection" content="address=no"> <meta property="fb:app_id" content="255519317820035"> <meta property="og:type" content="website"> <meta property="og:site_name" content="4shared"> <meta property="og:image" content="http://cdnstatic.4shared.com/images/social/general.png?ver=4029806336"> <link rel="image_src" href="http://cdnstatic.4shared.com/images/social/general.png?ver=4029806336"> <meta name="format-detection" content="telephone=yes"> <meta name="format-detection" content="address=no"> <meta name="MobileOptimized" content="width"> <meta name="HandheldFriendly" content="True"> <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0"> <link rel="stylesheet" type="text/css" href="./4shared.com_files/general_m.4min.css"> <link rel="stylesheet" type="text/css" href="./4shared.com_files/media-queries.4min.css"> <script type="text/javascript" src="./4shared.com_files/jquery-1.9.1.4min.js"></script> <script type="text/javascript" src="./4shared.com_files/jquery-migrate-1.2.1.4min.js"></script> <script type="text/javascript">
+    $(function () {
+      $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        if (!$.cookie) return;
+        if (originalOptions.crossDomain && originalOptions.url.search(".4shared.com") == -1) return;
+        var cookie = $.cookie('Login');
+        if (cookie) jqXHR.setRequestHeader("x-security", cookie);
+      });
+    });
+  </script> <script type="text/javascript">
+  function Config() {
+    return this
+  }
+  document.domain='4shared.com';
+</script> <script type="text/javascript">
+  Config.mainSiteUrlPath = 'http://www.4shared.com/';
+  Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/';
+  Config.isRTLLanguage = false;
+  Config.currentLanguage = 'iw';
+  Config.isReplaceSearchNameForSeo = false;
+  Config.revisionNum = 48823;
+  Config.syncDomain = 'https://www.4sync.com/';
+  Config.cdDomain = '//dc616.4shared.com/';
+  Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$");
+  Config.isMobile = true;
+  Config.isIpad = false;
+  Config.is4Sync = false;
+  Config.isUserLoggedIn = false;
+  Config.jsMixpanelProjectToken = 'a80fa5b34dd23a9241e6f20e94d52e7f';
+  Config.epomHost = 'forshrd.com';
+  Config.detectAd = {
+    allowedUri: 'empty.js',
+    blockedUri: '/show_ad_.xml',
+    tg: ''
+  };
+  Config.searchDomain = 'search.4shared.com';
+  Config.cookieDomain = (function(){
+    var domain = document.domain;
+    var splited = domain.split(".");
+    if(splited.length>2){
+      splited = splited.splice(splited.length-2, splited.length);
+    }
+    return "."+splited.join(".");
+  })();
+
+  $(function(){
+      //lets detect touch device
+      try{
+          document.createEvent("TouchEvent");
+        if (window.opera && !/Opera Mobi/.test(navigator.userAgent) && !/Opera Mini/.test(navigator.userAgent)) $("body").addClass("notTouch");
+      } catch(e){
+          $("body").addClass("notTouch");
+      }
+  });
+
+
+  
+  function selectLang(lang){
+    $.post("/web/user/language",{code:lang}, // save langCode into UserEntity
+        function (data) {
+          if (data.status = 'ok') {
+            document.cookie = '4langcookie='+lang+'; path=/; domain=' + encodeURIComponent(Config.cookieDomain);
+            window.location.reload();
+          }
+        })
+  }
+</script><script type="text/javascript" src="./4shared.com_files/jquery.jsonWithError.4min.js"></script> <script type="text/javascript" src="./4shared.com_files/mobileScripts.4min.js"></script> <title> 4shared.com - search and download music, video, photo, files, for free - 1</title> <meta name="Description" content="93,893,878music, video, photo, files found at 4shared. Download files for free from 4shared now. Online file sharing and storage - 15 GB free web space. Easy registration. File upload progressor. Multiple file transfer. Fast download."> <meta name="Keywords" content=" - file sharing, free web space, online storage, share files, photo image music mp3 video sharing, dedicated hosting, enterprise sharing, file transfer, file hosting - 1"> <script type="text/javascript">
+    function doSearch() {
+      document.pagerForm.submit();
+    }
+
+    var slinks = {
+      mobile: ['/q/CAwD/1/apps/ipa', '/q/CCwD/1/apps/ipa'],
+      files: ['/q/CAAD/1', '/q/CCAD/1'],
+      video: ['/q/CAQD/1/video', '/q/CCQD/1/video'],
+      music: ['/q/CAQD/1/music', '/q/CCQD/1/music'],
+      photo: ['/q/CAQD/1/photo', '/q/CCQD/1/photo'],
+      books: ['/q/CAQD/1/books_office', '/q/CCQD/1/books_office'],
+      featured_videos: ['/q/CAQD/1/featured_videos', '/q/CCQD/1/video']
+    }
+
+    var sprefix = '//search.4shared.com';
+    var mainSite = 'http://www.4shared.com/';
+
+    function doSearchCategory(name) {
+      var searchTerm = document.getElementById('searchMainField').value;
+      if (name) {
+        if (searchTerm) {
+          document.location.href = sprefix + slinks[name][1] + '/' + Utils.getSearchName(searchTerm);
+        } else {
+          document.location.href = sprefix + slinks[name][0];
+        }
+      } else {
+        //Special for files category
+        document.location.href = sprefix + slinks[name][0] + '/' + Utils.getSearchName(searchTerm);
+      }
+      return false
+    }
+  </script> <script type="text/javascript" src="./4shared.com_files/jquery.cookie.4min.js"></script> <link rel="stylesheet" type="text/css" href="./4shared.com_files/search.4min.css"> <link rel="stylesheet" type="text/css" href="./4shared.com_files/account.4min.css"> <script type="text/javascript" src="./4shared.com_files/json2.4min.js"></script> <script type="text/javascript" src="./4shared.com_files/utils.4min.js"></script> <script type="text/javascript" src="./4shared.com_files/cunami-v0.1.min.js"></script><script type="text/javascript" src="./4shared.com_files/cunami-v0.1.min.js"></script><script type="text/javascript" src="./4shared.com_files/cunami-v0.1.min.js"></script></head> <body class="site4shared notPremiumUser Safari mobile body" onload="document.getElementById(&#39;searchMainField&#39;).focus();" screen_capture_injected="true" cz-shortcut-listen="true"><div id="smartbanner" class="ios shown" style="height: 78px;"><div class="sb-container"><a href="http://search.4shared.com/q/1#" class="sb-close">×</a><span class="sb-icon gloss" style="background-image: url(http://is2.mzstatic.com/image/pf/us/r30/Purple5/v4/3d/34/c1/3d34c1a0-62a9-63e3-164e-3900ed8e311b/AppIcon60x60_U00402x.png);"></span><div class="sb-info"><strong>4shared Mobile</strong><span>New IT Solutions Ltd.</span><span>Free - On the App Store</span></div><a href="https://itunes.apple.com/us/app/4shared-mobile/id444426162?mt=8&uo=4" class="sb-button"><span>INSTALL</span></a></div></div> <script type="text/javascript">
+      document.domain =  '4shared.com';
+      var object = new Object();
+      object.sourceForDownload = "search";
+      object.returnURL = location.href;
+      var keyName = "sourceForDownload";
+      var keyValue = JSON.stringify(object);
+      $.cookie(keyName, keyValue, {domain: 'search.4shared.com', path: '/'  });
+      $.cookie(keyName, keyValue, {domain: '4shared.com', path: '/'  });
+  </script> <link rel="stylesheet" type="text/css" href="./4shared.com_files/jquery.smartbanner.4min.css"> <script type="text/javascript" src="./4shared.com_files/jquery.smartbanner.4min.js"></script> <script type="text/javascript" src="./4shared.com_files/mobileAppsAds.4min.js"></script> <script type="text/javascript">
+  $(function(){
+    new MobileAppsAdd({
+      isIphoneOS : true,
+      isAndroidOS : false,
+      isBlackberryOS : false,
+      isSymbianOS : false,
+      isAsha : false,
+      iphoneOSAppId : "444426162",
+      androidOSAppUrl : "https://play.google.com/store/apps/details?id=com.forshared",
+      defaultAppName : "4shared",
+      defaultAppCompany : "New IT Solutions",
+      noDisplayTime : 3
+    },{
+      sharedProAndroidDisplayChance : 0.0
+    });
+  });
+</script> <div class="mobileAppAddTopBaner"> <a href="javascript:void(0)" class="jsMobAddClose closeAdsBlock"></a> <img src="" alt="" class="jsAppImg"><div class="jsAppName heading top"></div> <div class="jsAppCompanyName mob_regular"></div> <div class="jsAppRating"></div> <a href="javascript:void(0)" class="jsAppUrl mob_grayButton">Install</a> </div> <script type="text/javascript" src="./4shared.com_files/jquery.placeholder.patch.4min.js"></script> <script type="text/javascript" src="./4shared.com_files/includeAntiFrameScript.4min.js"></script> <div id="mob_content"> <div id="mob_header"> <a href="http://www.4shared.com/" class="mob_logo gaClick" data-element="h1" title="4shared"></a> <div class="mob_headbuttons"> <a href="http://search.4shared.com/web/account/settings" class="headbutton but_settings"></a> <a href="http://search.4shared.com/search.html" class="headbutton but_search"></a> <a href="http://www.4shared.com/web/login?returnTo=http%3A%2F%2Fsearch.4shared.com%2Fq%2F1" class="headbutton but_account"></a> <a href="http://www.4shared.com/web/login?returnTo=http%3A%2F%2Fsearch.4shared.com%2Fq%2F1"><div class="mobUserLogin headbutton" style="display:none"></div></a> </div> </div> <div id="mob_body" class="search_page"> <form class="jsSearchForm" name="pagerForm" action="http://search.4shared.com/search.html" method="POST" onsubmit="return doSearchCategory(&#39;files&#39;);"> <input type="hidden" name="sortType" value="5"> <input type="hidden" name="sortOrder" value="1"> <input type="hidden" name="sortmode" value="2"> <input type="hidden" name="searchCategory" value="null"> <input type="hidden" name="searchmode" value="2"> <div class="mob_search mob_menuactive"></div> <div class="mob_input"> <input type="text" name="searchName" id="searchMainField" class="ajax-suggestion gaClick mob_searchfield" data-element="s0" autocomplete="off" value="" placeholder=" Search files... "> <input class="gaClick mob_searchbutton" data-element="s7" type="submit" value=""> <div class="clear"></div> </div> <div class="searchlinks_wrapper"> <div class="searchlinks"> <div class="mob_category mobile first "> <a class="gaClick" data-element="s1.1" href="http://search.4shared.com/q/CAQD/1/apps" onclick="return doSearchCategory(&#39;mobile&#39;)">Apps</a> </div> <div class="mob_category music "> <a class="gaClick" data-element="s4" href="http://search.4shared.com/q/CAQD/1/music" onclick="return doSearchCategory(&#39;music&#39;)">Music</a> </div> <div class="mob_category video "> <a class="gaClick" data-element="s3" href="http://search.4shared.com/q/CAQD/1/video" onclick="return doSearchCategory(&#39;video&#39;)">Video</a> </div> <div class="mob_category files active"> <a class="gaClick" data-element="s2" href="http://search.4shared.com/q/CAAD/1" onclick="return doSearchCategory(&#39;files&#39;)">Files</a> </div> <div class="mob_category photo last "> <a class="gaClick" data-element="s5" href="http://search.4shared.com/q/CAQD/1/photo" onclick="return doSearchCategory(&#39;photo&#39;)">Photo</a> </div> </div> <div class="subcatsBlock"> <div class="resCounter"> <span>93893878</span> Results</div> <div class="clear"></div> </div> </div> <div class="mob_searchresults"> <div class="searchResultsList"> <div class="resultItem"> <div class="mob_ads"> <script type="text/javascript">
+    var EpomConfig = EpomConfig || {ads: []};
+</script> <script type="text/javascript">
+
+    epom_key = "93d87902c8b4f9ee1ce14be410c2bd91";
+    epom_code_format = "ads-api-sync.js";
+    epom_ads_host = "//forshrd.com";
+    epom_click = "";
+    epom_custom_params = {};
+
+    document.write("<"+"script type='text\/javascript' src='"+(location.protocol == 'https:' ? 'https:' : 'http:') + "//forshrd.com\/js/show_ads.js'><\/script>");
+
+</script><script type="text/javascript" src="./4shared.com_files/show_ads.js"></script><script type="text/javascript" src="./4shared.com_files/ads-api-sync.js"></script><span id="emar-d702cf02"><a href="http://www.forshrd.com/cr?b=13949&p=35&ch=&cps=&c=141&l=IL&h=c7d8b8f22a58a9cfc85af91db4cf7530&t=1432562119665&u=https%3A%2F%2Fitunes.apple.com%2Fus%2Fapp%2F4shared-sync%2Fid444426162%3Fmt%3D8%26ls%3D1" target="_blank"><img border="0" alt="" src="./4shared.com_files/4pshared-iOS_320x50_01.png" width="320" height="50"></a><img src="./4shared.com_files/impression.gif" alt="" style="width:1px; height:1px; position:absolute; left:-10000px"><img src="./4shared.com_files/set-action-cookie.gif" alt="" style="width:1px; height:1px; position:absolute; left:-10000px"></span>
+<script>
+    (function (jqVer, key, id, interval, failOverLimit) {
+        function loadScript(src, callback) {
+            var script = document.createElement('script');
+            script.type = "text/javascript";
+            script.src = src;
+            if (script.readyState) {
+                script.onreadystatechange = function () {
+                    if (script.readyState == "loaded" || script.readyState == "complete") {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {
+                script.onload = callback;
+            }
+            document.getElementsByTagName('head')[0].appendChild(script);
+        }
+
+        if (typeof jQuery == 'undefined') {
+            loadScript("http://ajax.googleapis.com/ajax/libs/jquery/" + jqVer + "/jquery.min.js", jqLoaded);
+        } else {
+            jqLoaded();
+        }
+        function jqLoaded() {
+            loadScript('http://cdn.epom.com/files/templates/655/895/cunami-v0.1.min.js', function () {
+                new EpomCunami(jqVer, key, id, interval, failOverLimit).start();
+            });
+        }
+    })('1.6.4', '62f09d0a85180ab3c9bc70e804b128a7', 'emar-d702cf02', 100*1000, 3);
+</script><script type="text/javascript">new Image().src = "http://www.forshrd.com"+"/im"+"pressi"+"on.gif?b=77328"+"&p=38407&ch=&ap=&cps=&c"+"=45560&l=IL"+"&h=d30a3f0b3af062e565a6416cd0bc87cf&t="+new Date().getTime()+"&s=361910ef8223f9e0a6970a7323e791bc";</script> </div> </div> <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/R_L50TGlba/Wiz_Khalifa_-_See_You_Again_ft.htm"> <span>Wiz Khalifa - See You Again ft. Charlie Puth [Furious 7 Soundtrack].mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">3,808 KB</span> • 2015-03-22</div> </a> </div> <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/MCputAouce/Jorge_e_Mateus_-_Os_anjos_cant.htm"> <span>Jorge e Mateus - Os anjos cantam.mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">7,865 KB</span> • 2015-02-25</div> </a> </div>
+    <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)">
+        <script type='text/javascript' src='native-sdk.js?rt=api&r_type=native&r_resp=json&n_img=icon&n_txt=headline&s=80187188f458cfde788d961b6882fd53&i=2.122.29.194&u=Mozilla%2F5.0%20(iPhone%3B%20U%3B%20CPU%20iPhone%20OS%203_0%20like%20Mac%20OS%20X%3B%20en-us)%20AppleWebKit%2F528.18%20(KHTML%2C%20like%20Gecko)%20Version%2F4.0%20Mobile%2F7A341%20Safari%2F528.16&o_iosadvid=68753A44-4D6F-1226-9C60-0050E4C00067&publisher=4shared&width=320&height=50'></script>
+    </div>
+<div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/6Le0urocba/Big_Bang_-_Loser.htm"> <span>Big Bang - Loser.mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">9,095 KB</span> • 2015-04-30</div> </a> </div> <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/C1CLySb3ce/Lucas_Lucco_-_Vai_vendo.htm"> <span>Lucas Lucco - Vai vendo.mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">5,792 KB</span> • 2015-01-08</div> </a> </div> <div class="resultItem"> <div class="mob_ads"> <script type="text/javascript">
+
+    epom_key = "be4d58996085609b61b84feea83981cc";
+    epom_code_format = "ads-api-sync.js";
+    epom_ads_host = "//forshrd.com";
+    epom_click = "";
+    epom_custom_params = {};
+
+    document.write("<"+"script type='text\/javascript' src='"+(location.protocol == 'https:' ? 'https:' : 'http:') + "//forshrd.com\/js/show_ads.js'><\/script>");
+
+</script><script type="text/javascript" src="./4shared.com_files/show_ads.js"></script><script type="text/javascript" src="./4shared.com_files/ads-api-sync(1).js"></script><span id="emar-d71a4ea1"><a href="http://www.forshrd.com/cr?b=13949&p=34919&ch=&cps=&c=141&l=IL&h=2d2848a03ac0f7cddb0acf9411da8c08&t=1432562119879&u=https%3A%2F%2Fitunes.apple.com%2Fus%2Fapp%2F4shared-sync%2Fid444426162%3Fmt%3D8%26ls%3D1" target="_blank"><img border="0" alt="" src="./4shared.com_files/4pshared-iOS_320x50_01.png" width="320" height="50"></a><img src="./4shared.com_files/impression(1).gif" alt="" style="width:1px; height:1px; position:absolute; left:-10000px"><img src="./4shared.com_files/set-action-cookie(1).gif" alt="" style="width:1px; height:1px; position:absolute; left:-10000px"><script type="text/javascript">document.cookie='csc="\"\"\"\"100118-1432648462462-60767-3--\"21843-1432648462756-59916-6--\"90377-1432648462806-60891-1--"; Version=1; Max-Age=31536000; Expires=Tue, 24-May-2016 13:55:19 GMT; Path=/';</script></span>
+<script>
+    (function (jqVer, key, id, interval, failOverLimit) {
+        function loadScript(src, callback) {
+            var script = document.createElement('script');
+            script.type = "text/javascript";
+            script.src = src;
+            if (script.readyState) {
+                script.onreadystatechange = function () {
+                    if (script.readyState == "loaded" || script.readyState == "complete") {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {
+                script.onload = callback;
+            }
+            document.getElementsByTagName('head')[0].appendChild(script);
+        }
+
+        if (typeof jQuery == 'undefined') {
+            loadScript("http://ajax.googleapis.com/ajax/libs/jquery/" + jqVer + "/jquery.min.js", jqLoaded);
+        } else {
+            jqLoaded();
+        }
+        function jqLoaded() {
+            loadScript('http://cdn.epom.com/files/templates/655/895/cunami-v0.1.min.js', function () {
+                new EpomCunami(jqVer, key, id, interval, failOverLimit).start();
+            });
+        }
+    })('1.6.4', '2895205e250ffe56765f24a54763ec21', 'emar-d71a4ea1', 90*1000, 3);
+</script><script type="text/javascript">new Image().src = "http://www.forshrd.com"+"/im"+"pressi"+"on.gif?b=77329"+"&p=38406&ch=&ap=&cps=&c"+"=45560&l=IL"+"&h=ecdbb745eef1fd9afecffd8a759d9b37&t="+new Date().getTime()+"&s=361910ef8223f9e0a6970a7323e791bc";</script> </div> </div> <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/x-xqGbzice/Maroon5_-_Sugar.htm"> <span>Maroon5 - Sugar.mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">3,696 KB</span> • 2015-02-01</div> </a> </div> <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/TapRbVSFce/LANAMENTOS_PARA_O_CARNAVAL_201.htm"> <span>LANÇAMENTOS PARA O CARNAVAL 2015 - DANIEL MATHEUS - LUXURIA - PABLO - HENRIQUE E JULIANO - MC GUIME - MC TATI ZAQUI - IVETE SANGALO - PSIRICO - PARANGOLÉ -MC PEDRINHO - REI DA CACIMBINHA - MARCHINHAS - GUSTTAVO LIMA.mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">4,110 KB</span> • 2015-02-28</div> </a> </div> <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/Qtfe97sUce/escreve_ai.htm"> <span>escreve ai.mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">3,554 KB</span> • 2015-03-07</div> </a> </div> <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/TcyoI8C2ba/7_-_See_You_Again_-_Fast__Furi.htm"> <span>7 - See You Again - Fast &amp; Furious 7 - [Songspk.CC].mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">9,146 KB</span> • 2015-04-06</div> </a> </div> <div class="mobAccItem" style="background-image: url(http://cdnstatic.4shared.com/icons/16x16/mp3.png)"> <a class="mobFileName gaClick" data-element="s10.1" href="http://www.4shared.com/mp3/qrJE3xSUce/AS_MELHORES_MSICAS_DE_2015_-_A.htm"> <span>AS MELHORES MÚSICAS DE 2015 - AMOR É SÓ DE MAE - DANIEL MATHEUS - ATÉ VOCE VOLTAR - HENRIQUE E JULIANO - CE QUE SABE - HENRIQUE E JULIANO - QUE MAL TE FIZ EU -GUSTTAVO LIMA - LUCAS LUCCO - DESTINO -JORGE E MATEUS - CALMA- TOP10.mp3</span> <div class="mobFileMeta"> <span class="mobFileSize">4,110 KB</span> • 2015-01-18</div> </a> </div> </div> </div> <center class="t"> <br> <table border="0" cellpadding="3" cellspacing="0" class="" align="center"> <tbody><tr> <td class="pagerOn"><b>1</b></td> <td class="pager"> <a href="http://search.4shared.com/q/010" class="pager gaClick" data-element="pg.2">2</a> </td> <td class="pager"> <a href="http://search.4shared.com/q/020" class="pager gaClick" data-element="pg.3">3</a> </td> <td class="pager"> <a href="http://search.4shared.com/q/030" class="pager gaClick" data-element="pg.4">4</a> </td> <td class="pager"> <a href="http://search.4shared.com/q/040" class="pager gaClick" data-element="pg.5">5</a> </td> <td class="pager"> <a href="http://search.4shared.com/q/010" class="pager next gaClick" data-element="pg.next">»</a> </td> </tr> </tbody></table> <div class="pager mob_pager_total marginT5"> &nbsp;(<a href="http://dc446.4shared.com/web/popularSearches" class="allFilesListLink">93893878</a> <a href="http://search.4shared.com/network/listAllSearchFiles.jsp" class="allFilesListLink">Total</a>) </div> <br> </center> <div class="mob_ads"> <script type="text/javascript">
+
+    epom_key = "b3e5263b235c0915eb885bc87cd2a3bb";
+    epom_code_format = "ads-api-sync.js";
+    epom_ads_host = "//forshrd.com";
+    epom_click = "";
+    epom_custom_params = {};
+
+    document.write("<"+"script type='text\/javascript' src='"+(location.protocol == 'https:' ? 'https:' : 'http:') + "//forshrd.com\/js/show_ads.js'><\/script>");
+
+</script><script type="text/javascript" src="./4shared.com_files/show_ads.js"></script><script type="text/javascript" src="./4shared.com_files/ads-api-sync(2).js"></script><span id="emar-d7318021"><style type="text/css">
+    html,
+    body,
+    #pae51c930,
+    #pae51c930 img {
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+    #pae51c930 {
+        display: block;
+        z-index: 9999;
+        position: fixed;
+        left: 50%;
+        margin-left: -50%;
+        transition: opacity ease 1s;
+        opacity: 0;
+    }
+    #pae51c930.top {
+        top: -5px;
+    }
+    #pae51c930.middle {
+        top: 35%;
+        margin: auto;
+        bottom: 0;
+    }
+    #pae51c930.bottom {
+        bottom: -5px;
+    }
+    #pae51c930,
+    #cae51c930,
+    #cIn img {
+        width: 100%;
+    }
+    #cX {
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        z-index: 1000;
+        padding: 15px 20px;
+        margin: 0;
+        font: bold 22px Arial, sans-serif;
+        opacity: 0.7;
+        color: white;
+    }
+    #cX:hover {
+        opacity: 1;
+    }
+    #pae51c930 a {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: block;
+        left: 0;
+        top: 0;
+    }
+    #cae51c930 {
+        position: relative;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+    }
+</style>
+<script>
+    var iOS = (navigator.userAgent.match(/iPhone|iPad|iPod/i)) ? true : false;
+
+    function closeB() {
+        if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
+            document.getElementById('pae51c930').style.display = 'none';
+        } else {
+            document.getElementById('pae51c930').style.opacity = 0;
+            setTimeout(function () {
+                document.getElementById('pae51c930').style.display = 'none';
+            }, 1000);
+        }
+    }
+
+    function runAll() {
+        var p = document.getElementById('pae51c930'),
+            vP = 'bottom',
+            closable = false;
+        color = "";
+        if (closable) {
+            document.getElementById('cX').style.display = 'block';
+            if (color != "") {
+                document.getElementById('cX').style.color = color;
+            }
+        }
+        p.setAttribute('class', vP);
+        p.className = vP;
+        p.style.opacity = '1';
+        update();
+    }
+
+    function update() {
+        var p = document.getElementById('pae51c930'),
+            ps = p.style,
+            width = window.innerWidth;
+
+        ps.marginLeft = -(width / 2) + "px";
+        ps.width = width + "px";
+        if (iOS) {
+            fsize = width / 30;
+            pad = width / 40;
+        } else {
+            fsize = width / 50;
+            pad = width / 40;
+        }
+
+        document.getElementById('cX').style.fontSize = fsize + "px";
+        document.getElementById('cX').style.padding = pad + "px";
+    }
+    if (iOS) {
+        setTimeout(function () {
+            runAll();
+        }, 200);
+    } else {
+
+        window.onload = runAll;
+        window.onreadystatechange = runAll;
+    }
+    window.onresize = function () {
+        update();
+    };
+    window.onscroll = function () {
+        update();
+    };
+</script>
+<div id="pae51c930" class="bottom" style="opacity: 1; margin-left: -160px; width: 320px;">
+    <div id="cX" onclick="closeB() " style="font-size: 10.6666666666667px; padding: 8px;">x</div>
+    <div id="cae51c930" style="height:0;">
+        <div id="cIn">
+            <!-- BEGIN STANDARD appTV TAG - 320x50 MOBILE -- ID:320x50 Catfish [4470]  DO NOT MODIFY -->
+<script type="text/javascript" src="./4shared.com_files/tag"></script><script type="text/javascript" src="./4shared.com_files/imp.php"></script><a target="_blank" href="http://dlvr.readserver.net/clk?c=Ojo0NDcwOjozMDA6OklMOjoxOjoxNTo6MDo6OjoxMzI6OjEzODM6OjgxNDg0NTo6Mjo6aHR0cDovL3d3dy50cmF2aWFuLmNvbT9wdWJfaWQ9MTM0ODo6MTYxNjo6OTIyODo6Ojo4MjgyNTI6OjM6OjUzMTEzNzQ0Mjo6MDo6MjMwOjowOjoyOjowOjowOjo4NTUxOjpCZXplcSBJbnRlcm5hdGlvbmFsOjoy,,NTMxMTM3NDQyOjoxNDMyNTYyMTE5,,,,1"><img alt="" border="0" height="50" width="320" src="./4shared.com_files/02f49167fd10bf6c6af57bf38a5d377f.jpg"></a></div></div></div>
+<!-- END OF TAG -->
+        
+        
+<img src="./4shared.com_files/impression(2).gif" alt="" style="width:1px; height:1px; position:absolute; left:-10000px"></span>
+<script>
+    (function (jqVer, key, id, interval, failOverLimit) {
+        function loadScript(src, callback) {
+            var script = document.createElement('script');
+            script.type = "text/javascript";
+            script.src = src;
+            if (script.readyState) {
+                script.onreadystatechange = function () {
+                    if (script.readyState == "loaded" || script.readyState == "complete") {
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {
+                script.onload = callback;
+            }
+            document.getElementsByTagName('head')[0].appendChild(script);
+        }
+
+        if (typeof jQuery == 'undefined') {
+            loadScript("http://ajax.googleapis.com/ajax/libs/jquery/" + jqVer + "/jquery.min.js", jqLoaded);
+        } else {
+            jqLoaded();
+        }
+        function jqLoaded() {
+            loadScript('http://cdn.epom.com/files/templates/655/895/cunami-v0.1.min.js', function () {
+                new EpomCunami(jqVer, key, id, interval, failOverLimit).start();
+            });
+        }
+    })('1.6.4', '2233c862ce891bc4ecf9bf00f030a1dc', 'emar-d7318021', 90*1000, 3);
+</script><script type="text/javascript">new Image().src = "http://www.forshrd.com"+"/im"+"pressi"+"on.gif?b=77327"+"&p=38404&ch=&ap=&cps=&c"+"=45560&l=IL"+"&h=f47afa44b9aeeff125299e53fd2cf55e&t="+new Date().getTime()+"&s=361910ef8223f9e0a6970a7323e791bc";</script> </div> </form> </div> </div> <div id="mob_footer"> <div class="s" align="center"> <a class="gaClick fullVersionLink" data-element="f15" href="javascript:void(0)" onclick="classicView();">Desktop version</a> </div> <div class="footer_menu"> <a href="http://search.4shared.com/privacy.jsp">Privacy</a> <a> | </a> <a href="http://search.4shared.com/terms.jsp">Terms</a> </div><div class="s mob_copyright" style="margin-top:5px" align="center">© <span>2005-2015</span> 4shared.com</div></div> <script type="text/javascript">
+    (function () {
+        var sc = document.createElement("script");
+        sc.type = "text/javascript";
+        sc.async = true;
+        sc.src = (location.protocol == "https:" ? "https:" : "http:") + "//forshrd.com\/js\/show_ads.js";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(sc, s);
+    })();
+</script> <script type="text/javascript" src="./4shared.com_files/webtoolkit.base64.4min.js"></script> <script type="text/javascript" src="./4shared.com_files/ajaxSuggestions.4min.js"></script> <script type="text/javascript">
+    ajaxSuggestions.searchBase = "//dc446.4shared.com";
+    ajaxSuggestions.closeText="Close";
+    ajaxSuggestions.suggestionsText="Suggestions";
+</script> <div id="search-result-suggestions"> <div id="search-results">&nbsp;</div> </div> <script type="text/javascript">
+  $(function() {
+    ga('send', 'pageview', '/search.jsp?q=' + encodeURIComponent(''));
+  })
+</script> <script type="text/javascript">
+  document.write("<img src='//www.jscount.com/a/4/28b1a41b/z?ref=" +
+      escape(document.referrer)+"&url="+escape(document.URL)+"&rand="+Math.random()+"' width=1 height=1 alt='' style='display:none'>")
+</script><img src="./4shared.com_files/z" width="1" height="1" alt="" style="display:none"> <script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-306602-1', '4shared.com', {'sampleRate': 100});
+  ga('send', 'pageview');
+</script> <script type="text/javascript">
+var sc_project=4135125;
+var sc_invisible=1;
+var sc_partition=51;
+var sc_click_stat=1;
+var sc_security="e8ecc2ac";
+</script> <script type="text/javascript" src="./4shared.com_files/counter.js"></script> <noscript> &lt;div class="statcounter"&gt; &lt;a title="free hit counter" href="http://www.statcounter.com/free_hit_counter.html" target="_blank" rel="nofollow"&gt; &lt;img class="statcounter" src="//c.statcounter.com/4135125/0/e8ecc2ac/1/" alt="free hit counter"&gt; &lt;/a&gt; &lt;/div&gt; </noscript> <script type="text/javascript">
+<!--
+document.write("<img src='//counter.yadro.ru/hit?r"+
+escape(document.referrer)+((typeof(screen)=="undefined")?"":
+";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+";"+Math.random()+
+"' width=1 height=1 alt='' style='display:none'>")//-->
+</script><img src="./4shared.com_files/hit" width="1" height="1" alt="" style="display:none"> <script type="text/javascript" src="./4shared.com_files/quant.js"></script> <script type="text/javascript">_qacct="p-23Fqia_-MkKko";quantserve();</script> <noscript> &lt;a href="http://www.quantcast.com/p-23Fqia_-MkKko" target="_blank" rel="nofollow"&gt; &lt;img src="//secure.quantserve.com/pixel/p-23Fqia_-MkKko.gif" style="display: none" border="0" height="1" width="1" alt="Quantcast"&gt; &lt;/a&gt; </noscript> <script type="text/javascript">
+    try {
+      ga('send', 'event', 'search-guest', 'PageView' , 'general');
+    } catch (err) { }
+
+    function clickFunction() {
+      var element = $(this).attr('data-element');
+      if (element)
+        try {
+          ga('send', 'event', 'search-guest', 'general', element)
+        } catch (err) {
+        }
+    }
+
+    function handlerClick() {
+      $('.gaClick, .tab').unbind('click', clickFunction).click(clickFunction)
+    }
+
+    $(function() {
+      handlerClick();
+
+      if(typeof(Events)!='undefined') Events.addListener('folder.reload', function() {handlerClick()})
+    });
+
+    function showGANumbers() {
+      $('.gaClick, .tab').each(function () {
+        var element = $(this).attr('data-element');
+        if ($(this).css('position') != 'absolute') {
+          $(this).css('position', 'relative')
+        }
+        if (element) $(this).append($('<div/>').html(element).addClass('gaHelperNumbers'))
+      });
+    }
+    if(typeof(Events)!='undefined') Events.addListener("send.g.a", function(data) {
+      try {
+        ga('send', 'event', data[0], data[1]);
+      } catch (err) {}
+    });
+</script> </body></html>

@@ -1,0 +1,115 @@
+<style scoped>
+    a,
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+      color: #000000;
+      text-decoration: none;
+      font-weight: normal;
+      display: block;
+    }
+    .border-box {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .con {
+        position: relative;
+        width: 320px;
+        height: 50px;
+        margin: 0;
+        padding: 0;
+        font-family: 'open sans', arial, sans-serif, 'Helvetica Neue', Helvetica, sans-serif;
+    }
+    .bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+    .bg-color {
+        background: #EEEFEF;
+    }
+    .flex-con {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: -ms-flex;
+        display: flex;
+    }
+    .flex-left {
+        -webkit-flex: 50px;
+        -moz-flex: 50px;
+        -ms-flex: 50px;
+        flex: 50px;
+    }
+    .flex-left img {
+        height: 50px;
+        width: auto;
+    }
+    .flex-middle {
+        -webkit-flex: 220px;
+        -moz-flex: 220px;
+        -ms-flex: 220px;
+        flex: 220px;
+        padding: 2px 2px;
+    }
+    .flex-middle .title {
+        text-align: left;
+        border: none;
+        color: #CE4500;
+    }
+    .flex-middle .desc {
+        margin-top: 3px;
+        font-size: 10px;
+    }
+    .flex-right {
+        -webkit-flex: 50px;
+        -moz-flex: 50px;
+        -ms-flex: 50px;
+        flex: 50px;
+        padding: 15px 2px;
+    }
+    .flex-right .cta {
+        height: 15px;
+        padding: 2px;
+        font-size: 12px;
+        line-height: 15px;
+        text-align: center;
+        color: #918390;
+        overflow: hidden;
+        border: 1px solid #918390;
+    }
+    .ad {
+         position: absolute;
+         top: 0px;
+         left: 265px;
+         font-size: 8px; 
+         color: #918390;
+    }
+</style>
+
+<a target="_top" href="{{{data.click_url}}}">
+    <div class="con">
+        <div class="bg bg-color"></div>
+        <div class="flex-con">
+            <div class="flex-left">
+                <img src={{{data.icon}}} />
+            </div>
+            <div class="flex-middle border-box">
+                <div class="title">{{{data.title}}}</div>
+                <div class="desc">{{{data.desc}}}</div>
+            </div>
+            <div class="flex-right  border-box">
+                <div class="cta">{{{data.cta}}}</div>
+            </div>
+            <div class="ad">(sponsored ad)</div>
+        </div>
+    </div>
+    {{#data.trackers}}
+    <img style="display:none;" src={{{url}}} />
+    {{/data.trackers}}
+</a>

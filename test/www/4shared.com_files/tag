@@ -1,0 +1,17 @@
+ 
+var rsvis=0;
+var ult = Math.round(new Date().getTime() / 1000) ;
+var iif = 0;
+var x=0;
+if ( window.self === window.top ) {  iif = 0; } else {iif=1; } 
+var rf = encodeURIComponent(document.domain);  
+var rsflash="";var cookie=0;var rsurl="http://dlvr.readserver.net/imp.php?section=4470&size=320x50&type=ad&sso=0&side=0&ext_cost=0&dvar=0&rmx_buyer_li=0&rmx_seller_li=0"+"&ult="+ult+"&iif="+iif+"&rf="+rf+"&ssl=0";var rsflash=new Object();rsflash=rsflashDetection();if(!rsflash.installed){rsurl+="&f=2"};var trs= (0-(new Date().getTimezoneOffset())/60);var cookieEnabled=(navigator.cookieEnabled)?true:false;if(typeof navigator.cookieEnabled=="undefined"&&!cookieEnabled){document.cookie="testrscookie";cookieEnabled=(document.cookie.indexOf("testrscookie")!=-1)?true:false}if(cookieEnabled==true){rsurl+="&ck=1"}else{rsurl+="&ck=2"}function rsflashDetection(){var rsflash=new Object();rsflash.installed=false;rsflash.version='0.0';if(navigator.plugins&&navigator.plugins.length){for(x=0;x<navigator.plugins.length;x++){if(navigator.plugins[x].name.indexOf('Shockwave Flash')!=-1){rsflash.version=navigator.plugins[x].description.split('Shockwave Flash ')[1];rsflash.installed=true;break}}}else if(window.ActiveXObject){for(x=2;x<10;x++){try{oFlash=eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash."+x+"');");if(oFlash){rsflash.installed=true;rsflash.version=x+'.0'}}catch(e){}}}return rsflash}var cachebust=Number(new Date());rsurl+="&trs="+trs;rsurl+="&cbu="+cachebust;
+	   
+	   rsurl+="&rsvis="+rsvis;
+	   
+
+
+		var tag='<SCRIPT TYPE="text/javascript" SRC="'+rsurl+'"><\/SCRIPT>';document.write(tag);
+	   
+	   
+
