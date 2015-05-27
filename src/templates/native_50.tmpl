@@ -1,0 +1,131 @@
+<style scoped>
+    a,
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+      color: #000000;
+      text-decoration: none;
+      font-weight: normal;
+      display: block;
+    }
+    .border-box {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    .sdk-con {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .sdk-con .sdk-bg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+    .sdk-con .sdk-bg-color {
+        background: #EEEFEF;
+    }
+    .sdk-con .sdk-front{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        font-family: 'open sans', arial, sans-serif, 'Helvetica Neue', Helvetica, sans-serif;
+        z-index: 1;
+    }
+    .sdk-con .flex-con {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: -ms-flex;
+        display: flex;
+    }
+    .sdk-con .flex-left {
+        -webkit-flex: 0 0 17%;
+        -moz-flex: 0 0 17%;
+        -ms-flex: 0 0 17%;
+        flex: 0 0 17%;
+    }
+    .sdk-con img {
+        position: absolute;
+        height: 100%;
+        width: auto;
+    }
+    .sdk-con .flex-middle {
+        -webkit-flex: 0 0 52%;
+        -moz-flex: 0 0 52%;
+        -ms-flex: 0 0 52%;
+        flex: 0 0 52%;
+        padding: 1% 2%;
+    }
+    .sdk-con .title-sdk {
+        border: none;
+        font-size: 14px;
+        text-align: left;
+        color: #CE4500;
+    }
+    .sdk-con .desc-sdk {
+        max-height: 25px;
+        margin-top: 2%;
+        line-height: 12px;
+        font-size: 12px;
+        color: #AEACA9;
+        overflow: hidden;
+    }
+    .sdk-con .flex-right {
+        -webkit-flex: 0 0 31%;
+        -moz-flex: 0 0 31%;
+        -ms-flex: 0 0 31%;
+        flex: 0 0 31%;
+        padding: 5% 2%;
+    }
+    .sdk-con .cta-sdk {
+        padding: 4%;
+        font-size: 14px;
+        color: #ffffff;
+        background: #B3C833;
+        line-height: 15px;
+        text-align: center;
+    }
+    .sdk-con .ad-sdk {
+         position: absolute;
+         top: 0;
+         right: 2%;
+         font-size: 8px;
+         color: #AEACA9;
+    }
+    .sdk-con a {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+</style>
+
+<div class="sdk-con">
+    <div class="sdk-bg sdk-bg-color"></div>
+    <div class="sdk-front">
+        <div class="flex-con">
+            <div class="flex-left">
+                <img src={{{data.icon}}} />
+            </div>
+            <div class="flex-middle border-box">
+                <div class="title-sdk">{{{data.title}}}</div>
+                <div class="desc-sdk">{{{data.desc}}}</div>
+            </div>
+            <div class="flex-right border-box">
+                <div class="cta-sdk">{{{data.cta}}}</div>
+            </div>
+            <div class="ad-sdk">(sponsored ad)</div>
+        </div>
+    </div>
+    {{#data.trackers}}
+    <img style="display:none;" src={{{url}}} />
+    {{/data.trackers}}
+    <a target="_top" href="{{{data.click_url}}}"></a>
+</div>
