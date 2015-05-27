@@ -122,7 +122,12 @@ function queryParser(uri) {
         for (var i in pairs) {
             if (pairs.hasOwnProperty(i) && pairs[i]) {
                 var pair = pairs[i].split('=');
-                params[pair[0]] = decodeURIComponent(pair[1]);
+                try{
+                    params[pair[0]] = decodeURIComponent(pair[1]);
+                }
+                catch(e){//decode error
+                    params[pair[0]] = pair[1];
+                }
             }
         }
     }

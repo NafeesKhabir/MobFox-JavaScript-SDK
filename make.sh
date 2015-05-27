@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-browserify src/index.js >  dist/ad.js
-browserify -t stringify src/native.js >  dist/native.js
+mkdir -p dist
+browserify src/index.js > dist/ad_sdk.js
+browserify -t stringify src/native.js > dist/native_ad_sdk.js
