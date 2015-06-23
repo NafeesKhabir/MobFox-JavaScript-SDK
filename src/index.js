@@ -26,7 +26,7 @@
     }
 
     //START: backward compat code
-    if(!mobfoxConfig || (!mobfoxConfig.publicationID && !mobfoxConfig.pid)){
+    if(!mobfoxConfig || (!mobfoxConfig.publicationID && !mobfoxConfig.pid && !mobfoxConfig.invh)){
         if(confID){
             mobfoxConfig = window.mobfoxConfig[confID];
             confE = document.querySelector('#mobfoxConf_'+confID);
@@ -67,9 +67,11 @@
                 "adspace_strict",
                 "no_markup",
                 "s_subid",
+                "sub_domain",
                 "allow_mr",
                 "r_floor" ,
-                "testURL"
+                "testURL",
+                "referrer"
             ],
             params = {
                 r_type                  : 'banner',//mobfoxConfig.type,
@@ -97,6 +99,10 @@
             if(!window.mobfoxCount) window.mobfoxCount = 1;
             params.jsvar = mobfoxVar = "mobfox_test" + (window.mobfoxCount > 1 ? window.mobfoxCount : "");
             window.mobfoxCount ++;
+        }
+
+        if(params.referrer && !params.sub_domain && params.referrer.indexOf("http")===0){
+            params.sub_domain = URL(params.referrer).hostname;
         }
 
         //verify width / height
