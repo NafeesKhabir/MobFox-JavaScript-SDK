@@ -1,1 +1,1 @@
-../../dist/ad.js
+../../dist/ad_sdk.js
