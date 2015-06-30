@@ -84,7 +84,8 @@
                 'adspace_width'         : mobfoxConfig.width,
                 'adspace_height'        : mobfoxConfig.height,
                 timeout                 : mobfoxConfig.timeout,
-                jsvar                   : mobfoxVar
+                jsvar                   : mobfoxVar,
+                'h[Referer]'            : mobfoxConfig.referrer || document.referrer 
             };
 
    
