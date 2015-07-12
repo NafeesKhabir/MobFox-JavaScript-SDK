@@ -24,6 +24,7 @@ Insert this tag in your html page where you wish Mobfox ad/s to be located, for 
 </head>
 <body>
     <div id="main"">
+        <!-- ad will be placed inside the div with id 'main' -->
         <script 
     class="mobfoxConfig" 
     src="http://my.mobfox.com/ad_sdk.js?cb=CACHEBUSTER&referrer=REFERRER_URL&width=320&height=50&pid=fe96717d9875b9da4339ea5367eff1ec&type=banner&refresh=3000"
