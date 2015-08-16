@@ -1,0 +1,59 @@
+<style scoped>
+    *{
+       margin: 0;
+	    padding: 0;
+	    border: 0;
+	    font-size: 100%;
+	    font: inherit;
+	    vertical-align: baseline;
+    }
+
+    article{
+      position:relative;
+      background-color:#eee;
+      padding:1em;
+    }
+
+    .mobfoxImage{
+        display:inline-block;
+        width:30%;
+        height:auto;
+        vertical-align:top;
+    }
+    
+    .mobfoxText{
+        display:inline-block;
+        width:65%;
+        margin-left:2%;
+        height:auto;
+        vertical-align:top;
+    }
+
+    .mobfoxClick{
+        position:absolute;
+        right:1em;
+        bottom:1em;
+    }
+
+    strong{
+        font-weight:bold;
+        font-size:1.1em;
+    }
+
+</style>
+<article>
+    <img class="mobfoxImage" src="{{{imageassets.icon.url}}}"/>
+    <div class="mobfoxText">
+        <strong>
+            {{textassets.headline}}
+        </strong>
+        <p>
+            {{textassets.description}}
+            {{rating}}
+        </p>
+    </div>
+    <a class="mobfoxClick" href="{{{click_url}}}">{{textassets.cta}}</a>
+   {{#impressions}}
+    <img src="{{{url}}}" alt="" style="display:none;"/>
+   {{/impressions}}
+</article>
