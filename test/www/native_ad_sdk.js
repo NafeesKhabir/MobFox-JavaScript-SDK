@@ -1,0 +1,1 @@
+../../dist/native_ad_sdk.js
