@@ -85,11 +85,18 @@
                     return t.type === "impression";
                 });
 
-                var html = mustache.render(template,data),
-                    div = document.createElement("div");
+                data.width  = mobfoxConfig.width;
+                data.height = mobfoxConfig.height;
 
-                curScript.parentNode.insertBefore(div,curScript.nextSibling); 
-                div.innerHTML = html;
+                console.log(data);
+                var html = mustache.render(template,data),
+                    iframe = document.createElement("iframe");
+
+                curScript.parentNode.insertBefore(iframe,curScript.nextSibling); 
+                iframe.src = "data:text/html;charset=utf-8," + escape(html);
+                iframe.style.width  = data.width;
+                iframe.style.height = data.height;
+                iframe.style.border = "none";
                 
             });
 
