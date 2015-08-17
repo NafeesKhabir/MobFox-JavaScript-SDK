@@ -85,17 +85,24 @@
                     return t.type === "impression";
                 });
 
-                data.width  = mobfoxConfig.width;
-                data.height = mobfoxConfig.height;
+                data.css = {"heading":{},"cta":{}};
+                data.css.width  = mobfoxConfig.width;
+                data.css.height = mobfoxConfig.height;
 
-                console.log(data);
-                var html = mustache.render(template,data),
-                    iframe = document.createElement("iframe");
+                data.css.bg = mobfoxConfig.bg || "#eee";
+                data.css.fg = mobfoxConfig.fg || "#000";
+                data.css.heading.fg = mobfoxConfig.headingFg || "#ffa500";
+
+                data.css.cta.fg = mobfoxConfig.ctaFg || "#fff";
+                data.css.cta.bg = mobfoxConfig.ctaBg || "#777";
+
+                var html    = mustache.render(template,data),
+                    iframe  = document.createElement("iframe");
 
                 curScript.parentNode.insertBefore(iframe,curScript.nextSibling); 
                 iframe.src = "data:text/html;charset=utf-8," + escape(html);
-                iframe.style.width  = data.width;
-                iframe.style.height = data.height;
+                iframe.style.width  = data.css.width;
+                iframe.style.height = data.css.height;
                 iframe.style.border = "none";
                 
             });
