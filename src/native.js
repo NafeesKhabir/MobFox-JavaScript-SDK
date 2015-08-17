@@ -85,9 +85,10 @@
                     return t.type === "impression";
                 });
 
-                data.css = {"heading":{},"cta":{}};
+                data.css = {"heading":{},"cta":{},"info":{}};
                 data.css.width  = mobfoxConfig.width;
                 data.css.height = mobfoxConfig.height;
+                data.css.font   = mobfoxConfig.font || "Sans-Serif";
 
                 data.css.bg = mobfoxConfig.bg || "#eee";
                 data.css.fg = mobfoxConfig.fg || "#000";
@@ -95,6 +96,8 @@
 
                 data.css.cta.fg = mobfoxConfig.ctaFg || "#fff";
                 data.css.cta.bg = mobfoxConfig.ctaBg || "#777";
+
+                data.css.info.fg = mobfoxConfig.infoFg || "#999";
 
                 var html    = mustache.render(template,data),
                     iframe  = document.createElement("iframe");
