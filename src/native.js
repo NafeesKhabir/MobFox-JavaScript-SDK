@@ -4,6 +4,10 @@
         superagent      = require('superagent'),
         mustache        = require('mustache'),
         URL             = require('./lite-url').liteURL,
+        templates       = {
+            "article"   : require("./templates/article.html"),
+            "image"     : require("./templates/image.html")
+        },
         curScript       = document.currentScript || (function() {
             var scripts = document.getElementsByTagName('script');
             return scripts[scripts.length - 1];
@@ -75,7 +79,7 @@
                 }
 
                 var data        = res.body,
-                    template    = require("./templates/article.html");
+                    template    = mobfoxConfig.template ? templates[mobfoxConfig.template] : template.article;
 
                 if(!data){
                     return console.log("MobFox SDK: no ad returned");
