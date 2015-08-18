@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+    *{
+       margin: 0;
+	    padding: 0;
+	    border: 0;
+	    font-size: 100%;
+	    font: inherit;
+    }
+
+    html {
+      box-sizing: border-box;
+      font-family:"{{css.font}}";
+      font-size:18px;
+    }
+
+
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+
+    html,body{
+        height:100%;
+    }
+
+    a.image{
+        text-decoration:none;
+        display:block;
+        position:relative;
+        background-image:url("{{{imageassets.icon.url}}}");
+        width:100%;
+        height:100%;
+    }
+
+    .text_assets{
+        position:absolute;
+        left:0px;
+        bottom:10%;
+        background-color:{{css.bg}};
+        color:{{css.fg}};
+        width:100%;
+        height:30%;
+        justify-content: space-between;
+        display: flex; 
+    }
+
+    .text{
+        height:100%;
+        flex:3 3 auto;
+        padding:0.5em 1em;
+    }
+
+    .text>strong{
+        font-weight:bold;
+        font-size:1.2em;
+        color:{{css.heading.fg}};
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    .text>p{
+        display:block;
+        margin:0.2em 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        font-size:0.9em;
+    }
+    
+    .text>.info{
+        color:{{css.info.fg}};
+        font-size:0.9em;
+    }
+
+    .cta{
+        flex:1 0 auto;
+        height:100%;
+        background-color:{{css.cta.bg}};
+        color:{{css.cta.fg}};
+        text-align:center;
+        font-size:1.3em;
+        flex-direction:column;
+        justify-content: center;
+        display:flex;
+    }
+
+    </style>
+</head>
+<body>
+    <a class="image" href="{{{click_url}}}" target="_top">
+        <div class="text_assets">
+            {{#textassets}}
+            <div class="text">
+                <strong> {{headline}} </strong>
+                <p>
+                    {{description}}
+                    <!--{{rating}}-->
+                </p>
+                <span class="info">sponsored</span>
+            </div>
+            <div class="cta">
+                <span>{{cta}}</span>
+            </div>
+            {{/textassets}}
+        </div>
+    </a>    
+</body>
+</html>
