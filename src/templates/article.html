@@ -72,19 +72,19 @@
     }
 
     .cta{
-        flex:1 1 auto;
+        flex:1 0 auto;
         height:100%;
         background-color:{{css.cta.bg}};
         color:{{css.cta.fg}};
         text-align:center;
-        font-size:1.5em;
+        font-size:1.3em;
         flex-direction:column;
         justify-content: center;
         display:flex;
     }
 
     .cta>span{
-        text-align:center;
+        padding: 0 0.5em;
     }
 
     @media (max-width: 350px) {
@@ -94,6 +94,10 @@
 
         .text>strong{
             font-size:1.6em;
+        }
+
+        .cta{
+            font-size:1.5em;
         }
     }
     
@@ -106,7 +110,7 @@
         <strong> {{textassets.headline}} </strong>
         <p>
             {{textassets.description}}
-            {{textassets.rating}}
+            <!--{{textassets.rating}}-->
         </p>
         <span class="info">sponsored</span>
     </div>
