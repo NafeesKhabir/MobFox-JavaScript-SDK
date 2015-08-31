@@ -13,9 +13,8 @@ MobFox JavaScript SDK supporting Banner Ads, Video Ads, and Native Ads  http://w
 >
 </script>
 ```
-### Tag Generator
-You can use the Mobfox [Tag Generator](https://account.mobfox.com/www/cp/integration.php) (select your web publication) to easily create tags.
 
+You can use the Mobfox [Tag Generator](https://account.mobfox.com/www/cp/integration.php) (select your web publication) to easily create tags.
 
 
 Insert this tag in your html page where you wish Mobfox ad/s to be located, for example:
