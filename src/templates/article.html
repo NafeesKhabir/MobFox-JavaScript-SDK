@@ -15,7 +15,7 @@
     html {
       box-sizing: border-box;
       font-family:{{css.font}};
-      font-size:18px;
+      font-size:12px;
     }
 
 
@@ -43,11 +43,14 @@
     .text{
         height:100%;
         flex:3 3 auto;
-        padding:0.5em 1em;
+        padding:0.2em 1em;
         overflow:hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content:space-between; 
     }
 
-    .text>strong{
+    .text>p>strong{
         font-weight:bold;
         font-size:1.2em;
         color:{{css.heading.fg}};
@@ -55,11 +58,12 @@
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 100%;
+        display:block;
     }
 
     .text>p{
         display:block;
-        margin:0.2em 0;
+        margin:0.3em 0; justify-content:
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -87,7 +91,7 @@
     .cta>span{
         padding: 0 0.5em;
     }
-
+/*
     @media (max-width: 350px) {
         html {
           font-size:9px;
@@ -101,15 +105,15 @@
             font-size:1.5em;
         }
     }
-    
+*/    
 </style>
 </head>
 <body>
  <a class="article" href="{{{click_url}}}" target="_top">
     <img class="image" src="{{{imageassets.icon.url}}}"/>
     <div class="text">
-        <strong> {{textassets.headline}} </strong>
         <p>
+            <strong> {{textassets.headline}} </strong>
             {{textassets.description}}
             <!--{{textassets.rating}}-->
         </p>
