@@ -6,7 +6,8 @@
         URL             = require('./lite-url').liteURL,
         templates       = {
             "article"   : require("./templates/article.html"),
-            "image"     : require("./templates/image.html")
+            "image"     : require("./templates/image.html"),
+            "landscape" : require("./templates/landscape.html")
         },
         curScript       = document.currentScript || (function() {
             var scripts = document.getElementsByTagName('script');
