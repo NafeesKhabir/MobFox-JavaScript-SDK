@@ -114,6 +114,25 @@
 
     }
 
+    @media (max-width: 160px){
+    
+        .cta{
+            font-size:1.0em;
+        }
+        
+        .text{
+           padding-top: 0.7em; 
+        }
+
+        .text>p>span{
+            display:none;
+        }
+
+        .text>p>strong{
+            font-size:1.6em;
+        }
+    }
+
 
     </style>
 </head>
@@ -126,7 +145,7 @@
             <div class="text">
                 <p>
                     <strong> {{headline}} </strong>
-                    {{description}}
+                    <span>{{description}}</span>
                     <!--{{rating}}-->
                 </p>
                 <span class="info">sponsored</span>

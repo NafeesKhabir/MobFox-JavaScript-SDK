@@ -27,48 +27,48 @@
         height:100%;
     }
 
-    a.image{
+    a{
         text-decoration:none;
         display:block;
         position:relative;
+    }
+    
+    .image{
         background-image:url("{{{imageassets.icon.url}}}");
-        width:100%;
-        height:100%;
-        background-size: contain;
+        background-size:cover;
         background-repeat: no-repeat;
         background-position: center center;
         background-color:#000;
-
     }
 
     .text_assets{
-        position:absolute;
-        left:0px;
-        bottom:5%;
         background-color:{{css.bg}};
         color:{{css.fg}};
-        width:100%;
-        height:25%;
         justify-content: space-between;
+        align-items:stretch;
         display: flex; 
-        opacity:0.85;
     }
 
     .text{
-        height:100%;
         flex:1 1 auto;
         padding:0.3em 1em;
         overflow:hidden;
+
+        display: flex;
+        flex-direction: column;
+        justify-content:space-between; 
     }
 
-    .text>strong{
+    .text>p>strong{
         font-weight:bold;
-        font-size:1.2em;
+        font-size:1.4em;
         color:{{css.heading.fg}};
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 100%;
+        display:block;
+        margin-bottom:0.2em;
     }
 
     .text>p{
@@ -78,7 +78,7 @@
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 100%;
-        font-size:0.9em;
+        font-size:0.7em;
     }
     
     .text>.info{
@@ -89,7 +89,6 @@
 
     .cta{
         flex:1 0 auto;
-        height:100%;
         background-color:{{css.cta.bg}};
         color:{{css.cta.fg}};
         text-align:center;
@@ -115,17 +114,38 @@
 
     }
 
+    @media (max-width: 160px){
+    
+        .cta{
+            font-size:1.0em;
+        }
+        
+        .text{
+           padding-top: 0.7em; 
+        }
+
+        .text>p>span{
+            display:none;
+        }
+
+        .text>p>strong{
+            font-size:1.6em;
+        }
+    }
+
 
     </style>
 </head>
 <body>
-    <a class="image" href="{{{click_url}}}" target="_top">
+    <a href="{{{click_url}}}" target="_top">
+        <div class="image">
+        </div>
         <div class="text_assets">
             {{#textassets}}
             <div class="text">
-                <strong> {{headline}} </strong>
                 <p>
-                    {{description}}
+                    <strong> {{headline}} </strong>
+                    <span>{{description}}</span>
                     <!--{{rating}}-->
                 </p>
                 <span class="info">sponsored</span>
@@ -136,5 +156,12 @@
             {{/textassets}}
         </div>
     </a>    
+    <script>
+        var img =document.querySelector(".image");
+        img.style.height = document.body.offsetHeight * (3/4) + "px";
+        var  textAssets =document.querySelector(".text_assets");
+        textAssets.style.height = document.body.offsetHeight * (1/4) + "px";
+    </script>
+
 </body>
 </html>
