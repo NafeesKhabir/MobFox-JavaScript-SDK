@@ -7,7 +7,7 @@
         templates       = {
             "article"   : require("./templates/article.html"),
             "image"     : require("./templates/image.html"),
-            "landscape" : require("./templates/landscape.html")
+            "landscape" : require("./templates/image.html")
         },
         curScript       = document.currentScript || (function() {
             var scripts = document.getElementsByTagName('script');
@@ -82,6 +82,8 @@
                 var data        = res.body,
                     template    = mobfoxConfig.template ? templates[mobfoxConfig.template] : template.article;
 
+                if(mobfoxConfig.template === "landscape") data.landscape = true;
+
                 if(!data){
                     return console.log("MobFox SDK: no ad returned");
                 }
@@ -103,6 +105,10 @@
                 data.css.cta.bg = mobfoxConfig.ctaBg || "#777";
 
                 data.css.info.fg = mobfoxConfig.infoFg || "#999";
+
+                data.css.textHeight = mobfoxConfig.textHeight || 0.25;
+
+                data.css.fontSize = mobfoxConfig.fontSize || "12px";
 
                 var html    = mustache.render(template,data),
                     iframe  = document.createElement("iframe");
