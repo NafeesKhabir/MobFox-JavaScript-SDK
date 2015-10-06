@@ -15,7 +15,7 @@
     html {
       box-sizing: border-box;
       font-family:{{css.font}};
-      font-size:12px;
+      font-size:{{css.fontSize}};
     }
 
 
@@ -34,7 +34,13 @@
     }
     
     .image{
+        {{#landscape}}
+        background-image:url("{{{imageassets.main.url}}}");
+        {{/landscape}}
+        {{^landscape}}
         background-image:url("{{{imageassets.icon.url}}}");
+        {{/landscape}}
+
         background-size:cover;
         background-repeat: no-repeat;
         background-position: center center;
@@ -96,7 +102,7 @@
         flex-direction:column;
         justify-content: center;
         display:flex;
-        max-width:30%;
+        max-width:30%; https://my.nanorep.com/console/kb/#MobFox Tech Support/kb/i=69022803
     }
 
     .cta>span{
@@ -116,7 +122,7 @@
 
     @media (max-width: 160px){
     
-        .cta{
+        . https://my.nanorep.com/console/kb/#MobFox Tech Support/kb/i=69022803cta{
             font-size:1.0em;
         }
         
@@ -125,7 +131,7 @@
         }
 
         .text>p>span{
-            display:none;
+            display:none; https://my.nanorep.com/console/kb/#MobFox Tech Support/kb/i=69022803
         }
 
         .text>p>strong{
@@ -158,9 +164,9 @@
     </a>    
     <script>
         var img =document.querySelector(".image");
-        img.style.height = document.body.offsetHeight * (3/4) + "px";
+        img.style.height = document.body.offsetHeight * (1-{{css.textHeight}}) + "px";
         var  textAssets =document.querySelector(".text_assets");
-        textAssets.style.height = document.body.offsetHeight * (1/4) + "px";
+        textAssets.style.height = document.body.offsetHeight * ({{css.textHeight}}) + "px";
     </script>
 
 </body>
