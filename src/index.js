@@ -77,7 +77,7 @@
                 r_type                  : 'banner',//mobfoxConfig.type,
                 u                       : window.navigator.userAgent,
                 s                       : mobfoxConfig.publicationID || mobfoxConfig.invh || mobfoxConfig.pid,
-                p                       : window.location.href,
+                p                       : mobfoxConfig.referrer || window.location.href,
                 m                       : mobfoxConfig.debug ? 'test' : 'live',
                 rt                      : 'javascript',
                 v                       : '3.0',
