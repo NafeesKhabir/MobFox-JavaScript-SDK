@@ -88,7 +88,6 @@
                 'h[Referer]'            : mobfoxConfig.referrer || document.referrer 
             };
 
-   
         options.forEach(function(o){
             if(typeof(mobfoxConfig[o]) !== 'undefined'){
                 params[o] = mobfoxConfig[o];
@@ -102,8 +101,11 @@
             window.mobfoxCount ++;
         }
 
-        if(params.referrer && !params.sub_domain && params.referrer.indexOf("http")===0){
-            params.sub_domain = URL(params.referrer).hostname;
+        if(mobfoxConfig.referrer && !params.sub_domain && mobfoxConfig.referrer.indexOf("http")===0){
+            params.sub_domain = URL(mobfoxConfig.referrer).hostname;
+        }
+        else if(mobfoxConfig.referrer && !params.sub_domain && mobfoxConfig.referrer.match(/^(\w+\.){0,2}\w+\.\w+$/)){
+            params.sub_domain = mobfoxConfig.referrer;
         }
 
         //verify width / height
