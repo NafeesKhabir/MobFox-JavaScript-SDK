@@ -4,11 +4,6 @@
         superagent      = require('superagent'),
         mustache        = require('mustache'),
         URL             = require('./lite-url').liteURL,
-        templates       = {
-            "article"   : require("./templates/article.html"),
-            "image"     : require("./templates/image.html"),
-            "landscape" : require("./templates/image.html")
-        },
         curScript       = document.currentScript || (function() {
             var scripts = document.getElementsByTagName('script');
             return scripts[scripts.length - 1];
@@ -65,9 +60,11 @@
             }
         });
 
-
-        if(params.referrer && !params.sub_domain && params.referrer.indexOf("http")===0){
-            params.sub_domain = URL(params.referrer).hostname;
+        if(mobfoxConfig.referrer && !params.sub_domain && mobfoxConfig.referrer.indexOf("http")===0){
+            params.sub_domain = URL(mobfoxConfig.referrer).hostname;
+        }
+        else if(mobfoxConfig.referrer && !params.sub_domain && mobfoxConfig.referrer.match(/^(\w+\.){0,2}\w+\.\w+$/)){
+            params.sub_domain = mobfoxConfig.referrer;
         }
 
         superagent
@@ -80,51 +77,23 @@
                 }
 
                 var data        = res.body,
-                    template    = mobfoxConfig.template ? templates[mobfoxConfig.template] : template.article;
+                    template    = mobfoxConfig.template,
+                    selector    = mobfoxConfig.selector,
+                    index       = parseInt(mobfoxConfig.index);
 
-                if(mobfoxConfig.template === "landscape") data.landscape = true;
+                var tag = mustache.render(template,data);
 
-                if(!data){
-                    return console.log("MobFox SDK: no ad returned");
-                }
+                var readyStateCheckInterval = setInterval(function() {
+                    if (document.readyState === "interactive" || document.readyState === "complete") {
+                        clearInterval(readyStateCheckInterval);
+                        
+                        var nodes = document.querySelectorAll(selector); 
+                        var e = nodes.item(index);
+                        e.insertAdjacentHTML('beforebegin', tag);  
+                    }
+                }, 10); 
 
-                data.impressions = data.trackers.filter(function(t){
-                    return t.type === "impression";
-                });
 
-                data.css = {"heading":{},"cta":{},"info":{}};
-                data.css.width  = mobfoxConfig.width;
-                data.css.height = mobfoxConfig.height;
-                data.css.font   = mobfoxConfig.font || "Sans-Serif";
-
-                data.css.bg = mobfoxConfig.bg || "#eee";
-                data.css.fg = mobfoxConfig.fg || "#000";
-                data.css.heading.fg = mobfoxConfig.headingFg || "#ffa500";
-
-                data.css.cta.fg = mobfoxConfig.ctaFg || "#fff";
-                data.css.cta.bg = mobfoxConfig.ctaBg || "#777";
-
-                data.css.info.fg = mobfoxConfig.infoFg || "#999";
-
-                data.css.textHeight = mobfoxConfig.textHeight || 0.25;
-
-                data.css.fontSize = mobfoxConfig.fontSize || "12px";
-
-                var html    = mustache.render(template,data),
-                    iframe  = document.createElement("iframe");
-
-                if(curScript.parentNode && curScript.parentNode.tagName.toLowerCase() === "head"){
-                    document.body.appendChild(iframe);
-                }
-                else{
-                    curScript.parentNode.insertBefore(iframe,curScript.nextSibling); 
-                }
-
-                iframe.src = "data:text/html;charset=utf-8," + escape(html);
-                iframe.style.width  = data.css.width;
-                iframe.style.height = data.css.height;
-                iframe.style.border = "none";
-                
             });
 
 })();
