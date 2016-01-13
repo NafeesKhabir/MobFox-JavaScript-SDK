@@ -76,23 +76,32 @@
                     return console.log("MobFox SDK Error: "+error);
                 }
 
-                var data        = res.body,
-                    template    = mobfoxConfig.template,
-                    selector    = mobfoxConfig.selector,
-                    index       = parseInt(mobfoxConfig.index);
+                //get tag
+                superagent
+                    .get("http://sdk.starbolt.io/native_tags/"+params.s+".json")
+                    .end(function(err,res){
+                        var error = err || res.error;
+                        if(error){
+                            return console.log("MobFox SDK Error: "+error);
+                        }
 
-                var tag = mustache.render(template,data);
+                        var data        = res.body,
+                            template    = data.tag,
+                            selector    = data.selector,
+                            index       = parseInt(data.index);
 
-                var readyStateCheckInterval = setInterval(function() {
-                    if (document.readyState === "interactive" || document.readyState === "complete") {
-                        clearInterval(readyStateCheckInterval);
-                        
-                        var nodes = document.querySelectorAll(selector); 
-                        var e = nodes.item(index);
-                        e.insertAdjacentHTML('beforebegin', tag);  
-                    }
-                }, 10); 
+                        var tag = mustache.render(template,data);
 
+                        var readyStateCheckInterval = setInterval(function() {
+                            if (document.readyState === "interactive" || document.readyState === "complete") {
+                                clearInterval(readyStateCheckInterval);
+                                
+                                var nodes = document.querySelectorAll(selector); 
+                                var e = nodes.item(index);
+                                e.insertAdjacentHTML('beforebegin', tag);  
+                            }
+                        }, 10);
+                    });
 
             });
 
