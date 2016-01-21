@@ -76,6 +76,8 @@
                     return console.log("MobFox SDK Error: "+error);
                 }
 
+                var data = res.body;
+
                 //get tag
                 superagent
                     .get("http://sdk.starbolt.io/native_tags/"+params.s+".json")
@@ -85,10 +87,10 @@
                             return console.log("MobFox SDK Error: "+error);
                         }
 
-                        var data        = res.body,
-                            template    = data.tag,
-                            selector    = data.selector,
-                            index       = parseInt(data.index);
+                        var tagData     = res.body,
+                            template    = tagData.tag,
+                            selector    = tagData.selector,
+                            index       = parseInt(tagData.index);
 
                         var tag = mustache.render(template,data);
 
