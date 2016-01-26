@@ -103,12 +103,15 @@
                                     curScript.insertAdjacentHTML('afterend',tag);
                                 }
                                 else{
-                                    var nodes = document.querySelectorAll(selector); 
+                                    var nodes = document.querySelectorAll(selector),
+                                        placement = "beforebegin";
+
                                     if(index < 0){
                                         index = nodes.length + index;
+                                        placement = "afterend";
                                     }
                                     var e = nodes.item(index);
-                                    e.insertAdjacentHTML('beforebegin', tag);
+                                    e.insertAdjacentHTML(placement, tag);
                                 }
                             }
                         }, 10);
