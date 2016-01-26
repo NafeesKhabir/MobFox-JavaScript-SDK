@@ -89,6 +89,7 @@
 
                         var tagData     = res.body,
                             template    = tagData.tag,
+                            inline      = tagData.inline === 'true' ? true : false,
                             selector    = tagData.selector,
                             index       = parseInt(tagData.index);
 
@@ -97,10 +98,18 @@
                         var readyStateCheckInterval = setInterval(function() {
                             if (document.readyState === "interactive" || document.readyState === "complete") {
                                 clearInterval(readyStateCheckInterval);
-                                
-                                var nodes = document.querySelectorAll(selector); 
-                                var e = nodes.item(index);
-                                e.insertAdjacentHTML('beforebegin', tag);  
+                               
+                                if(inline){
+                                    curScript.insertAdjacentHTML('afterend',tag);
+                                }
+                                else{
+                                    var nodes = document.querySelectorAll(selector); 
+                                    if(index < 0){
+                                        index = nodes.length + index;
+                                    }
+                                    var e = nodes.item(index);
+                                    e.insertAdjacentHTML('beforebegin', tag);
+                                }
                             }
                         }, 10);
                     });
