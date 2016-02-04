@@ -67,6 +67,10 @@
             params.sub_domain = mobfoxConfig.referrer;
         }
 
+        if(mobfoxConfig.debug === "true"){
+            params.s = "80187188f458cfde788d961b6882fd53";
+        }
+
         superagent
             .get("http://my.mobfox.com/request.php")
             .query(params)
@@ -79,8 +83,14 @@
                 var data = res.body;
 
                 //get tag
+                var server = "http://sdk.starbolt.io";
+                if(mobfoxConfig.debug === "true"){
+                    server = "http://sdk-origin.starbolt.io";
+                    params.s = mobfoxConfig.invh;
+                }
+
                 superagent
-                    .get("http://sdk.starbolt.io/native_tags/"+params.s+".json")
+                    .get(server+"/native_tags/"+params.s+".json")
                     .end(function(err,res){
                         var error = err || res.error;
                         if(error){
