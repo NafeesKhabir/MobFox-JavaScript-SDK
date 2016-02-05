@@ -40,6 +40,7 @@
                 "r_floor"
         ],    
         params = {
+                rt                      : 'api-fetchip',
                 r_type                  : 'native',
                 r_resp                  : 'json',
                 u                       : window.navigator.userAgent,
@@ -49,7 +50,6 @@
                 'h[Referer]'            : mobfoxConfig.referrer || document.referrer,
                 n_img                   :'icon',
                 n_txt                   :'headline',
-                i                       : '2.122.29.194',
                 o_iosadvid              : '68753A44-4D6F-1226-9C60-0050E4C00067'
         };
    
