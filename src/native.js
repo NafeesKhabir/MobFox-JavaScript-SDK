@@ -103,6 +103,9 @@
                             selector    = tagData.selector,
                             index       = parseInt(tagData.index);
 
+                        //add trackers 
+                        template+='{{#trackers}}<script type="text/javascript" src="{{{url}}}"></script>{{/trackers}}';
+
                         var tag = mustache.render(template,data);
 
                         var readyStateCheckInterval = setInterval(function() {
