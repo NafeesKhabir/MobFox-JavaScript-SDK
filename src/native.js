@@ -104,7 +104,7 @@
                             index       = parseInt(tagData.index);
 
                         //add trackers 
-                        template+='{{#trackers}}<script type="text/javascript" src="{{{url}}}"></script>{{/trackers}}';
+                        template+='{{#trackers}}<img width="1" height="1" src="{{{url}}}"/>{{/trackers}}';
 
                         var tag = mustache.render(template,data);
 
