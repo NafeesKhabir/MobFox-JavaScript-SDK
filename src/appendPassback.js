@@ -8,7 +8,7 @@ module.exports = function(window,refE,passback,options,cb){
         if(iframe.passbackLoaded) return;
         var iframeWin= (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
         iframeWin.document.open();
-        iframeWin.document.write(decodeURIComponent(passback));
+        iframeWin.document.write("<style>body{margin:0;padding:0}</style>"+decodeURIComponent(passback));
         iframeWin.document.close();
         iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
         iframe.passbackLoaded = true;
