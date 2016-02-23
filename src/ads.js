@@ -144,6 +144,13 @@ module.exports = {
 
         iframe.scrolling = "no";
         iframe.style.overflow = "hidden";
+
+        if(mobfoxConfig.close){
+            containerDiv.style.width    = mobfoxConfig.width+"px";
+            containerDiv.style.height   = mobfoxConfig.height+"px";
+            containerDiv.style.position = "relative";
+            addCloseButton(containerDiv,{width:20,height:20,top:5,right:5});
+        }
     },
 
     createInterstitial : function(ad,ad_id,confElement,mobfoxConfig){
