@@ -126,6 +126,24 @@ module.exports = {
 
         var cleaned = cleanAd(ad.content);
 
+        if(mobfoxConfig.noIFrame){
+            var adDiv = document.createElement("div");
+            adDiv.innerHTML = cleaned;
+            adDiv.id = ad_id;
+            adDiv.className = "mobfox_ad"; 
+            adDiv.style.width= mobfoxConfig.width+"px";
+            adDiv.style.height= mobfoxConfig.height+"px";
+
+            containerDiv.appendChild(adDiv);
+
+            adDiv.style.margin = "0px";
+            adDiv.style.padding= "0px";
+            adDiv.style.border= "none";   
+            adDiv.style.overflow = "hidden";
+
+            return;
+        }
+
         iframe = document.createElement("iframe");
         iframe.id = ad_id;
         iframe.className = "mobfox_iframe"; 
