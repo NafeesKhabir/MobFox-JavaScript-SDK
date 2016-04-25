@@ -136,6 +136,11 @@
                 }
                 return;
             }
+            else{
+                if(typeof(mobfoxConfig.onAdLoaded) === "function"){
+                    mobfoxConfig.onAdLoaded();
+                }
+            }
 
 
             mobfoxConfig.timeout = params.timeout;
