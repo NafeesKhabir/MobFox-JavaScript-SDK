@@ -86,7 +86,7 @@ function createOnClickCallback(mobfoxClickURL,starboltClickURL){
     };
 }
 //----------------------------------------------------------------
-function writeToIFrame(iframe,html){
+function writeToIFrame(iframe,html,disableJS){
 
             if(iframe.mobfoxLoaded) return;
 
@@ -94,7 +94,12 @@ function writeToIFrame(iframe,html){
             iframeWin.document.open();
             iframeWin.document.write(html);
             iframeWin.document.close();
-            iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+            if(disableJS){
+                iframe.sandbox="allow-top-navigation allow-popups";
+            }
+            else{
+                iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+            }
             iframe.mobfoxLoaded = true;
 }
 //----------------------------------------------------------------
@@ -152,7 +157,7 @@ module.exports = {
         //iframe.style.pointerEvents = "none";
 
         iframe.onload = function(){
-            writeToIFrame(iframe,cleaned);
+            writeToIFrame(iframe,cleaned,mobfoxConfig.disableJS);
         };
         containerDiv.appendChild(iframe);
 
@@ -221,7 +226,7 @@ module.exports = {
        // }
 
         iframe.onload = function(){
-            writeToIFrame(iframe,cleaned);
+            writeToIFrame(iframe,cleaned,mobfoxConfig.disableJS);
         };
 
         containerDiv.appendChild(iframe);
@@ -298,7 +303,7 @@ module.exports = {
         if(mobfoxConfig.closeButton === false) return;
 
         iframe.onload = function(){
-            writeToIFrame(iframe,cleaned);
+            writeToIFrame(iframe,cleaned,mobfoxConfig.disableJS);
         };
 
         containerDiv.appendChild(iframe);
