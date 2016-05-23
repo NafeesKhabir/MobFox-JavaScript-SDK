@@ -88,19 +88,19 @@ function createOnClickCallback(mobfoxClickURL,starboltClickURL){
 //----------------------------------------------------------------
 function writeToIFrame(iframe,html,disableJS){
 
-            if(iframe.mobfoxLoaded) return;
+    if(iframe.mobfoxLoaded) return;
 
-            var iframeWin= (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
-            iframeWin.document.open();
-            iframeWin.document.write(html);
-            iframeWin.document.close();
-            if(disableJS){
-                iframe.sandbox="allow-top-navigation allow-popups";
-            }
-            else{
-                iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
-            }
-            iframe.mobfoxLoaded = true;
+    var iframeWin= (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+    iframeWin.document.open();
+    iframeWin.document.write(html);
+    iframeWin.document.close();
+    if(disableJS){
+        iframe.sandbox="allow-top-navigation allow-popups";
+    }
+    else{
+        iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+    }
+    iframe.mobfoxLoaded = true;
 }
 //----------------------------------------------------------------
 module.exports = {
