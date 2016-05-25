@@ -19,6 +19,8 @@
   "dependencies": {
     "htmlparser": "^1.7.7",
     "mustache": "^1.0.0",
+    "node-static": "^0.7.7",
+    "phantom": "^2.1.2",
     "qs": "^2.3.3",
     "superagent": "^0.21.0"
   },

@@ -86,23 +86,7 @@ function createOnClickCallback(mobfoxClickURL,starboltClickURL){
     };
 }
 //----------------------------------------------------------------
-function writeToIFrame(iframe,html,disableJS){
 
-    if(iframe.mobfoxLoaded) return;
-
-    var iframeWin= (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
-    iframeWin.document.open();
-    iframeWin.document.write(html);
-    iframeWin.document.close();
-    if(disableJS){
-        iframe.sandbox="allow-top-navigation allow-popups";
-    }
-    else{
-        iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
-    }
-    iframe.mobfoxLoaded = true;
-}
-//----------------------------------------------------------------
 module.exports = {
 
     createBanner : function(ad,ad_id,confElement,mobfoxConfig){
@@ -154,11 +138,16 @@ module.exports = {
         iframe.className = "mobfox_iframe"; 
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
+        iframe.srcdoc = cleaned;
         //iframe.style.pointerEvents = "none";
 
-        iframe.onload = function(){
-            writeToIFrame(iframe,cleaned,mobfoxConfig.disableJS);
-        };
+        if(mobfoxConfig.disableJS){
+            iframe.sandbox="allow-top-navigation allow-popups";
+        }
+        else{
+            iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+        }
+
         containerDiv.appendChild(iframe);
 
         iframe.style.margin = "0px";
@@ -220,14 +209,20 @@ module.exports = {
         iframe.className = "mobfox_iframe";
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
+        
+        iframe.srcdoc = cleaned;
+        //iframe.style.pointerEvents = "none";
+
+        if(mobfoxConfig.disableJS){
+            iframe.sandbox="allow-top-navigation allow-popups";
+        }
+        else{
+            iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+        }
 
        // if(clickURL){
        //     iframe.style.pointerEvents = "none";
        // }
-
-        iframe.onload = function(){
-            writeToIFrame(iframe,cleaned,mobfoxConfig.disableJS);
-        };
 
         containerDiv.appendChild(iframe);
 
@@ -302,9 +297,13 @@ module.exports = {
 
         if(mobfoxConfig.closeButton === false) return;
 
-        iframe.onload = function(){
-            writeToIFrame(iframe,cleaned,mobfoxConfig.disableJS);
-        };
+        iframe.srcdoc = cleaned;
+        if(mobfoxConfig.disableJS){
+            iframe.sandbox="allow-top-navigation allow-popups";
+        }
+        else{
+            iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+        }
 
         containerDiv.appendChild(iframe);
 

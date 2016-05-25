@@ -15,6 +15,7 @@ staticServer.stdout.on('data', function (data) {
     fs.readdirSync('tests').filter(function(f){
         return f.match(/\.js$/);
     }).forEach(function(test){
+  //      exec('slimerjs tests/'+test);
         exec('slimerjs tests/'+test);
     });
     staticServer.kill();
