@@ -157,3 +157,148 @@ module.exports.testBannerStatic = function (test) {
 
 };
 //-----------------------------------------
+module.exports.testBannerOneTag = function (test) {
+
+    test.expect(6);
+    var loaded = false,
+        data;
+
+    page.on('onLoadFinished', function(status) {
+        if(loaded) return;
+        if(status === "success") loaded = true;
+
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
+            page.evaluate(function() {
+                var iframe = document.querySelector(".mobfox_iframe");
+                return {
+                    id:iframe.id,
+                    srcdoc : iframe.srcdoc,
+                    width:iframe.width,
+                    height:iframe.height,
+                    src : document.querySelector(".mobfox_iframe").parentNode.nextSibling.src,
+                    nextElmClass : document.querySelector(".mobfox_iframe").parentNode.nextElementSibling.nextElementSibling.className,
+                    offset : $(iframe).offset()
+                };
+
+            }).then(function(_data){
+                data = _data;
+                test.ok(data.id.match(/^mobfox_test$/));
+                test.equal(data.width,"320");
+                test.equal(data.height,"50");
+                test.ok(data.src.match(/ad\.js/));
+                test.equal(data.nextElmClass,"green");
+                page.sendEvent('click',data.offset.left+5,data.offset.top +5);
+            });
+        });
+
+        
+    });
+
+
+    page.on('onNavigationRequested',function(url, type, willNavigate, main) {
+        //ad clicked, finish test
+        if(url==="http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f"){
+            test.equal(url,"http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f","Navigate to landing page.");
+            test.done();
+        }
+    });
+
+    page.open('http://localhost:58080/banner-static-one-tag.html');
+
+};
+//-----------------------------------------
+module.exports.testBannerOneTagHead = function (test) {
+
+    test.expect(6);
+    var loaded = false,
+        data;
+
+    page.on('onLoadFinished', function(status) {
+        if(loaded) return;
+        if(status === "success") loaded = true;
+
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
+            page.evaluate(function() {
+                var iframe = document.querySelector(".mobfox_iframe");
+
+                return {
+                    id:iframe.id,
+                    srcdoc : iframe.srcdoc,
+                    width:iframe.width,
+                    height:iframe.height,
+                    adParentTag :document.querySelector(".mobfox_iframe").parentNode.parentNode.tagName,
+                    adNextSibling :document.querySelector(".mobfox_iframe").parentNode.nextElementSibling,
+                    offset : $(iframe).offset()
+                };
+
+            }).then(function(_data){
+                data = _data;
+                test.ok(data.id.match(/^mobfox_test$/));
+                test.equal(data.width,"320");
+                test.equal(data.height,"50");
+                test.equal(data.adParentTag.toLowerCase(),"body");
+                test.equal(data.adNextSibling.src,"https://code.jquery.com/jquery-2.1.3.min.js");
+                page.sendEvent('click',data.offset.left+5,data.offset.top +5);
+            });
+        });
+
+        
+    });
+
+
+    page.on('onNavigationRequested',function(url, type, willNavigate, main) {
+        //ad clicked, finish test
+        if(url==="http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f"){
+            test.equal(url,"http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f","Navigate to landing page.");
+            test.done();
+        }
+    });
+
+    page.open('http://localhost:58080/banner-static-one-tag-head.html');
+
+};
+//-----------------------------------------
+module.exports.testBannerNestedHeadClass = function (test) {
+
+    test.expect(3);
+    var loaded = false,
+        data;
+
+    page.on('onLoadFinished', function(status) {
+        if(loaded) return;
+        if(status === "success") loaded = true;
+
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
+            page.evaluate(function() {
+                var iframe = document.querySelector("iframe");
+
+                return {
+                    width:iframe.width,
+                    height:iframe.height,
+                    offset : $(iframe).offset()
+                };
+
+            }).then(function(_data){
+                data = _data;
+                test.equal(data.width,"320");
+                test.equal(data.height,"50");
+                page.sendEvent('click',data.offset.left+5,data.offset.top +5);
+            });
+        });
+
+        
+    });
+
+
+    page.on('onNavigationRequested',function(url, type, willNavigate, main) {
+        //ad clicked, finish test
+        if(url==="http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f"){
+            test.equal(url,"http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f","Navigate to landing page.");
+            test.done();
+        }
+    });
+
+    page.open('http://localhost:58080/banner-static-nested-head-class.html');
+
+};
+//-----------------------------------------
