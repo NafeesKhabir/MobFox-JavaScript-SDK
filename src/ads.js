@@ -107,6 +107,7 @@ module.exports = {
 
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
+            confElement.style.margin = "0px";
             confElement.appendChild(containerDiv);
         }
         else{

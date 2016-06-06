@@ -5,6 +5,50 @@ var fileServer = new static.Server('./test/www'),
     phantom,
     page;
 
+function standardPageTest(test,pageURL,clickURL){
+    test.expect(3);
+    var loaded = false,
+        data;
+
+    page.on('onLoadFinished', function(status) {
+        if(loaded) return;
+        if(status === "success") loaded = true;
+
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
+            page.evaluate(function() {
+                var iframe = document.querySelector("iframe");
+
+                return {
+                    width:iframe.width,
+                    height:iframe.height,
+                    offset : $(iframe).offset()
+                };
+
+            }).then(function(_data){
+                data = _data;
+                test.equal(data.width,"320");
+                test.equal(data.height,"50");
+                page.sendEvent('click',data.offset.left+5,data.offset.top +5);
+            });
+        });
+
+        
+    });
+
+
+    page.on('onNavigationRequested',function(url, type, willNavigate, main) {
+        //ad clicked, finish test
+        if(url===clickURL){
+            test.equal(url,clickURL);
+            test.done();
+        }
+
+    });
+
+    page.open(pageURL);
+
+}
+
 //-----------------------------------------
 module.exports.setUp = function (cb) {
     server = require('http').createServer(function (request, response) {
@@ -259,8 +303,74 @@ module.exports.testBannerOneTagHead = function (test) {
 };
 //-----------------------------------------
 module.exports.testBannerNestedHeadClass = function (test) {
+    standardPageTest(
+        test,
+        'http://localhost:58080/banner-static-nested-head-class.html',
+        'http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f'
+    );
 
-    test.expect(3);
+};
+//-----------------------------------------
+module.exports.testBannerNested = function (test) {
+
+    standardPageTest(
+        test,
+        'http://localhost:58080/banner-static-nested.html',
+        'http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f'
+    );
+
+};
+//-----------------------------------------
+module.exports.testBannerNestedHead = function (test) {
+
+    standardPageTest(
+        test,
+        'http://localhost:58080/banner-static-nested-head.html',
+        'http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f'
+    );
+
+};
+//-----------------------------------------
+module.exports.testBannerStarbolt = function (test) {
+
+    standardPageTest(
+        test,
+        'http://localhost:58080/banner-static-starbolt.html',
+        'https://play.google.com/store/apps/details?id=com.topgames.FighterCowboy.en'
+    );
+
+};
+
+//-----------------------------------------
+module.exports.testBannerNestedStarbolt = function (test) {
+    standardPageTest(
+        test,
+        'http://localhost:58080/banner-static-nested-starbolt.html',
+        'https://play.google.com/store/apps/details?id=com.topgames.FighterCowboy.en'
+    );
+};
+//-----------------------------------------
+module.exports.testBannerNestedHeadStarbolt = function (test) {
+
+    standardPageTest(
+        test,
+        'http://localhost:58080/banner-static-nested-head-starbolt.html',
+        'https://play.google.com/store/apps/details?id=com.topgames.FighterCowboy.en'
+    );
+};
+//-----------------------------------------
+module.exports.testBannerNestedHeadStarbolt = function (test) {
+
+    standardPageTest(
+        test,
+        'http://localhost:58080/banner-static-nested-head-starbolt.html',
+        'https://play.google.com/store/apps/details?id=com.topgames.FighterCowboy.en'
+    );
+};
+//-----------------------------------------
+module.exports.testBannerOneScript = function (test) {
+
+    test.expect(5);
     var loaded = false,
         data;
 
@@ -270,18 +380,22 @@ module.exports.testBannerNestedHeadClass = function (test) {
 
         page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
             page.evaluate(function() {
-                var iframe = document.querySelector("iframe");
+                var iframe = document.querySelector(".mobfox_iframe");
 
                 return {
+                    id:iframe.id,
                     width:iframe.width,
                     height:iframe.height,
+                    beforeMobfoxConfig : document.querySelector(".mobfox_iframe").parentNode.nextSibling.id === "mobfoxConfig",
                     offset : $(iframe).offset()
                 };
 
             }).then(function(_data){
                 data = _data;
+                test.ok(data.id.match(/^mobfox_test$/));
                 test.equal(data.width,"320");
                 test.equal(data.height,"50");
+                test.ok(data.beforeMobfoxConfig);
                 page.sendEvent('click',data.offset.left+5,data.offset.top +5);
             });
         });
@@ -298,7 +412,118 @@ module.exports.testBannerNestedHeadClass = function (test) {
         }
     });
 
-    page.open('http://localhost:58080/banner-static-nested-head-class.html');
+    page.open('http://localhost:58080/banner-static-one-script.html');
+
 
 };
 //-----------------------------------------
+module.exports.testBannerOneScript = function (test) {
+
+    test.expect(5);
+    var loaded = false,
+        data;
+
+    page.on('onLoadFinished', function(status) {
+        if(loaded) return;
+        if(status === "success") loaded = true;
+
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
+            page.evaluate(function() {
+                var iframe = document.querySelector(".mobfox_iframe");
+
+                return {
+                    id:iframe.id,
+                    width:iframe.width,
+                    height:iframe.height,
+                    beforeMobfoxConfig : document.querySelector(".mobfox_iframe").parentNode.nextSibling.id === "mobfoxConfig",
+                    offset : $(iframe).offset()
+                };
+
+            }).then(function(_data){
+                data = _data;
+                test.ok(data.id.match(/^mobfox_test$/));
+                test.equal(data.width,"320");
+                test.equal(data.height,"50");
+                test.ok(data.beforeMobfoxConfig);
+                page.sendEvent('click',data.offset.left+5,data.offset.top +5);
+            });
+        });
+
+        
+    });
+
+
+    page.on('onNavigationRequested',function(url, type, willNavigate, main) {
+        //ad clicked, finish test
+        if(url==="http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f"){
+            test.equal(url,"http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f","Navigate to landing page.");
+            test.done();
+        }
+    });
+
+    page.open('http://localhost:58080/banner-static-one-script.html');
+
+
+};
+//-----------------------------------------
+module.exports.testWithClass = function (test) {
+
+    test.expect(4);
+    var loaded = false,
+        data;
+
+    page.on('onLoadFinished', function(status) {
+        if(loaded) return;
+        if(status === "success") loaded = true;
+
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
+            page.evaluate(function() {
+                var iframe = document.querySelector(".mobfox_iframe");
+                return {
+                    id:iframe.id,
+                    width:iframe.width,
+                    height:iframe.height,
+                    beforeMobfoxConfig : document.querySelector(".mobfox_iframe").parentNode.nextSibling.className === "mobfoxConfig",
+                    offset : $(iframe).offset()
+                };
+
+            }).then(function(_data){
+                data = _data;
+                test.ok(data.id.match(/^mobfox_\d+$/));
+                test.equal(data.width,"320");
+                test.equal(data.height,"50");
+                test.ok(data.beforeMobfoxConfig);
+                test.done();
+            });
+        });
+
+        
+    });
+
+    page.open('http://localhost:58080/banner-test-class.html');
+};
+//-----------------------------------------
+module.exports.multi = function (test) {
+    test.expect(0);
+    var pixels = 0;
+    page.on('onResourceReceived',function(response){
+        if(response.url === "http://my.mobfox.com/exchange.pixel.php?h=af1cac2831727a105f48a9fc09df9847"){
+            pixels++;
+            if(pixels === 2) test.done();
+        }
+    });
+    page.open('http://localhost:58080/multi.html');
+};
+//-----------------------------------------
+module.exports.passback = function (test) {
+
+    test.expect(1);
+    page.on('onConsoleMessage',function(msg, lineNum, sourceId) {
+        test.equal(msg,"nothing to show here.");
+        test.done();
+    });
+    page.open('http://localhost:58080/passback.html');
+
+};
+//-----------------------------------------
+
