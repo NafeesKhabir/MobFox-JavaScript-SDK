@@ -526,4 +526,96 @@ module.exports.passback = function (test) {
 
 };
 //-----------------------------------------
+module.exports.passbackTagDFP = function (test) {
+
+    test.expect(1);
+    page.on('onConsoleMessage',function(msg, lineNum, sourceId) {
+        test.equal(msg,"ya ya ya!");
+        test.done();
+    });
+    page.open('http://localhost:58080/passback-tag-dfp.html');
+
+};
+//-----------------------------------------
+module.exports.passbackOneTag = function (test) {
+
+    test.expect(1);
+    page.on('onConsoleMessage',function(msg, lineNum, sourceId) {
+        test.equal(msg,"ya ya ya!");
+        test.done();
+    });
+    page.open('http://localhost:58080/passback-one-tag.html');
+
+};
+//-----------------------------------------
+
+module.exports.passbackTag = function (test) {
+
+    test.expect(1);
+    page.on('onConsoleMessage',function(msg, lineNum, sourceId) {
+        test.equal(msg,"ya ya ya!");
+        test.done();
+    });
+    page.open('http://localhost:58080/passback-tag.html');
+
+};
+//-----------------------------------------
+
+module.exports.passbackTagMobFoxTag = function (test) {
+
+    test.expect(1);
+    page.on('onConsoleMessage',function(msg, lineNum, sourceId) {
+        test.equal(msg,"ya ya ya!");
+        test.done();
+    });
+    page.open('http://localhost:58080/passback-tag-mobfoxTag.html');
+
+};
+//-----------------------------------------
+/*
+module.exports.passbackTagMulti = function (test) {
+
+    test.expect(3);
+
+
+    var adCalls = 0,done=false;
+
+    page.on("onResourceReceived",function(resp) {
+        
+        if(resp.url.match(/http:\/\/my\.mobfox\.com\/request\.php/)) return;
+
+        adCalls++;
+        if(!done && adCalls === 2){
+            done = true;
+            setTimeout(function(){
+
+                page.evaluate(function(){
+
+
+                    if(!document.querySelector("#first iframe") || document.querySelector("#second iframe")) return null;
+                    return {
+                                iframeCount : document.querySelectorAll("iframe").length,
+                                textFirst   : document.querySelector("#first iframe").contentWindow.document.querySelector("h1").textContent.trim(),
+                                textSecond  : document.querySelector("#second iframe").contentWindow.document.querySelector("h1").textContent.trim()
+                    };
+                
+                }).then(function(data){
+                    console.log("data: "+data);
+                    if(!data) return;
+                    console.log(data);
+                    test.equal(iframeCount,2);
+                    test.equal(textFirst,"Hello");
+                    test.equal(textSecond,"Goodbye");
+                    test.done(); 
+                });
+
+               
+            },100);
+        }
+    });
+
+    page.open('http://localhost:58080/passback-tag-multi.html');
+
+};*/
+//-----------------------------------------
 

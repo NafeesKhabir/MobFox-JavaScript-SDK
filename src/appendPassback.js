@@ -28,7 +28,7 @@ module.exports = function(window,refE,passback,options,cb){
         };
     }
 
-    console.log("passback!!!");
+//    console.log("passback!!!");
 
     if(options.confID){
         refE = options.confID.match(/^\d+$/) ? document.querySelector("#mobfoxConf_"+options.confID) : document.querySelector("#"+options.confID);

@@ -4,7 +4,7 @@
   "description": "Mobfox Tag",
   "main": "index.js",
   "scripts": {
-    "test": "test/run.js"
+    "test": "nodeunit test/testSDK.js"
   },
   "repository": {
     "type": "git",
