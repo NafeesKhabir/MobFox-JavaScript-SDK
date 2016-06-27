@@ -143,10 +143,10 @@ module.exports = {
         //iframe.style.pointerEvents = "none";
 
         if(mobfoxConfig.disableJS){
-            iframe.sandbox="allow-top-navigation allow-popups";
+            iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
         }
         else{
-            iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+            iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
         }
 
         containerDiv.appendChild(iframe);
@@ -215,10 +215,10 @@ module.exports = {
         //iframe.style.pointerEvents = "none";
 
         if(mobfoxConfig.disableJS){
-            iframe.sandbox="allow-top-navigation allow-popups";
+            iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
         }
         else{
-            iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+            iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
         }
 
        // if(clickURL){
@@ -300,10 +300,10 @@ module.exports = {
 
         iframe.srcdoc = cleaned;
         if(mobfoxConfig.disableJS){
-            iframe.sandbox="allow-top-navigation allow-popups";
+            iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
         }
         else{
-            iframe.sandbox="allow-top-navigation allow-popups allow-scripts";
+            iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
         }
 
         containerDiv.appendChild(iframe);
