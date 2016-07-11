@@ -139,8 +139,6 @@ module.exports = {
         iframe.className = "mobfox_iframe"; 
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
-        iframe.srcdoc = cleaned;
-        //iframe.style.pointerEvents = "none";
 
         if(mobfoxConfig.disableJS){
             iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
@@ -149,7 +147,21 @@ module.exports = {
             iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
         }
 
-        containerDiv.appendChild(iframe);
+        if('srcdoc' in iframe){
+            iframe.srcdoc = cleaned;    
+            containerDiv.appendChild(iframe);
+        }
+        else{
+            containerDiv.appendChild(iframe);
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(cleaned);
+            iframe.contentWindow.document.close();
+        }
+ 
+        
+        //iframe.style.pointerEvents = "none";
+
+        
 
         iframe.style.margin = "0px";
         iframe.style.padding= "0px";
@@ -210,15 +222,23 @@ module.exports = {
         iframe.className = "mobfox_iframe";
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
-        
-        iframe.srcdoc = cleaned;
-        //iframe.style.pointerEvents = "none";
 
         if(mobfoxConfig.disableJS){
             iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
         }
         else{
             iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
+        }
+
+        if('srcdoc' in iframe){
+            iframe.srcdoc = cleaned; 
+            containerDiv.appendChild(iframe);
+        }
+        else{
+            containerDiv.appendChild(iframe);
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(cleaned);
+            iframe.contentWindow.document.close();
         }
 
        // if(clickURL){
@@ -298,7 +318,6 @@ module.exports = {
 
         if(mobfoxConfig.closeButton === false) return;
 
-        iframe.srcdoc = cleaned;
         if(mobfoxConfig.disableJS){
             iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
         }
@@ -306,7 +325,17 @@ module.exports = {
             iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
         }
 
-        containerDiv.appendChild(iframe);
+        if('srcdoc' in iframe){
+            iframe.srcdoc = cleaned;    
+            containerDiv.appendChild(iframe);
+        }
+        else{
+            containerDiv.appendChild(iframe);
+            iframe.contentWindow.document.open();
+            iframe.contentWindow.document.write(cleaned);
+            iframe.contentWindow.document.close();
+        }
+
 
         addCloseButton(adContainer,{width:20,height:20,top:5,right:5});
     }
