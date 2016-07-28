@@ -68,7 +68,7 @@
                 "no_markup",
                 "s_subid",
                 "sub_domain",
-                "sub_bundle_id",
+                //"sub_bundle_id",
                 "allow_mr",
                 "r_floor" ,
                 "testURL",
