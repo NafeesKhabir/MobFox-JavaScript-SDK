@@ -141,10 +141,10 @@ module.exports = {
         iframe.height= mobfoxConfig.height;
 
         if(mobfoxConfig.disableJS){
-            iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
+            iframe.sandbox="allow-top-navigation allow-same-origin";
         }
         else{
-            iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
+            iframe.sandbox="allow-top-navigation allow-scripts allow-same-origin";
         }
 
         if('srcdoc' in iframe){
@@ -224,10 +224,10 @@ module.exports = {
         iframe.height= mobfoxConfig.height;
 
         if(mobfoxConfig.disableJS){
-            iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
+            iframe.sandbox="allow-top-navigation allow-same-origin";
         }
         else{
-            iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
+            iframe.sandbox="allow-top-navigation allow-scripts allow-same-origin";
         }
 
         if('srcdoc' in iframe){
@@ -319,10 +319,10 @@ module.exports = {
         if(mobfoxConfig.closeButton === false) return;
 
         if(mobfoxConfig.disableJS){
-            iframe.sandbox="allow-top-navigation allow-popups allow-same-origin";
+            iframe.sandbox="allow-top-navigation allow-same-origin";
         }
         else{
-            iframe.sandbox="allow-top-navigation allow-popups allow-scripts allow-same-origin";
+            iframe.sandbox="allow-top-navigation allow-scripts allow-same-origin";
         }
 
         if('srcdoc' in iframe){
