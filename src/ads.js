@@ -140,12 +140,16 @@ module.exports = {
         iframe.width= mobfoxConfig.width;
         iframe.height= mobfoxConfig.height;
 
+        var sandbox = ["allow-top-navigation", "allow-scripts","allow-same-origin"];
         if(mobfoxConfig.disableJS){
-            iframe.sandbox="allow-top-navigation allow-same-origin";
+           sandbox.splice(sandbox.indexOf("allow-scripts"),1); 
         }
-        else{
-            iframe.sandbox="allow-top-navigation allow-scripts allow-same-origin";
+
+        if(mobfoxConfig.disableOrigin){
+           sandbox.splice(sandbox.indexOf("allow-same-origin"),1); 
         }
+
+        iframe.sandbox = sandbox.join(" "); 
 
         if('srcdoc' in iframe){
             iframe.srcdoc = cleaned;    

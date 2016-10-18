@@ -153,7 +153,7 @@ module.exports.testBannerJQuery = function (test) {
 //-----------------------------------------
 module.exports.testBannerStatic = function (test) {
 
-    test.expect(5);
+    test.expect(6);
     var loaded = false,
         data;
 
@@ -166,6 +166,7 @@ module.exports.testBannerStatic = function (test) {
             return {
                 id:iframe.id,
                 srcdoc : iframe.srcdoc,
+                sandbox : iframe.sandbox,
                 width:iframe.width,
                 height:iframe.height,
                 beforeMobfoxConfig : document.querySelector(".mobfox_iframe").parentNode.nextSibling.id === "mobfoxConfig",
@@ -175,6 +176,7 @@ module.exports.testBannerStatic = function (test) {
         }).then(function(_data){
             data = _data;
             test.ok(data.id.match(/^mobfox_test$/));
+            test.equal(data.sandbox,"allow-top-navigation allow-scripts allow-same-origin");
             test.equal(data.width,"320");
             test.equal(data.height,"50");
             test.ok(data.beforeMobfoxConfig);
@@ -200,6 +202,58 @@ module.exports.testBannerStatic = function (test) {
     page.open('http://localhost:58080/banner-static.html');
 
 };
+//-----------------------------------------
+module.exports.testBannerDisableOrigin = function (test) {
+
+    test.expect(6);
+    var loaded = false,
+        data;
+
+    page.on('onLoadFinished', function(status) {
+        if(loaded) return;
+        if(status === "success") loaded = true;
+        page.evaluate(function() {
+            var iframe = document.querySelector(".mobfox_iframe");
+            return {
+                id:iframe.id,
+                srcdoc : iframe.srcdoc,
+                sandbox : iframe.sandbox,
+                width:iframe.width,
+                height:iframe.height,
+                beforeMobfoxConfig : document.querySelector(".mobfox_iframe").parentNode.nextSibling.id === "mobfoxConfig",
+                offset : $(iframe).offset()
+            };
+
+        }).then(function(_data){
+            data = _data;
+            test.ok(data.id.match(/^mobfox_test$/));
+            test.equal(data.sandbox,"allow-top-navigation allow-scripts");
+            test.equal(data.width,"320");
+            test.equal(data.height,"50");
+            test.ok(data.beforeMobfoxConfig);
+
+        });
+    });
+
+    page.on('onNavigationRequested',function(url, type, willNavigate, main) {
+        //ad clicked, finish test
+        if(url==="http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f"){
+            test.equal(url,"http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f","Navigate to landing page.");
+            test.done();
+        }
+    });
+
+    page.on('onResourceRequested',function(requestData, networkRequest) {
+        //impression, ad shown
+        if(requestData.url==="http://my.mobfox.com/exchange.pixel.php?h=c9400133ac5b182d10a130c99bf9035f"){
+            page.sendEvent('click',data.offset.left+5,data.offset.top +5);
+        }
+    });
+
+    page.open('http://localhost:58080/banner-disable-origin.html');
+
+};
+
 //-----------------------------------------
 module.exports.testBannerOneTag = function (test) {
 
