@@ -18,19 +18,26 @@ var cleanAd = function(ad){
     return cleaned;
 };
 //----------------------------------------------------------------
-function addCloseButton(div,options){
+function addCloseButton(div,options,onclickCB){
 
     options = options || {};
     var button = document.createElement('canvas');
 
     div.appendChild(button);
-    button.onclick = function(){
-       div.parentNode.removeChild(div); 
-    };
+
+    if(onclickCB){
+        button.onclick = onclickCB;
+    }
+    else{
+        button.onclick = function(){
+            div.parentNode.removeChild(div); 
+        };
+    }
+
     button.style.position   = "absolute";
     button.style.width      =  (options.width || 40) + "px";
     button.style.height     =  (options.height || 40) + "px";
-    button.style.top        =  (options.top || 10 ) + "px";
+    button.style.top        =  (options.top || 5 ) + "px";
     button.style.right      =  (options.right || 10) + "px";   
     button.width = 40;
     button.height = 40;
@@ -191,16 +198,38 @@ module.exports = {
             confElement = document.body; 
         }
 
-        var adContainer = document.getElementById('mobfox_interstitial');
-        if(adContainer){
-            adContainer.parentNode.removeChild(iframe);
+        var adBackground        = document.getElementById('mobfox_interstitial_background'),
+            adContainer         = document.getElementById('mobfox_interstitial');
+
+        if(adBackground){
+            adBackground.parentNode.removeChild(adBackground);
         }
+
+        if(adContainer){
+            adContainer.parentNode.removeChild(adContainer);
+        }
+
+        adBackground= document.createElement('div'); 
+        adBackground.id = "mobfox_interstitial_background";
+        adBackground.style.width  = window.innerWidth + "px";
+        adBackground.style.height = window.innerHeight + "px";
+        adBackground.style.zIndex = "1000000";
+        adBackground.style.backgroundColor = "#000";
+        adBackground.style.opacity = "0.7";
+        adBackground.style.position = "fixed";
+        adBackground.style.left = "0px";
+        adBackground.style.top = "0px";
+        adBackground.style.margin = "0px";
+        adBackground.style.padding= "0px";
+        adBackground.style.border= "none";
+
+        document.body.appendChild(adBackground);
 
         adContainer = document.createElement('div'); 
         adContainer.id = "mobfox_interstitial";
         adContainer.style.width  = window.innerWidth + "px";
         adContainer.style.height = window.innerHeight + "px";
-        adContainer.style.zIndex = "1000000";
+        adContainer.style.zIndex = "1000001";
         adContainer.style.backgroundColor = "transparent";
         adContainer.style.position = "fixed";
         adContainer.style.left = "0px";
@@ -259,9 +288,15 @@ module.exports = {
         iframe.scrolling = "no";
         iframe.style.overflow = "hidden";
 
-        addCloseButton(adContainer);
+        addCloseButton(adContainer,{},
+            function(){ 
+                adBackground.parentNode.removeChild(adBackground);
+                adContainer.parentNode.removeChild(adContainer);
+            }
+        );
 
         setTimeout(function(){
+           adBackground.parentNode.removeChild(adBackground); 
            adContainer.parentNode.removeChild(adContainer); 
         },mobfoxConfig.timeout || 16000);
     },
