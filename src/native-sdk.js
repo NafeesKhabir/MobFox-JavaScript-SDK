@@ -28,7 +28,7 @@
     var native_50 = require('./templates/native_50.tmpl');
     var native_100 = require('./templates/native_100.tmpl');
     
-    var requestURL = 'http://my.mobfox.com/request.php';
+    var requestURL = '//my.mobfox.com/request.php';
     
     superagent
         .get(requestURL)

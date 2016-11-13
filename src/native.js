@@ -72,7 +72,7 @@
         }
 
         superagent
-            .get("http://my.mobfox.com/request.php")
+            .get("//my.mobfox.com/request.php")
             .query(params)
             .end(function(err,res){
                 var error = err || res.error;
@@ -83,9 +83,9 @@
                 var data = res.body;
 
                 //get tag
-                var server = "http://sdk.starbolt.io";
+                var server = "//sdk.starbolt.io";
                 if(mobfoxConfig.debug === "true"){
-                    server = "http://sdk-origin.starbolt.io";
+                    server = "//sdk-origin.starbolt.io";
                     params.s = mobfoxConfig.invh;
                 }
 

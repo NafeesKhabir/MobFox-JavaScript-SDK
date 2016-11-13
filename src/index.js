@@ -116,7 +116,7 @@
         if(w !=w || w < 0) throw "Invalid adspace_width: " + params.adspace_width;
         if(h !=h || h < 0) throw "Invalid adspace_height: " + params.adspace_height;
 
-        var url = params.testURL || 'http://my.mobfox.com/request.php';
+        var url = params.testURL || '//my.mobfox.com/request.php';
         script.type = "text/javascript";
         script.onload = script.onerror = function(){
 
