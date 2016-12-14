@@ -176,7 +176,7 @@ module.exports.testBannerStatic = function (test) {
         }).then(function(_data){
             data = _data;
             test.ok(data.id.match(/^mobfox_test$/));
-            test.equal(data.sandbox,"allow-top-navigation allow-scripts allow-same-origin");
+            test.equal(data.sandbox,"allow-top-navigation allow-scripts allow-same-origin allow-popups");
             test.equal(data.width,"320");
             test.equal(data.height,"50");
             test.ok(data.beforeMobfoxConfig);
@@ -227,7 +227,7 @@ module.exports.testBannerDisableOrigin = function (test) {
         }).then(function(_data){
             data = _data;
             test.ok(data.id.match(/^mobfox_test$/));
-            test.equal(data.sandbox,"allow-top-navigation allow-scripts");
+            test.equal(data.sandbox,"allow-top-navigation allow-scripts allow-popups");
             test.equal(data.width,"320");
             test.equal(data.height,"50");
             test.ok(data.beforeMobfoxConfig);

@@ -2,6 +2,13 @@ var cleanAd = function(ad){
     
     var cleaned;
 
+    var markupRegExp = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
+        matchMarkup  = ad.match(markupRegExp);
+
+    if(matchMarkup){
+       ad = window.atob(matchMarkup[1]); 
+    }
+
    /* if(ad.indexOf("<iframe") >=0){
         cleaned = ad;
     }*/
@@ -14,6 +21,9 @@ var cleanAd = function(ad){
     else{
         cleaned = ["<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
     }
+
+   
+
 
     return cleaned;
 };
@@ -125,6 +135,7 @@ module.exports = {
 
         if(mobfoxConfig.noIFrame){
             var adDiv = document.createElement("div");
+
             adDiv.innerHTML = cleaned;
             adDiv.id = ad_id;
             adDiv.className = "mobfox_ad"; 
