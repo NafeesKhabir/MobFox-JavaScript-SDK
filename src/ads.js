@@ -9,6 +9,10 @@ var cleanAd = function(ad){
        ad = window.atob(matchMarkup[1]); 
     }
 
+    var audioCancel = "<script>window.navigator.vibrate=function(){ return true; }; window.AudioContext = null;</script>";
+
+    ad = audioCancel + ad;
+
    /* if(ad.indexOf("<iframe") >=0){
         cleaned = ad;
     }*/
@@ -21,9 +25,6 @@ var cleanAd = function(ad){
     else{
         cleaned = ["<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
     }
-
-   
-
 
     return cleaned;
 };
