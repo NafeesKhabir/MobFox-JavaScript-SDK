@@ -61,9 +61,9 @@
                 "o_andadvid",
                 "longitude",
                 "latitude",
-                "demo.gender",
-                "demo.keyword",
-                "demo.age",
+                "demo_gender",
+                "demo_keyword",
+                "demo_age",
                 "adspace_strict",
                 "no_markup",
                 "s_subid",
@@ -86,7 +86,8 @@
                 'adspace_height'        : mobfoxConfig.height,
                 timeout                 : mobfoxConfig.timeout,
                 jsvar                   : mobfoxVar,
-                'h[Referer]'            : mobfoxConfig.referrer || document.referrer 
+                'h[Referer]'            : mobfoxConfig.referrer || document.referrer,
+                c_mraid                 : 0
             };
 
         options.forEach(function(o){
