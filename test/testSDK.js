@@ -28,7 +28,7 @@ function standardPageTest(test,pageURL,clickURL){
                 data = _data;
                 test.equal(data.width,"320");
                 test.equal(data.height,"50");
-                page.sendEvent('click',data.offset.left+5,data.offset.top +5);
+                page.sendEvent('click',data.offset.left+5,data.offset.top + 5);
             });
         });
 
@@ -580,6 +580,18 @@ module.exports.passback = function (test) {
 
 };
 //-----------------------------------------
+module.exports.passbackTimeout = function (test) {
+
+    test.expect(1);
+    page.on('onConsoleMessage',function(msg, lineNum, sourceId) {
+        test.equal(msg,"nothing to show here.");
+        test.done();
+    });
+    page.open('http://localhost:58080/passback.html');
+
+};
+//-----------------------------------------
+
 module.exports.passbackTagDFP = function (test) {
 
     test.expect(1);

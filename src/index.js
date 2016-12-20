@@ -50,9 +50,29 @@
             mobfoxConfig = window.mobfoxConfig;
         }
     }
+
+    /*if(!window.onerror){
+        window.onerror = function (msg, url, lineNo, columnNo, error) {
+
+        };
+    }*/
     //END: backward compat code
+    var safetyLatch = window.setTimeout(function(){
+        console.log("mobfox >> safety latch activated.");
+        if(mobfoxConfig.passback){
+            if(typeof(mobfoxConfig.passback) === "function"){
+                mobfoxConfig.passback();
+            }
+            else if(typeof(mobfoxConfig.passback) === "string"){
+                appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height,confID:confID,noIFrame:mobfoxConfig.noIFrame},function(err){
+                    //...
+                });
+            }
+        }
+    },mobfoxConfig.reqTimeout || 2000);
     //-------------------------------------------
     function retrieve(){
+
         var script  = document.createElement("script"),
             options = [
                 "o_androidid",
@@ -127,6 +147,7 @@
                 window.clearInterval(refreshInterval);
 
                 if(mobfoxConfig.passback){
+                    window.clearTimeout(safetyLatch);
                     if(typeof(mobfoxConfig.passback) === "function"){
                         mobfoxConfig.passback();
                     }
@@ -146,7 +167,11 @@
 
 
             mobfoxConfig.timeout = params.timeout;
-            createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig);
+            
+
+            createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig,function(err){
+                if(!err) window.clearTimeout(safetyLatch);
+            });
 
         };
 

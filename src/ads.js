@@ -1,32 +1,37 @@
 var cleanAd = function(ad){
     
-    var cleaned;
+    try{
+        var cleaned;
 
-    var markupRegExp = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
-        matchMarkup  = ad.match(markupRegExp);
+        var markupRegExp = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
+            matchMarkup  = ad.match(markupRegExp);
 
-    if(matchMarkup){
-       ad = window.atob(matchMarkup[1]); 
+        if(matchMarkup){
+           ad = window.atob(matchMarkup[1].replace(/\s/g, '')); 
+        }
+
+        var audioCancel = "<script>window.navigator.vibrate=function(){ return true; }; window.AudioContext = null;</script>";
+
+        ad = audioCancel + ad;
+
+       /* if(ad.indexOf("<iframe") >=0){
+            cleaned = ad;
+        }*/
+        if(ad.indexOf("</html>") > 0){
+            cleaned = ad;
+        }
+        else if(ad.indexOf("</body>") > 0){
+            cleaned = ["<html>",ad,"</html>"].join("\n");
+        }
+        else{
+            cleaned = ["<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
+        }
+
+        return cleaned;
     }
-
-    var audioCancel = "<script>window.navigator.vibrate=function(){ return true; }; window.AudioContext = null;</script>";
-
-    ad = audioCancel + ad;
-
-   /* if(ad.indexOf("<iframe") >=0){
-        cleaned = ad;
-    }*/
-    if(ad.indexOf("</html>") > 0){
-        cleaned = ad;
+    catch(e){
+        return null;
     }
-    else if(ad.indexOf("</body>") > 0){
-        cleaned = ["<html>",ad,"</html>"].join("\n");
-    }
-    else{
-        cleaned = ["<html><body style='margin:0px;padding:0px;'>",ad,"</body></html>"].join("\n");
-    }
-
-    return cleaned;
 };
 //----------------------------------------------------------------
 function addCloseButton(div,options,onclickCB){
@@ -107,9 +112,10 @@ function createOnClickCallback(mobfoxClickURL,starboltClickURL){
 
 module.exports = {
 
-    createBanner : function(ad,ad_id,confElement,mobfoxConfig){
+    createBanner : function(ad,ad_id,confElement,mobfoxConfig,cb){
 
-        
+        cb = cb || function(){};
+
         var iframe = document.getElementById(ad_id);
         if(iframe){
             iframe.parentNode.removeChild(iframe);
@@ -133,6 +139,10 @@ module.exports = {
         }
 
         var cleaned = cleanAd(ad.content);
+
+        if(!cleaned){
+            return cb("unable to clean ad.");
+        }
 
         if(mobfoxConfig.noIFrame){
             var adDiv = document.createElement("div");
@@ -199,10 +209,14 @@ module.exports = {
             containerDiv.style.position = "relative";
             addCloseButton(containerDiv,{width:20,height:20,top:5,right:5});
         }
+
+        setTimeout(cb,1);
     },
 
-    createInterstitial : function(ad,ad_id,confElement,mobfoxConfig){
+    createInterstitial : function(ad,ad_id,confElement,mobfoxConfig,cb){
             
+        cb = cb || function(){};
+
         if(mobfoxConfig.debug){
             mobfoxConfig.timeout = 500000;
         }
@@ -253,6 +267,9 @@ module.exports = {
         
         var cleaned = cleanAd(ad.content);
 
+        if(!cleaned){
+            return cb("unable to clean ad.");
+        }
         var containerDiv = document.createElement("div");
         containerDiv.style.margin = "0px";
         containerDiv.style.padding= "0px";
@@ -307,13 +324,17 @@ module.exports = {
             }
         );
 
+        setTimeout(cb,1);
+
         setTimeout(function(){
            adBackground.parentNode.removeChild(adBackground); 
            adContainer.parentNode.removeChild(adContainer); 
         },mobfoxConfig.timeout || 16000);
     },
-    createFloating : function(ad,ad_id,confElement,mobfoxConfig){
+    createFloating : function(ad,ad_id,confElement,mobfoxConfig,cb){
         
+        cb = cb || function(){};
+
         if(confElement.parentNode && confElement.parentNode.tagName.toLowerCase() === "head"){
             confElement = document.body; 
         }
@@ -338,6 +359,10 @@ module.exports = {
         document.body.appendChild(adContainer);
         
         var cleaned = cleanAd(ad.content);
+
+        if(!cleaned){
+            return cb("unable to clean ad.");
+        }
 
         var containerDiv = document.createElement("div");
 
@@ -389,6 +414,8 @@ module.exports = {
 
 
         addCloseButton(adContainer,{width:20,height:20,top:5,right:5});
+
+        setTimeout(cb,1);
     }
 
 };
