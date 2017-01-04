@@ -1,6 +1,7 @@
 (function(){
 
-    var Qs              = require('./query-string'),
+    var superagent      = require('superagent'),
+        Qs              = require('./query-string'),
         URL             = require('./lite-url').liteURL,
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
@@ -19,7 +20,40 @@
         }, 
         refreshInterval;
 
-    var mobfoxConfig = URL(curScript.src).params;
+    var mobfoxConfig = URL(curScript.src).params,
+        report = function(data){
+    
+          if(!mobfoxConfig.report) return;
+
+          try{
+            
+            data = data || {};
+            if(typeof(data)!=="object"){
+                data = {message:data};
+            }
+
+            data.host       = "JS_TAG";
+            data.facility   = "JS_REPORT";
+
+
+            Object.keys(mobfoxConfig).forEach(function(k){
+                data[k] = mobfoxConfig[k];
+            });
+
+            superagent
+                .post("http://sdk-logs.matomy.com:12201/gelf") 
+                .set('Content-Type', 'application/json')
+                .send(data)
+                .end();
+
+            //console.log("reported: "+JSON.stringify(data));
+        }
+        catch(e){
+        
+        }
+    };
+
+    report("tag started");
 
     if(mobfoxConfig){//no conf element position it behind script
         confE = curScript;
@@ -59,13 +93,13 @@
     //END: backward compat code
     var safetyLatch = window.setTimeout(function(){
         console.log("mobfox >> safety latch activated.");
+        report("safety latch");
         if(mobfoxConfig.passback){
             if(typeof(mobfoxConfig.passback) === "function"){
                 mobfoxConfig.passback();
             }
             else if(typeof(mobfoxConfig.passback) === "string"){
                 appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height,confID:confID,noIFrame:mobfoxConfig.noIFrame},function(err){
-                    //...
                 });
             }
         }
@@ -141,19 +175,22 @@
         script.type = "text/javascript";
         script.onload = script.onerror = function(){
 
+            report("request returned");
+
             script.parentNode.removeChild(script);
             if(!window[mobfoxVar]){
 
                 window.clearInterval(refreshInterval);
 
                 if(mobfoxConfig.passback){
-                    window.clearTimeout(safetyLatch);
+                    if(safetyLatch) window.clearTimeout(safetyLatch);
                     if(typeof(mobfoxConfig.passback) === "function"){
                         mobfoxConfig.passback();
                     }
                     else if(typeof(mobfoxConfig.passback) === "string"){
+
+                        report("passback appended");
                         appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height,confID:confID,noIFrame:mobfoxConfig.noIFrame},function(err){
-                            //...
                         });
                     }
                 }
@@ -170,7 +207,15 @@
             
 
             createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig,function(err){
-                if(!err) window.clearTimeout(safetyLatch);
+                if(!err){
+                    if(safetyLatch) window.clearTimeout(safetyLatch);
+                }
+                if(err){
+                    report(err);
+                }
+                else{
+                    report("ad created");
+                }
             });
 
         };
