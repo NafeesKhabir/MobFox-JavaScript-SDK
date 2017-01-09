@@ -1,7 +1,6 @@
 (function(){
 
-    var superagent      = require('superagent'),
-        Qs              = require('./query-string'),
+    var Qs              = require('./query-string'),
         URL             = require('./lite-url').liteURL,
         ads             = require('./ads.js'),
         appendPassback  = require('./appendPassback.js'),
@@ -40,11 +39,10 @@
                 data[k] = mobfoxConfig[k];
             });
 
-            superagent
-                .post("http://sdk-logs.matomy.com:12201/gelf") 
-                .set('Content-Type', 'application/json')
-                .send(data)
-                .end();
+            var request = new XMLHttpRequest();
+            request.open("POST", "http://sdk-logs.matomy.com:12201/gelf");
+            request.setRequestHeader("Content-type", "application/json");
+            request.send(JSON.stringify(data));
 
             //console.log("reported: "+JSON.stringify(data));
         }
