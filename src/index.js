@@ -34,7 +34,6 @@
             data.host       = "JS_TAG";
             data.facility   = "JS_REPORT";
 
-
             Object.keys(mobfoxConfig).forEach(function(k){
                 data[k] = mobfoxConfig[k];
             });
@@ -51,7 +50,7 @@
         }
     };
 
-    report("tag started");
+    report("init");
 
     if(mobfoxConfig){//no conf element position it behind script
         confE = curScript;
@@ -83,15 +82,15 @@
         }
     }
 
-    /*if(!window.onerror){
+    if(!window.onerror){
         window.onerror = function (msg, url, lineNo, columnNo, error) {
-
+            report("error: "+[msg,lineNo].join(" "));
         };
-    }*/
+    }
     //END: backward compat code
     var safetyLatch = window.setTimeout(function(){
         console.log("mobfox >> safety latch activated.");
-        report("safety latch");
+        report("safety");
         if(mobfoxConfig.passback){
             if(typeof(mobfoxConfig.passback) === "function"){
                 mobfoxConfig.passback();
@@ -102,6 +101,23 @@
             }
         }
     },mobfoxConfig.reqTimeout || 2000);
+
+    //-------------------------------------------
+    var handlePassback = function(){
+        if(mobfoxConfig.passback){
+            if(safetyLatch) window.clearTimeout(safetyLatch);
+            if(typeof(mobfoxConfig.passback) === "function"){
+                mobfoxConfig.passback();
+            }
+            else if(typeof(mobfoxConfig.passback) === "string"){
+
+                report("passback");
+                appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height,confID:confID,noIFrame:mobfoxConfig.noIFrame},function(err){
+                });
+            }
+        }
+
+    };
     //-------------------------------------------
     function retrieve(){
 
@@ -162,36 +178,26 @@
             params.sub_domain = mobfoxConfig.referrer;
         }
 
-        //verify width / height
         var w = parseInt(params.adspace_width),
             h = parseInt(params.adspace_height);
 
-        if(w !=w || w < 0) throw "Invalid adspace_width: " + params.adspace_width;
-        if(h !=h || h < 0) throw "Invalid adspace_height: " + params.adspace_height;
+        if(w !=w || w < 0 || h !=h || h < 0){
+            console.log("invalid width or height.");
+            handlePassback();
+            return;
+        }
 
+        report("request");
         var url = params.testURL || '//my.mobfox.com/request.php';
         script.type = "text/javascript";
         script.onload = script.onerror = function(){
 
-            report("request returned");
+            report("response");
 
             script.parentNode.removeChild(script);
             if(!window[mobfoxVar]){
-
                 window.clearInterval(refreshInterval);
-
-                if(mobfoxConfig.passback){
-                    if(safetyLatch) window.clearTimeout(safetyLatch);
-                    if(typeof(mobfoxConfig.passback) === "function"){
-                        mobfoxConfig.passback();
-                    }
-                    else if(typeof(mobfoxConfig.passback) === "string"){
-
-                        report("passback appended");
-                        appendPassback(window,confE,mobfoxConfig.passback,{width:mobfoxConfig.width,height:mobfoxConfig.height,confID:confID,noIFrame:mobfoxConfig.noIFrame},function(err){
-                        });
-                    }
-                }
+                handlePassback();
                 return;
             }
             else{
@@ -203,16 +209,17 @@
 
             mobfoxConfig.timeout = params.timeout;
             
+            report("served");
 
             createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig,function(err){
                 if(!err){
                     if(safetyLatch) window.clearTimeout(safetyLatch);
                 }
                 if(err){
-                    report(err);
+                    report("err: "+String(err));
                 }
                 else{
-                    report("ad created");
+                    report("impression");
                 }
             });
 
