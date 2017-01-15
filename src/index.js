@@ -200,27 +200,29 @@
                 handlePassback();
                 return;
             }
-            else{
-                if(typeof(mobfoxConfig.onAdLoaded) === "function"){
-                    mobfoxConfig.onAdLoaded();
-                }
-            }
-
 
             mobfoxConfig.timeout = params.timeout;
             
             report("served");
 
             createAd[mobfoxConfig.type](window[mobfoxVar][0],mobfoxVar,confE,mobfoxConfig,function(err){
-                if(!err){
-                    if(safetyLatch) window.clearTimeout(safetyLatch);
-                }
                 if(err){
                     report("err: "+String(err));
+                    return;
                 }
-                else{
-                    report("impression");
+                if(safetyLatch) window.clearTimeout(safetyLatch);
+                report("impression");
+                
+                if(typeof(mobfoxConfig.onAdLoaded) === "function"){
+                    mobfoxConfig.onAdLoaded();
                 }
+                else if(typeof(mobfoxConfig.onAdLoaded) === "string"){
+                    appendPassback(window,confE,
+                                    mobfoxConfig.onAdLoaded,
+                                    {width:mobfoxConfig.width,height:mobfoxConfig.height,confID:confID,noIFrame:mobfoxConfig.noIFrame},
+                                    function(err){});
+                }
+
             });
 
         };
