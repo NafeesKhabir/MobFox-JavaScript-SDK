@@ -1,0 +1,41 @@
+<iframe
+    id          = "mfAd"
+    frameborder = "0" 
+    sandbox     = "allow-forms allow-scripts allow-top-navigation allow-popups"
+    style       = "border:none;width:320px;height:50px;overflow:hidden;margin:none;scrolling:no;"
+    >
+</iframe>
+<script>
+var params = {
+    r_type          : "banner",
+    u               : navigator.userAgent,
+    s               : "fe96717d9875b9da4339ea5367eff1ec",
+    m               : "live",
+    rt              : "javascript",
+    v               : "3.0",
+    adspace_width   : 320,
+    adspace_height  : 50,
+    jsvar           : "mfAd",
+    c_mraid         : 0
+}
+
+var query = Object.keys(params).map(function(k){
+    return [k,encodeURIComponent(params[k])].join("=");
+}).join("&");
+
+
+var url     = "http://my.mobfox.com/request.php?"+query,
+    request = new XMLHttpRequest();
+
+request.open('GET', url, false);  // `false` makes the request synchronous
+request.send(null);
+var resp = request.responseText; 
+
+if(request.status!==200 || !resp || resp.length===0){
+    loaded=true;
+    window.location="mopub://failLoad"; 
+}
+
+document.querySelector("#mfAd").srcdoc = eval(resp.replace("var mfAd = ",""))[0].content;
+
+</script>
