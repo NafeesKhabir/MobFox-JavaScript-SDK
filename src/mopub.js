@@ -51,13 +51,25 @@ superagent
             ifrm.style.margin    = "none";
             ifrm.style.scrolling = "no";
 
+            var markupRegExp = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
+                matchMarkup  = json.request.htmlString.match(markupRegExp);
+
+            if(matchMarkup){
+                html = window.atob(matchMarkup[1]) + "<style>body{margin:0;}</style>";
+            }
+
+            ifrm.onload = function(){
+                setTimeout( function() { window.location = 'mopub://finishLoad'; }, 0 );
+                if(typeof(_track) === "function"){
+                    _track();
+                }
+            };
+
             var c = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
+            
             c.document.open();
             c.document.write(html);
             c.document.close();
-            setTimeout( function() { window.location = 'mopub://finishLoad'; }, 0 );
-            if(typeof(_track) === "function"){
-                _track();
-            }
+            
         }));
 //--------------------------------------
