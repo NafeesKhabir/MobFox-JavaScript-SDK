@@ -25,51 +25,75 @@ if(typeof(window.trackImpressionHelper) === "function"){
 
 window.htmlWillCallFinishLoad =true;
 
-superagent
-        .get("http://my.mobfox.com/request.php")
-        .timeout(3000)
-        .query(mobFoxParams)
-        .end(once(function(err,resp){
-            if(err || resp.error || !resp.body || resp.body.error){
-                return failLoad();
-            }
+var mobFoxCall = once(function(){
 
-            var json    = resp.body,
-                html    = json.request.htmlString;
+    var timeout     = false,
+        finished    = false;
 
-            var ifrm = document.createElement('iframe');
-            ifrm.id = "mobfoxFrame";
-            document.body.appendChild(ifrm);
+    window.setTimeout(function(){
+        timeout = true;
+        if(finished) return;
+        failLoad();
+    },3000);
 
-            //css
-            ifrm.frameborder = "0";
-            ifrm.style.border    = "none";
-            ifrm.style.width     = mobFoxParams.adspace_width + "px";
-            ifrm.style.height    = mobFoxParams.adspace_height + "px";
-            ifrm.style.overflow  = "hidden";
-            ifrm.style.overflow  = "hidden";
-            ifrm.style.margin    = "none";
-            ifrm.style.scrolling = "no";
+    superagent
+            .get("http://my.mobfox.com/request.php")
+            .timeout(2500)
+            .query(mobFoxParams)
+            .end(once(function(err,resp){
+                if(timeout) return;
+                try{
+                    if(err || resp.error || !resp.body || resp.body.error){
+                        finished = true;
+                        return failLoad();
+                    }
 
-            var markupRegExp = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
-                matchMarkup  = json.request.htmlString.match(markupRegExp);
+                    var json    = resp.body,
+                        html    = json.request.htmlString;
 
-            if(matchMarkup){
-                html = window.atob(matchMarkup[1]) + "<style>body{margin:0;}</style>";
-            }
+                    var ifrm = document.createElement('iframe');
+                    ifrm.id = "mobfoxFrame";
+                    document.body.appendChild(ifrm);
 
-            ifrm.onload = function(){
-                setTimeout( function() { window.location = 'mopub://finishLoad'; }, 0 );
-                if(typeof(_track) === "function"){
-                    _track();
+                    //css
+                    ifrm.frameborder = "0";
+                    ifrm.style.border    = "none";
+                    ifrm.style.width     = mobFoxParams.adspace_width + "px";
+                    ifrm.style.height    = mobFoxParams.adspace_height + "px";
+                    ifrm.style.overflow  = "hidden";
+                    ifrm.style.overflow  = "hidden";
+                    ifrm.style.margin    = "none";
+                    ifrm.style.scrolling = "no";
+
+                    var markupRegExp = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
+                        matchMarkup  = json.request.htmlString.match(markupRegExp);
+
+                    if(matchMarkup){
+                        html = window.atob(matchMarkup[1]) + "<style>body{margin:0;}</style>";
+                    }
+
+                    ifrm.onload = once(function(){
+                        if(timeout) return;
+                        finished = true; 
+                        setTimeout( function() { window.location = 'mopub://finishLoad'; }, 0 );
+                        if(typeof(_track) === "function"){
+                            _track();
+                        }
+                    });
+
+                    var c = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
+                    
+                    c.document.open();
+                    c.document.write(html);
+                    c.document.close();
                 }
-            };
+                catch(e){
+                    finished = true; 
+                    failLoad();
+                }
+                
+            }));
+});
 
-            var c = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
-            
-            c.document.open();
-            c.document.write(html);
-            c.document.close();
-            
-        }));
+mobFoxCall();
 //--------------------------------------
