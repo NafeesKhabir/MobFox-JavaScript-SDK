@@ -227,6 +227,11 @@
 
         };
 
+        //not allowed to get idfa, discard it
+        if(params.o_iosadvid && params.o_iosadvid === "00000000-0000-0000-0000-000000000000"){
+            delete params.o_iosadvid;
+        }
+
         script.src = url + '?' + Qs.stringify(params);
         document.head.appendChild(script);
 
