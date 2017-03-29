@@ -140,7 +140,8 @@
                 "allow_mr",
                 "r_floor" ,
                 "testURL",
-                "referrer"
+                "referrer",
+                "dev_js"
             ],
             params = {
                 r_type                  : 'banner',//mobfoxConfig.type,
