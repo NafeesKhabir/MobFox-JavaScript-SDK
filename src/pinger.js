@@ -46,9 +46,12 @@ var mobFoxCall = once(function(){
                     var json    = resp.body,
                         html    = json.request.htmlString;
 
-                    var ifrm = document.createElement('iframe');
-                    ifrm.id = "mobfoxFrame";
-                    document.body.appendChild(ifrm);
+                    var ifrm = document.getElementById("mobfoxFrame");
+                    if(!ifrm){
+                        ifrm = document.createElement('iframe');
+                        ifrm.id = "mobfoxFrame";
+                        document.body.appendChild(ifrm);
+                    }
 
                     //css
                     ifrm.frameborder = "0";
@@ -87,5 +90,16 @@ var mobFoxCall = once(function(){
             }));
 });
 
-mobFoxCall();
+
+if(document.currentScript.parentNode.tagName.toLowerCase() === "head"){
+    document.addEventListener("DOMContentLoaded",function(){
+        var ifrm = document.createElement('iframe');
+        ifrm.id = "mobfoxFrame";
+        document.body.appendChild(ifrm);
+        mobFoxCall();
+    }); 
+}
+else{
+    mobFoxCall();
+}
 //--------------------------------------
