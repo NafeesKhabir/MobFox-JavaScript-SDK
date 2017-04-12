@@ -35,7 +35,13 @@ var createIFrame = function(json){
             matchMarkup  = json.request.htmlString.match(markupRegExp);
 
         if(matchMarkup){
-            html = window.atob(matchMarkup[1]) + "<style>body{margin:0;}</style>";
+            html = window.atob(matchMarkup[1]);
+            if(html.indexOf("<html>") < 0){
+                html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
+            }
+            else{
+                html = html + "<style>body{margin:0px;padding:0px}</style>";
+            }
         }
 
         ifrm.onload = once(function(){
