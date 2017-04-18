@@ -2,6 +2,9 @@ var superagent  = require("superagent"),
     once        = require("once");
 
 //--------------------------------------
+var timeout     = false,
+    finished    = false;
+//--------------------------------------
 var failLoad = function(){
     if(typeof(mobFoxParams.onFail)==="function"){
         mobFoxParams.onFail();
@@ -71,9 +74,6 @@ mobFoxParams.rt         = "api-fetchip";
 mobFoxParams.r_type     = "banner";
 
 var mobFoxCall = once(function(){
-
-    var timeout     = false,
-        finished    = false;
 
     window.setTimeout(function(){
         timeout = true;
