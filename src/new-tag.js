@@ -1,5 +1,6 @@
 var superagent  = require("superagent"),
-    once        = require("once");
+    once        = require("once"),
+    curScript   = document.currentScript;
 
 //--------------------------------------
 var timeout     = false,
@@ -17,13 +18,69 @@ var successLoad = function(){
     }
 };
 //--------------------------------------
+var getHTML = function(json){
+
+    var html            = json.request.htmlString,
+        markupRegExp    = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
+        matchMarkup     = json.request.htmlString.match(markupRegExp);
+
+    if(matchMarkup){
+        html = window.atob(matchMarkup[1]);
+    }
+
+    return html;
+};
+//--------------------------------------
+var createDiv = function(json){
+
+    try{
+
+        var div = document.createElement('div');
+        div.id = "mobfoxDiv";
+
+        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+            curScript.parentNode.appendChild(div);     
+        }
+        else{
+            document.body.appendChild(div);
+        }
+
+        //css
+        div.style.border        = "none";
+        div.style.width         = mobFoxParams.adspace_width + "px";
+        div.style.height        = mobFoxParams.adspace_height + "px";
+        div.style.overflow      = "hidden";
+        div.style.margin        = "0px";
+        div.style.padding       = "0px";
+        div.style.display       = "inline-block";
+
+        var html = getHTML(json); 
+        div.innerHTML = html;
+
+        finished = true; 
+        successLoad(); 
+
+    }
+    catch(e){
+        console.log(e);
+        finished = true; 
+        failLoad();
+    }
+
+};
+//--------------------------------------
 var createIFrame = function(json){
     
     try{
-        var html = json.request.htmlString;
         var ifrm = document.createElement('iframe');
         ifrm.id = "mobfoxFrame";
-        document.body.appendChild(ifrm);
+
+        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+            curScript.parentNode.appendChild(ifrm);     
+        }
+        else{
+            document.body.appendChild(ifrm);
+        }
 
         //css
         ifrm.frameborder = "0";
@@ -31,21 +88,16 @@ var createIFrame = function(json){
         ifrm.style.width     = mobFoxParams.adspace_width + "px";
         ifrm.style.height    = mobFoxParams.adspace_height + "px";
         ifrm.style.overflow  = "hidden";
-        ifrm.style.overflow  = "hidden";
         ifrm.style.margin    = "none";
         ifrm.style.scrolling = "no";
 
-        var markupRegExp = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
-            matchMarkup  = json.request.htmlString.match(markupRegExp);
+        var html = getHTML(json); 
 
-        if(matchMarkup){
-            html = window.atob(matchMarkup[1]);
-            if(html.indexOf("<html>") < 0){
-                html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
-            }
-            else{
-                html = html + "<style>body{margin:0px;padding:0px}</style>";
-            }
+        if(html.indexOf("<html>") < 0){
+            html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
+        }
+        else{
+            html = html + "<style>body{margin:0px;padding:0px}</style>";
         }
 
         ifrm.onload = once(function(){
@@ -94,12 +146,15 @@ var mobFoxCall = once(function(){
                     }
 
                     var json    = resp.body;
+
                     if(document.body){
-                        createIFrame(json); 
+                        if(mobFoxParams.noIFrame) createDiv(json);
+                        else createIFrame(json); 
                     }
                     else{
                         document.addEventListener("DOMContentLoaded",function(){
-                            createIFrame(json);
+                            if(mobFoxParams.noIFrame) createDiv(json);
+                            else createIFrame(json); 
                         });
                     }
                 }
