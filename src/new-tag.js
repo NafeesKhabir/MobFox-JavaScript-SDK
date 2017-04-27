@@ -89,7 +89,7 @@ var createIFrame = function(json){
         ifrm.style.height    = mobFoxParams.adspace_height + "px";
         ifrm.style.overflow  = "hidden";
         ifrm.style.margin    = "none";
-        ifrm.style.scrolling = "no";
+        ifrm.setAttribute("scrolling","no");
 
         var html = getHTML(json); 
 
