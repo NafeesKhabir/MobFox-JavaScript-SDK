@@ -125,6 +125,14 @@ mobFoxParams.r_resp     = "json";
 mobFoxParams.rt         = "api-fetchip";
 mobFoxParams.r_type     = "banner";
 
+var url = "http://my.mobfox.com/request.php";
+
+try {
+    if (mobFoxParams.imp_secure == 1) {
+        url = "https://my.mobfox.com/request.php";
+    }
+} catch(e) {}
+
 var mobFoxCall = once(function(){
 
     window.setTimeout(function(){
@@ -134,7 +142,7 @@ var mobFoxCall = once(function(){
     },3000);
 
     superagent
-            .get("http://my.mobfox.com/request.php")
+            .get(url)
             .timeout(2500)
             .query(mobFoxParams)
             .end(once(function(err,resp){
