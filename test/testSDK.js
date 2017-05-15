@@ -11,13 +11,16 @@ function standardPageTest(test,pageURL,clickURL){
         data;
 
     page.on('onLoadFinished', function(status) {
+        //console.log('onLoadFinished');
         if(loaded) return;
         if(status === "success") loaded = true;
 
         page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
+            //console.log('includeJs');
             page.evaluate(function() {
                 var iframe = document.querySelector("iframe");
-
+                
+                //console.log('return');
                 return {
                     width:iframe.width,
                     height:iframe.height,
@@ -29,6 +32,7 @@ function standardPageTest(test,pageURL,clickURL){
                 test.equal(data.width,"320");
                 test.equal(data.height,"50");
                 page.sendEvent('click',data.offset.left+5,data.offset.top + 5);
+                //console.log('sendEvent');
             });
         });
 
@@ -37,8 +41,12 @@ function standardPageTest(test,pageURL,clickURL){
 
 
     page.on('onNavigationRequested',function(url, type, willNavigate, main) {
+        //console.log('onNavigationRequested');
+        //console.log('url ' + url);
+        //console.log('clickURL ' + clickURL);
         //ad clicked, finish test
         if(url===clickURL){
+            //console.log('url===clickURL');
             test.equal(url,clickURL);
             test.done();
         }
@@ -46,6 +54,7 @@ function standardPageTest(test,pageURL,clickURL){
     });
 
     page.open(pageURL);
+    //console.log('open');
 
 }
 
