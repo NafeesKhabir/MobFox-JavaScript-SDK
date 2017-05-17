@@ -62,9 +62,8 @@ var createDiv = function(json){
 
     }
     catch(e) {
-        finished = true; 
-        console.log('e1');
-        failLoad(e);
+        finished = true;
+        failLoad({e1:e});
     }
 
 };
@@ -114,8 +113,7 @@ var createIFrame = function(json){
     }
     catch(e) {
         finished = true; 
-        console.log('e2');
-        failLoad(e);
+        failLoad({e2:e});
     }
 };
 
@@ -139,28 +137,24 @@ var mobFoxCall = once(function(){
         if (finished) return;
         failLoad("timeout");
     },3000);
-    
-    console.log(mobFoxParams.u);
-    
+        
     superagent
             .get(url)
             .timeout(2500)
             .query(mobFoxParams)
-            .end(once(function(err,resp){
-                if(timeout) return;
+            .end(once(function(resp,err) {
+                if (timeout) return;
                 try {
-//                    console.log(JSON.stringify(resp));
-//                    console.log(JSON.stringify(err));
+                    
                     var problem = err || resp.error || !resp.body || resp.body.error;
                     if (problem) {
                         finished = true;
-                        console.log('e3');
-                        return failLoad(problem);
+                        return failLoad({e3:problem});
                     }
 
-                    var json    = resp.body;
+                    var json = resp.body;
 
-                    if(document.body){
+                    if (document.body) {
                         if(mobFoxParams.noIFrame) createDiv(json);
                         else createIFrame(json); 
                     }
@@ -173,8 +167,7 @@ var mobFoxCall = once(function(){
                 }
                 catch(e) {
                     finished = true; 
-                    console.log('e4');
-                    failLoad(e);
+                    failLoad({e4:e});
                 }
                 
             }));

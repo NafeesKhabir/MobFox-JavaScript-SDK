@@ -1493,18 +1493,15 @@ var mobFoxCall = once(function(){
         if (finished) return;
         failLoad("timeout");
     },3000);
-    
-    console.log(mobFoxParams.u);
-    
+        
     superagent
             .get(url)
             .timeout(2500)
             .query(mobFoxParams)
-            .end(once(function(err,resp){
-                if(timeout) return;
+            .end(once(function(resp,err) {
+                if (timeout) return;
                 try {
-//                    console.log(JSON.stringify(resp));
-//                    console.log(JSON.stringify(err));
+                    
                     var problem = err || resp.error || !resp.body || resp.body.error;
                     if (problem) {
                         finished = true;
@@ -1512,9 +1509,9 @@ var mobFoxCall = once(function(){
                         return failLoad(problem);
                     }
 
-                    var json    = resp.body;
+                    var json = resp.body;
 
-                    if(document.body){
+                    if (document.body) {
                         if(mobFoxParams.noIFrame) createDiv(json);
                         else createIFrame(json); 
                     }
