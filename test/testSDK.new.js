@@ -11,47 +11,13 @@ function standardPageTest(test, pageURL, clickURL) {
     var loaded = false,
         data;
 
-    page.on('onLoadFinished', function(status) {
-
-        if (loaded) return;
-        if (status === "success") loaded = true;
-
-        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function() {
-
-            page.evaluate(function() {
-                
-                var iframe = document.querySelector("iframe");
-        
-                return {
-                    width   : iframe.width,
-                    height  : iframe.height,
-                    offset  : $(iframe).offset()
-                };
-
-            }).then(function(_data) {
-                
-//                return console.log(JSON.stringify(_data));
-                data = _data;
-                test.equal(data.width   , "320");
-                test.equal(data.height  , "50");
-                page.sendEvent('click', data.offset.left + 5, data.offset.top + 5);
-            });
-        });
-
-    });
-
 
     page.on('onNavigationRequested',function(url, type, willNavigate, main) {
-        //console.log('onNavigationRequested');
-        //console.log('url ' + url);
-        //console.log('type ' + type);
-        //console.log('willNavigate ' + willNavigate);
-        //console.log('main ' + main);
-        //console.log('clickURL ' + clickURL);
+
+        return console.log('url ' + url);
         
         //ad clicked, finish test
         if (url === clickURL) {
-
             test.equal(url,clickURL);
             test.done();
         }
@@ -59,7 +25,41 @@ function standardPageTest(test, pageURL, clickURL) {
     });
     
     page.on('onConsoleMessage', function(msg) {
-        console.log('CONSOLE: ' + msg);
+        if (loaded) return;
+        if (msg === "onSuccess") loaded = true;
+        
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function() {
+            page.evaluate(function() {
+
+            var iframe = document.querySelector('iframe');
+
+            return {
+                width   : $(iframe).width(),
+                height  : $(iframe).height(),
+                offset  : $(iframe).offset()
+            };
+
+            }).then(function(_data) {
+
+                data = _data;
+                test.equal(data.width   , "320");
+                test.equal(data.height  , "50");
+                page.sendEvent('click', data.offset.left + 5, data.offset.top + 5);
+            });
+
+        });
+    });
+    
+//    page.on('onResourceReceived',function(response){
+//        console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response));
+//    });
+    
+    page.on('onResourceRequested',function(requestData, networkRequest) {
+//        console.log('Request (#' + requestData.id + '): ' + JSON.stringify(requestData));
+        if (requestData.url)
+            if (requestData.url.startsWith("http://my.mobfox.com/request.php")) {
+//                console.log('gotcha');
+            }
     });
     
     page.open(pageURL);
