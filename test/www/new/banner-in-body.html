@@ -39,10 +39,18 @@
         "s": "fe96717d9875b9da4339ea5367eff1ec",
         "adspace_width": 320,
         "adspace_height": 50,
-        "o_iosadvid": "[o_iosadvid]"
+        "o_iosadvid": "[o_iosadvid]",
+        "onSuccess": function() {
+            console.log('onSuccess');
+        }
     };
     </script>
-    <script src="tag.js"></script>
+    <script src="http://sdk.starbolt.io/dist/tag.js"></script>
+    
+    <script>
+        console.log('onConsole');
+        alert('alert');
+    </script>
     
     <h1 class="green">Green</h1>
     <h1 class="gold">Gold</h1>

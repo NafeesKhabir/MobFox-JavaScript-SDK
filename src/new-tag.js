@@ -6,42 +6,41 @@ var superagent  = require("superagent"),
 var timeout     = false,
     finished    = false;
 //--------------------------------------
-var failLoad = function(){
-    if(typeof(mobFoxParams.onFail)==="function"){
+var failLoad = function() {
+    if (typeof(mobFoxParams.onFail)==="function") {
         mobFoxParams.onFail();
     }
 };
 //--------------------------------------
-var successLoad = function(){
-    if(typeof(mobFoxParams.onSuccess)==="function"){
+var successLoad = function() {
+    if (typeof(mobFoxParams.onSuccess)==="function") {
         mobFoxParams.onSuccess();
     }
 };
 //--------------------------------------
-var getHTML = function(json){
-
+var getHTML = function(json) {
+    
     var html            = json.request.htmlString,
         markupRegExp    = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
         matchMarkup     = json.request.htmlString.match(markupRegExp);
 
-    if(matchMarkup){
+    if (matchMarkup) {
         html = window.atob(matchMarkup[1]);
     }
-
     return html;
 };
 //--------------------------------------
-var createDiv = function(json){
+var createDiv = function(json) {
 
-    try{
+    try {
 
         var div = document.createElement('div');
         div.id = "mobfoxDiv";
 
-        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+        if (curScript && curScript.parentNode.tagName.toLowerCase() !== "head") {
             curScript.parentNode.appendChild(div);     
         }
-        else{
+        else {
             document.body.appendChild(div);
         }
 
@@ -58,10 +57,9 @@ var createDiv = function(json){
         div.innerHTML = html;
 
         finished = true; 
-        successLoad(); 
-
+        successLoad();
     }
-    catch(e){
+    catch(e) {
         console.log(e);
         finished = true; 
         failLoad();
@@ -71,14 +69,14 @@ var createDiv = function(json){
 //--------------------------------------
 var createIFrame = function(json){
     
-    try{
+    try {
         var ifrm = document.createElement('iframe');
         ifrm.id = "mobfoxFrame";
 
-        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+        if (curScript && curScript.parentNode.tagName.toLowerCase() !== "head") {
             curScript.parentNode.appendChild(ifrm);     
         }
-        else{
+        else {
             document.body.appendChild(ifrm);
         }
 
@@ -112,7 +110,7 @@ var createIFrame = function(json){
         c.document.write(html);
         c.document.close();
     }
-    catch(e){
+    catch(e) {
         finished = true; 
         failLoad();
     }
@@ -127,11 +125,11 @@ mobFoxParams.r_type     = "banner";
 
 var url = "http://my.mobfox.com/request.php";
 
-try {
-    if (mobFoxParams.imp_secure == 1) {
-        url = "https://my.mobfox.com/request.php";
-    }
-} catch(e) {}
+//try {
+//    if (mobFoxParams.imp_secure == 1) {
+//        url = "https://my.mobfox.com/request.php";
+//    }
+//} catch(e) {}
 
 var mobFoxCall = once(function(){
 
@@ -155,13 +153,13 @@ var mobFoxCall = once(function(){
 
                     var json    = resp.body;
 
-                    if(document.body){
-                        if(mobFoxParams.noIFrame) createDiv(json);
+                    if (document.body) {
+                        if (mobFoxParams.noIFrame) createDiv(json);
                         else createIFrame(json); 
                     }
-                    else{
+                    else {
                         document.addEventListener("DOMContentLoaded",function(){
-                            if(mobFoxParams.noIFrame) createDiv(json);
+                            if (mobFoxParams.noIFrame) createDiv(json);
                             else createIFrame(json); 
                         });
                     }
