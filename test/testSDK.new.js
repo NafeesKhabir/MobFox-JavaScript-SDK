@@ -5,56 +5,69 @@ var fileServer = new static.Server('./test/www'),
     phantom,
     page;
 
-function standardPageTest(test,pageURL,clickURL){
+function standardPageTest(test, pageURL, clickURL) {
     test.expect(3);
+    
     var loaded = false,
         data;
 
     page.on('onLoadFinished', function(status) {
-        //console.log('onLoadFinished');
-        if(loaded) return;
-        if(status === "success") loaded = true;
+//        return console.log(status);
+        if (loaded) return;
+        if (status === "success") loaded = true;
 
-        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function(){
-            //console.log('includeJs');
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function() {
+
             page.evaluate(function() {
-                var iframe = document.querySelector("iframe");
+//                return mobFoxParams;
                 
-                //console.log('return');
+                var iframe = document.querySelector("iframe");
+        
                 return {
-                    width:iframe.width,
-                    height:iframe.height,
-                    offset : $(iframe).offset()
+                    
+                    width   : iframe.width,
+                    height  : iframe.height,
+                    offset  : $(iframe).offset()
                 };
 
             }).then(function(_data){
+                return console.log(JSON.stringify(_data));
                 data = _data;
-                test.equal(data.width,"320");
-                test.equal(data.height,"50");
-                page.sendEvent('click',data.offset.left+5,data.offset.top + 5);
-                //console.log('sendEvent');
+                test.equal(data.width   , "320");
+                test.equal(data.height  , "50");
+                page.sendEvent('click', data.offset.left + 5, data.offset.top + 5);
             });
         });
 
-        
     });
 
 
     page.on('onNavigationRequested',function(url, type, willNavigate, main) {
         //console.log('onNavigationRequested');
         //console.log('url ' + url);
+        //console.log('type ' + type);
+        //console.log('willNavigate ' + willNavigate);
+        //console.log('main ' + main);
         //console.log('clickURL ' + clickURL);
+        
         //ad clicked, finish test
-        if(url===clickURL){
-            //console.log('url===clickURL');
+        if (url === clickURL) {
+
             test.equal(url,clickURL);
             test.done();
         }
 
     });
-
+    
+    page.on('onConsoleMessage', function(msg) {
+        console.log('CONSOLE: ' + msg);
+    });
+    
+    page.on('onAlert', function(msg) {
+        console.log('ALERT: ' + msg);
+    });
+    
     page.open(pageURL);
-    //console.log('open');
 
 }
 
@@ -365,10 +378,10 @@ module.exports.testBannerOneTagHead = function (test) {
 
 };
 //-----------------------------------------
-module.exports.testBannerNestedHeadClass = function (test) {
+module.exports.validateTagInBody = function (test) {
     standardPageTest(
         test,
-        'http://localhost:58080/banner-static-nested-head-class.html',
+        'http://localhost:58080/new/banner-in-body.html',
         'http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f'
     );
 
