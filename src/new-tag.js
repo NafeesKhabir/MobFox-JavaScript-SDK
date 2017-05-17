@@ -6,9 +6,9 @@ var superagent  = require("superagent"),
 var timeout     = false,
     finished    = false;
 //--------------------------------------
-var failLoad = function(){
+var failLoad = function(reason){
     if(typeof(mobFoxParams.onFail)==="function"){
-        mobFoxParams.onFail();
+        mobFoxParams.onFail(reason);
     }
 };
 //--------------------------------------
@@ -130,7 +130,7 @@ var mobFoxCall = once(function(){
     window.setTimeout(function(){
         timeout = true;
         if(finished) return;
-        failLoad();
+        failLoad("timeout");
     },3000);
 
     superagent
@@ -140,9 +140,10 @@ var mobFoxCall = once(function(){
             .end(once(function(err,resp){
                 if(timeout) return;
                 try{
-                    if(err || resp.error || !resp.body || resp.body.error){
+                    var problem = err || resp.error || !resp.body || resp.body.error;
+                    if(problem){
                         finished = true;
-                        return failLoad();
+                        return failLoad(String(problem));
                     }
 
                     var json    = resp.body;
@@ -160,7 +161,7 @@ var mobFoxCall = once(function(){
                 }
                 catch(e){
                     finished = true; 
-                    failLoad();
+                    failLoad(String(e));
                 }
                 
             }));
