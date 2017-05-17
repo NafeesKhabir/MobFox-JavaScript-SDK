@@ -1416,9 +1416,8 @@ var createDiv = function(json){
 
     }
     catch(e) {
-        finished = true; 
-        console.log('e1');
-        failLoad(e);
+        finished = true;
+        failLoad({e1:e});
     }
 
 };
@@ -1468,8 +1467,7 @@ var createIFrame = function(json){
     }
     catch(e) {
         finished = true; 
-        console.log('e2');
-        failLoad(e);
+        failLoad({e2:e});
     }
 };
 
@@ -1505,8 +1503,7 @@ var mobFoxCall = once(function(){
                     var problem = err || resp.error || !resp.body || resp.body.error;
                     if (problem) {
                         finished = true;
-                        console.log('e3');
-                        return failLoad(problem);
+                        return failLoad({e3:problem});
                     }
 
                     var json = resp.body;
@@ -1524,8 +1521,7 @@ var mobFoxCall = once(function(){
                 }
                 catch(e) {
                     finished = true; 
-                    console.log('e4');
-                    failLoad(e);
+                    failLoad({e4:e});
                 }
                 
             }));
