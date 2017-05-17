@@ -6,25 +6,25 @@ var superagent  = require("superagent"),
 var timeout     = false,
     finished    = false;
 //--------------------------------------
-var failLoad = function(reason){
-    if(typeof(mobFoxParams.onFail)==="function"){
+var failLoad = function(reason) {
+    if (typeof(mobFoxParams.onFail)==="function") {
         mobFoxParams.onFail(reason);
     }
 };
 //--------------------------------------
-var successLoad = function(){
-    if(typeof(mobFoxParams.onSuccess)==="function"){
+var successLoad = function() {
+    if (typeof(mobFoxParams.onSuccess)==="function") {
         mobFoxParams.onSuccess();
     }
 };
 //--------------------------------------
-var getHTML = function(json){
+var getHTML = function(json) {
 
     var html            = json.request.htmlString,
         markupRegExp    = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
         matchMarkup     = json.request.htmlString.match(markupRegExp);
 
-    if(matchMarkup){
+    if (matchMarkup) {
         html = window.atob(matchMarkup[1]);
     }
 
@@ -33,7 +33,7 @@ var getHTML = function(json){
 //--------------------------------------
 var createDiv = function(json){
 
-    try{
+    try {
 
         var div = document.createElement('div');
         div.id = "mobfoxDiv";
@@ -61,10 +61,10 @@ var createDiv = function(json){
         successLoad(); 
 
     }
-    catch(e){
-        console.log(e);
+    catch(e) {
         finished = true; 
-        failLoad();
+        console.log('e1');
+        failLoad(e);
     }
 
 };
@@ -112,9 +112,10 @@ var createIFrame = function(json){
         c.document.write(html);
         c.document.close();
     }
-    catch(e){
+    catch(e) {
         finished = true; 
-        failLoad();
+        console.log('e2');
+        failLoad(e);
     }
 };
 
@@ -127,30 +128,34 @@ mobFoxParams.r_type     = "banner";
 
 var url = "http://my.mobfox.com/request.php";
 
-mobFoxParams.imp_secure === 1) {
-	url = "https://my.mobfox.com/request.php";
-}
-
+//mobFoxParams.imp_secure === 1) {
+//	url = "https://my.mobfox.com/request.php";
+//}
 
 var mobFoxCall = once(function(){
 
     window.setTimeout(function(){
         timeout = true;
-        if(finished) return;
+        if (finished) return;
         failLoad("timeout");
     },3000);
-
+    
+    console.log(mobFoxParams.u);
+    
     superagent
             .get(url)
             .timeout(2500)
             .query(mobFoxParams)
             .end(once(function(err,resp){
                 if(timeout) return;
-                try{
+                try {
+//                    console.log(JSON.stringify(resp));
+//                    console.log(JSON.stringify(err));
                     var problem = err || resp.error || !resp.body || resp.body.error;
-                    if(problem){
+                    if (problem) {
                         finished = true;
-                        return failLoad(String(problem));
+                        console.log('e3');
+                        return failLoad(problem);
                     }
 
                     var json    = resp.body;
@@ -166,9 +171,10 @@ var mobFoxCall = once(function(){
                         });
                     }
                 }
-                catch(e){
+                catch(e) {
                     finished = true; 
-                    failLoad(String(e));
+                    console.log('e4');
+                    failLoad(e);
                 }
                 
             }));

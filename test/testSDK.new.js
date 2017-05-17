@@ -12,26 +12,25 @@ function standardPageTest(test, pageURL, clickURL) {
         data;
 
     page.on('onLoadFinished', function(status) {
-//        return console.log(status);
+
         if (loaded) return;
         if (status === "success") loaded = true;
 
         page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function() {
 
             page.evaluate(function() {
-//                return mobFoxParams;
                 
                 var iframe = document.querySelector("iframe");
         
                 return {
-                    
                     width   : iframe.width,
                     height  : iframe.height,
                     offset  : $(iframe).offset()
                 };
 
-            }).then(function(_data){
-                return console.log(JSON.stringify(_data));
+            }).then(function(_data) {
+                
+//                return console.log(JSON.stringify(_data));
                 data = _data;
                 test.equal(data.width   , "320");
                 test.equal(data.height  , "50");
@@ -63,12 +62,7 @@ function standardPageTest(test, pageURL, clickURL) {
         console.log('CONSOLE: ' + msg);
     });
     
-    page.on('onAlert', function(msg) {
-        console.log('ALERT: ' + msg);
-    });
-    
     page.open(pageURL);
-
 }
 
 //-----------------------------------------
@@ -84,6 +78,7 @@ module.exports.setUp = function (cb) {
             phantom = ph;
             ph.createPage().then(function(_page) {
                 page = _page;
+                page.setting('userAgent', 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36');
                 cb();
             });
         }); 
