@@ -366,7 +366,7 @@ module.exports.testBannerOneTagHead = function (test) {
 
 };
 //-----------------------------------------
-module.exports.testTagInBody = function (test) {
+module.exports.validateTagInBody = function (test) {
     standardPageTest(
         test,
         'http://localhost:58080/new/banner-in-body.html',
