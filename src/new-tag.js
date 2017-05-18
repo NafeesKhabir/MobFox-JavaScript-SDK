@@ -124,8 +124,6 @@ mobFoxParams.r_resp     = "json";
 mobFoxParams.rt         = "api-fetchip";
 mobFoxParams.r_type     = "banner";
 
-console.log('blah');
-
 var url = "http://my.mobfox.com/request.php";
 
 try {
