@@ -124,11 +124,15 @@ mobFoxParams.r_resp     = "json";
 mobFoxParams.rt         = "api-fetchip";
 mobFoxParams.r_type     = "banner";
 
+console.log('blah');
+
 var url = "http://my.mobfox.com/request.php";
 
-//mobFoxParams.imp_secure === 1) {
-//	url = "https://my.mobfox.com/request.php";
-//}
+try {
+    if (mobFoxParams.imp_secure == 1) {
+        url = "https://my.mobfox.com/request.php";
+    }
+} catch(e) {}
 
 var mobFoxCall = once(function(){
 

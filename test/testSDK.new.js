@@ -34,6 +34,7 @@ function standardPageTest(test, pageURL, clickURL) {
             var iframe = document.querySelector('iframe');
 
             return {
+                
                 width   : $(iframe).width(),
                 height  : $(iframe).height(),
                 offset  : $(iframe).offset()
@@ -70,6 +71,21 @@ function standardPageTest(test, pageURL, clickURL) {
 //            networkRequest.changeUrl(url); 
 //        }
 //    });
+    
+    page.open(pageURL);
+}
+
+function testSecure(test, pageURL) {
+    test.expect(0);
+    
+    var loaded = false,
+        data;
+    
+    page.on('onResourceRequested', function(requestData, networkRequest) {
+        if (requestData.url.startsWith("https")) {
+            test.done();
+        }
+    });
     
     page.open(pageURL);
 }
@@ -387,6 +403,14 @@ module.exports.validateTagInBody = function (test) {
         test,
         'http://localhost:58080/new/banner-in-body.html',
         'http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f'
+    );
+
+};
+//-----------------------------------------
+module.exports.validateSecureParam = function (test) {
+    testSecure(
+        test,
+        'http://localhost:58080/new/banner-secure.html'
     );
 
 };
