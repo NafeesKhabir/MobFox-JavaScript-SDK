@@ -398,6 +398,15 @@ module.exports.validateTagInBody = function (test) {
 
 };
 //-----------------------------------------
+module.exports.validateTagInHead = function (test) {
+    standardPageTest(
+        test,
+        'http://localhost:58080/new/banner-in-head.html',
+        'http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f'
+    );
+
+};
+//-----------------------------------------
 module.exports.validateSecureParam = function (test) {
     testSecure(
         test,
