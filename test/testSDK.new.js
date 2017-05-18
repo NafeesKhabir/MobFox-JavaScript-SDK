@@ -1,9 +1,13 @@
-var static = require('node-static');
+var static  = require('node-static');
+var URL     = require('url');
 
 var fileServer = new static.Server('./test/www'),
     server,
     phantom,
     page;
+
+var domain      = 'http://my.mobfox.com/request.php';
+var clickUrl    = 'http://tokyo-my.mobfox.com/exchange.click.php';
 
 function standardPageTest(test, pageURL, clickURL) {
     test.expect(3);
@@ -11,20 +15,16 @@ function standardPageTest(test, pageURL, clickURL) {
     var loaded = false,
         data;
 
-
     page.on('onNavigationRequested',function(url, type, willNavigate, main) {
-
-        return console.log('url ' + url);
-        
         //ad clicked, finish test
-        if (url === clickURL) {
-            test.equal(url,clickURL);
+        if (url.startsWith(clickUrl)) {
+            test.ok(URL.parse(url).query.startsWith("h="));
             test.done();
         }
 
     });
     
-    page.on('onConsoleMessage', function(msg) {
+    page.on('onConsoleMessage', function(msg) {        
         if (loaded) return;
         if (msg === "onSuccess") loaded = true;
         
@@ -44,6 +44,7 @@ function standardPageTest(test, pageURL, clickURL) {
                 data = _data;
                 test.equal(data.width   , "320");
                 test.equal(data.height  , "50");
+
                 page.sendEvent('click', data.offset.left + 5, data.offset.top + 5);
             });
 
@@ -52,15 +53,23 @@ function standardPageTest(test, pageURL, clickURL) {
     
 //    page.on('onResourceReceived',function(response){
 //        console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response));
+//        console.log('onResourceReceived\nid: ' + response.id + '\njson: ' + JSON.stringify(response));
 //    });
     
-    page.on('onResourceRequested',function(requestData, networkRequest) {
-//        console.log('Request (#' + requestData.id + '): ' + JSON.stringify(requestData));
-        if (requestData.url)
-            if (requestData.url.startsWith("http://my.mobfox.com/request.php")) {
-//                console.log('gotcha');
-            }
-    });
+//    page.on('onResourceRequested', true, function(requestData, networkRequest) {
+//        console.log('onResourceRequested');
+//        
+//        if (requestData.url.indexOf("http://my.mobfox.com/request.php") > -1) {
+//            
+//            console.log('networkRequest.abort()');
+//            networkRequest.abort();
+//            
+//            var url = requestData.url.replace("http://my.mobfox.com/request.php", "localhost:9080");
+//            
+//            console.log('networkRequest.changeUrl()');
+//            networkRequest.changeUrl(url); 
+//        }
+//    });
     
     page.open(pageURL);
 }
