@@ -1,0 +1,51 @@
+ <!DOCTYPE html> <html>
+ <head> 
+     <!-- Adgroup is 899338bec2bd4ed3a9222a235fd6289c -->
+     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+     <style type='text/css'> 
+     .mp_center { position: fixed; top: 50%; left: 50%; margin-left: -160px !important; margin-top: -25px !important; } 
+     </style>  
+     <script type="text/javascript"> 
+     function mopubFinishLoad(){ setTimeout( function() { window.location = 'mopub://finishLoad' }, 0 ); }
+     </script> 
+     <script type="text/javascript"> 
+     if (trackImpressionHelper == null || typeof(trackImpressionHelper) != "function") { 
+        function trackImpressionHelper() { 
+            var urls = new Array(); var i = 0;  
+            urls[i++]="https://ads.mopub.com/m/imp?appid=&cid=e86b7482a2fd48cd81b9f5418fe86bab&city=Tel%20Aviv&ckv=2&country_code=IL&cppck=4E4F0&dev=iPhone7%2C2&exclude_adgroups=899338bec2bd4ed3a9222a235fd6289c&id=f74951bff0bf4379844d76946c0fb5ec&is_mraid=0&os=iOS&osv=10.0.1&req=d03ea3699ab2497686c34a2e1bf28869&reqt=1486985973.0&rev=0.000050&udid=ifa%3A851AF8A9-CAAE-40B6-A8C8-2548C3D63F69&video_type=";  
+            var hiddenSpan = document.createElement('span'); 
+            hiddenSpan.style.display = 'none'; 
+            var i = 0; for (var i=0;i<urls.length;i++) { 
+                var img = document.createElement('img'); 
+                img.src = urls[i]; hiddenSpan.appendChild(img);
+            } 
+            var body = document.getElementsByTagName('body')[0]; 
+            body.appendChild(hiddenSpan); } }
+            </script>
+            <script type="text/javascript"> 
+                function webviewDidClose(){ if (typeof webviewDidCloseHelper == 'function') { webviewDidCloseHelper(); } } 
+                function webviewDidAppear(){  if(typeof webviewDidAppearHelper == 'function') { webviewDidAppearHelper(); } }
+                window.addEventListener("load", function() { 
+                    var links = document.getElementsByTagName('a'); for(var i=0; i < links.length; i++) { links[i].setAttribute('target','_blank'); 
+                } }, false); 
+                </script>  
+</head> 
+<body style="margin:0;padding:0;"> 
+<iframe id="mfAd" frameborder="0" sandbox="allow-top-navigation allow-scripts allow-same-origin allow-popups" style="border:none;width:320px;height:50px;overflow:hidden;margin:none;scrolling:no">
+</iframe>
+<script>
+    function noFill(){loaded=!0,window.location="mopub://failLoad"}
+    var params={r_type:"banner",u:navigator.userAgent,s:"fe96717d9875b9da4339ea5367eff1ec",m:"live",rt:"javascript",v:"3.0",adspace_width:320,adspace_height:50,jsvar:"mfAd",o_iosadvid:"851AF8A9-CAAE-40B6-A8C8-2548C3D63F69",c_mraid:0},
+    query=Object.keys(params).map(
+        function(e){return[e,encodeURIComponent(params[e])].join("=")}).join("&"),
+        url="http://my.mobfox.com/request.php?"+query,
+        req=new XMLHttpRequest;req.addEventListener("load",function()
+            {var resp=this.responseText;return 200===this.status&&resp&&0!==resp.length?void(document.querySelector("#mfAd").srcdoc=eval(resp.replace("var mfAd = ",""))[0].content):noFill()}),req.addEventListener("error",noFill),req.addEventListener("abort",noFill),req.ontimeout=noFill,req.timeout=1e3,req.open("GET",url,!0),req.send(null)</script> 
+<script type="text/javascript"> 
+    if (typeof htmlWillCallFinishLoad == "undefined" || !htmlWillCallFinishLoad) { 
+        if(typeof mopubFinishLoad == 'function') { window.onload = mopubFinishLoad; }
+    } 
+    if(typeof trackImpressionHelper == 'function') { trackImpressionHelper(); }
+</script> 
+</body>
+</html> 
