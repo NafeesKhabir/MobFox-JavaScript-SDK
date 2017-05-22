@@ -22,7 +22,7 @@
     "node-static": "^0.7.9",
     "phantom": "^4.0.3",
     "qs": "^2.3.3",
-    "superagent": "^0.21.0"
+    "superagent": "^3.5.2"
   },
   "devDependencies": {
     "cheerio": "^0.18.0",

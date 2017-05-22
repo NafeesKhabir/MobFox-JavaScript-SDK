@@ -144,7 +144,8 @@ var mobFoxCall = once(function(){
             .get(url)
             .timeout(2500)
             .query(mobFoxParams)
-            .end(once(function(resp,err) {
+            .end(once(function(err,resp) {
+        
                 if (timeout) return;
                 try {
                     

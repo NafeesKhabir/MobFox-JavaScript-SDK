@@ -25,6 +25,7 @@ function standardPageTest(test, pageURL, clickURL) {
     });
     
     page.on('onConsoleMessage', function(msg) {
+        console.log(msg);
         if (msg != 'onSuccess')     return;
         if (loaded)                 return;
         if (msg === "onSuccess")    loaded = true;
