@@ -10,6 +10,7 @@ var domain      = 'http://my.mobfox.com/request.php';
 var clickUrl    = 'http://tokyo-my.mobfox.com/exchange.click.php';
 
 function standardPageTest(test, pageURL, clickURL) {
+    console.log('standardPageTest');
     test.expect(3);
     
     var loaded = false,
@@ -17,6 +18,7 @@ function standardPageTest(test, pageURL, clickURL) {
 
     page.on('onNavigationRequested',function(url, type, willNavigate, main) {
         //ad clicked, finish test
+        console.log('onNavigationRequested');
         if (url.startsWith(clickUrl)) {
             test.ok(URL.parse(url).query.startsWith("h="));
             test.done();
@@ -25,21 +27,26 @@ function standardPageTest(test, pageURL, clickURL) {
     });
     
     page.on('onConsoleMessage', function(msg) {
-        console.log(msg);
+        console.log('onConsoleMessage');
+        
         if (msg != 'onSuccess')     return;
+        
         if (loaded)                 return;
         if (msg === "onSuccess")    loaded = true;
         
         page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function() {
+            console.log('includeJs');
+            
             page.evaluate(function() {
-                
-            var iframe = document.querySelector('iframe');
-                
-            return {
-                width   : $(iframe).width(),
-                height  : $(iframe).height(),
-                offset  : $(iframe).offset()
-            };
+                console.log('evaluate');
+
+                var iframe = document.querySelector('iframe');
+
+                return {
+                    width   : $(iframe).width(),
+                    height  : $(iframe).height(),
+                    offset  : $(iframe).offset()
+                };
 
             }).then(function(_data) {
                 
@@ -47,6 +54,7 @@ function standardPageTest(test, pageURL, clickURL) {
                 test.equal(data.width   , "320");
                 test.equal(data.height  , "50");
 
+                console.log('click');
                 page.sendEvent('click', data.offset.left + 5, data.offset.top + 5);
             });
 

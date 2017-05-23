@@ -1,0 +1,16 @@
+ <!DOCTYPE html> <html> <head>  <!-- Adgroup is 666728ae129f455894421e7089d918c8 -->  <style type='text/css'> .mp_center { position: fixed; top: 50%; left: 50%; margin-left: -160px !important; margin-top: -25px !important; } </style>  <script type="text/javascript"> function mopubFinishLoad(){ setTimeout( function() { window.location = 'mopub://finishLoad' }, 0 ); } </script> <script type="text/javascript"> if (trackImpressionHelper == null || typeof(trackImpressionHelper) != "function") { function trackImpressionHelper() { var urls = new Array(); var i = 0;  urls[i++]="http://ads.mopub.com/m/imp?appid=&cid=94c95229911b4ddca7656b48dec21918&city=Tel%20Aviv&ckv=2&country_code=IL&cppck=10211&dev=SM-J710F&exclude_adgroups=666728ae129f455894421e7089d918c8&id=f74951bff0bf4379844d76946c0fb5ec&is_mraid=0&os=Android&osv=6.0.1&req=d4c6606188b849cca22f7276d213a5ab&reqt=1495530464.0&rev=0.000050&udid=sha%3Af90d872f208077e19facf5bb437ce8ef8cc7b5d4&video_type=";  var hiddenSpan = document.createElement('span'); hiddenSpan.style.display = 'none'; var i = 0; for (var i=0;i<urls.length;i++) { var img = document.createElement('img'); img.src = urls[i]; hiddenSpan.appendChild(img); } var body = document.getElementsByTagName('body')[0]; body.appendChild(hiddenSpan); } } </script>  <script type="text/javascript"> function webviewDidClose(){ if (typeof webviewDidCloseHelper == 'function') { webviewDidCloseHelper(); } } function webviewDidAppear(){  if(typeof webviewDidAppearHelper == 'function') { webviewDidAppearHelper(); } } window.addEventListener("load", function() { var links = document.getElementsByTagName('a'); for(var i=0; i < links.length; i++) { links[i].setAttribute('target','_blank'); } }, false);  </script>  </head> <body style="margin:0;padding:0;"> <script>
+    var mobFoxParams = {
+        "r_type": "banner",
+        "s": "fe96717d9875b9da4339ea5367eff1ec",
+        "adspace_width": 320,
+        "adspace_height": 50,
+        "o_iosadvid": "[o_iosadvid]",
+        "onSuccess": function() {
+            console.log('onSuccess');
+        },
+        "onFail": function() {
+            console.log('onFail');
+        }
+    };
+</script>
+<script src="mopub.js"></script> <script type="text/javascript"> if (typeof htmlWillCallFinishLoad == "undefined" || !htmlWillCallFinishLoad) { if(typeof mopubFinishLoad == 'function') { window.onload = mopubFinishLoad; } }  if(typeof trackImpressionHelper == 'function') { trackImpressionHelper(); }  </script>  </body> </html> 
