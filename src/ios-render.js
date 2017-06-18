@@ -73,6 +73,7 @@ var failLoad = function(window, reason) {
 
 var successLoad = function(window) {
     try {
+        document.body.style.backgroundColor = "#000000";
         window.webkit.messageHandlers.mobfox.postMessage({success:''});
     } catch(e) {
 //        console.log(e);
