@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <title></title>
+    <style>
+        htmL,body{
+            height:100%;
+        }
+
+        body{
+            margin  : auto;
+            padding : 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+    <script>
+
+        var search          = location.search.substring(1);
+            
+        window.mobFoxParams    = search ? JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}',
+                                function(key, value) { return key===""?value:decodeURIComponent(value) }):{};
+
+        window.mobFoxParams.onFail = function(reason){
+            if(typeof(reason) === "object") reason = JSON.stringify(reason);
+            mobfox.onFail(reason);
+        }
+
+        window.mobFoxParams.onSuccess = function(){
+            document.body.style.backgroundColor = "#000000";
+            mobfox.onSuccess();
+        }
+
+    </script>
+    <script src="/dist/tag.js"></script>
+</head>
+<body>
+    
+</body>
+</html>
