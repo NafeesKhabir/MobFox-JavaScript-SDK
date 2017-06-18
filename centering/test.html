@@ -1,0 +1,42 @@
+<style>
+    html{
+        height:100%;
+    }
+    
+    body{
+        margin: 0;
+        padding:0;
+        background:black;
+        height:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<script type="text/javascript">
+    var markupB64   = 'PCFET0NUWVBFIGh0bWw+PGh0bWwgbGFuZz0iZW4iPjxoZWFkPjxtZXRhIGNoYXJzZXQ9IlVURi04Ij48dGl0bGU+RG9jdW1lbnQ8L3RpdGxlPjwvaGVhZD48c3R5bGU+Ym9keXttYXJnaW46MDt0ZXh0LWFsaWduOmNlbnRlcjt9PC9zdHlsZT48Ym9keT48YSBpZD0iYnRuIiBocmVmPSJodHRwOi8vbW9iZm94LmRldjo1MDAwMC9leGNoYW5nZS5jbGljay5waHA/aD1lZDI0YTgyMzgyYjZjNDdlZmJjZjZjNTIyNjExZGQ5MCI+PGltZyBzdHlsZT0id2lkdGg6NzAlIiBzcmM9Imh0dHA6Ly9kb2dnMnZiZnYzMnhmLmNsb3VkZnJvbnQubmV0L3Rlc3RhZDEuanBnIi8+PC9hPjxpbWcgc3JjPSJodHRwOi8vdHJhY2tpbmcueWVhaG1vYmkuY29tL2V2ZW50LnBocD9lPTEwMjAwJmFkeD1tb2Jmb3gmYWQ9MzMzNSZiaWQ9NTkwRTZFRkY3M0I5ODc1REI2NDY1MUU4NDdFMTlBRTcmaW1wPTEiIHN0eWxlPSJwb3NpdGlvbjphYnNvbHV0ZTtsZWZ0Oi05OTk5cHgiLz48L2JvZHk+PHNjcmlwdD5mdW5jdGlvbiBjbGljaygpe3ZhciBzY3JpcHQ9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcJ2ltZ1wnKTsgc2NyaXB0LnNyYz0iaHR0cDovL3RyYWNraW5nLnllYWhtb2JpLmNvbS9ldmVudC5waHA/ZT0xMDMwMCZhZHg9bW9iZm94JmFkPTMzMzUmYmlkPTU5MEU2RUZGNzNCOTg3NURCNjQ2NTFFODQ3RTE5QUU3JmltcD0xIjsgZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChzY3JpcHQpO30gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcJyNidG5cJykuYWRkRXZlbnRMaXN0ZW5lcihcJ2NsaWNrXCcsY2xpY2spOzwvc2NyaXB0PjwvaHRtbD48aW1nIHN0eWxlPSJwb3NpdGlvbjphYnNvbHV0ZTsgbGVmdDogLTEwMDAwcHg7IiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBzcmM9Imh0dHA6Ly9tb2Jmb3guZGV2OjUwMDAwL2V4Y2hhbmdlLnBpeGVsLnBocD9oPWVkMjRhODIzODJiNmM0N2VmYmNmNmM1MjI2MTFkZDkwIi8+PHNjcmlwdCB0eXBlPSJ0ZXh0L2phdmFzY3JpcHQiPmRvY3VtZW50LndyaXRlKFwnPGltZyBzdHlsZT0icG9zaXRpb246YWJzb2x1dGU7IGxlZnQ6IC0xMDAwMHB4OyIgd2lkdGg9IjEiIGhlaWdodD0iMSIgc3JjPSJodHRwOi8vbW9iZm94LmRldjo1MDAwMC9leGNoYW5nZS5waXhlbC5waHA/aD1lZDI0YTgyMzgyYjZjNDdlZmJjZjZjNTIyNjExZGQ5MCZ0ZXN0PTEiLz5cJyk7PC9zY3JpcHQ+';
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var iframe      = document.createElement("iframe");
+        document.body.appendChild(iframe);
+        iframe.width    = "320";
+        iframe.height   = "480";
+
+        iframe.style.margin     = "0px";
+        iframe.style.padding    = "0px";
+        iframe.style.border     = "none";   
+        iframe.scrolling        = "no";
+        iframe.style.overflow   = "hidden";
+
+        var markup =atob(markupB64);
+
+        if(markup.indexOf("<body>") < 0) markup = "<html><body style='margin:0'>"+markup+"<\/body><\/html>";
+
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(markup);
+        iframe.contentWindow.document.close();
+    });
+</script>    
+
+
+

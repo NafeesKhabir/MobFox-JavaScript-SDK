@@ -1,0 +1,42 @@
+<style>
+    html{
+        height:100%;
+    }
+    
+    body{
+        margin: 0;
+        padding:0;
+        background:black;
+        height:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<script type="text/javascript">
+    var markupB64   = '{{{markupB64}}}';
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var iframe      = document.createElement("iframe");
+        document.body.appendChild(iframe);
+        iframe.width    = "{{width}}";
+        iframe.height   = "{{height}}";
+
+        iframe.style.margin     = "0px";
+        iframe.style.padding    = "0px";
+        iframe.style.border     = "none";   
+        iframe.scrolling        = "no";
+        iframe.style.overflow   = "hidden";
+
+        var markup =atob(markupB64);
+
+        if(markup.indexOf("<body>") < 0) markup = "<html><body style='margin:0'>"+markup+"<\/body><\/html>";
+
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(markup);
+        iframe.contentWindow.document.close();
+    });
+</script>    
+
+
+
