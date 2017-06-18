@@ -2,3 +2,4 @@ node_modules/
 *.swp
 test/specifics/
 dist/
+test/www/new/tag.js

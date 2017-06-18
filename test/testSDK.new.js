@@ -11,14 +11,16 @@ var clickUrl    = 'http://tokyo-my.mobfox.com/exchange.click.php';
 
 function standardPageTest(test, pageURL, clickURL) {
     console.log('standardPageTest');
+    
     test.expect(3);
     
     var loaded = false,
         data;
 
     page.on('onNavigationRequested',function(url, type, willNavigate, main) {
-        //ad clicked, finish test
         console.log('onNavigationRequested');
+        
+        //ad clicked, finish test
         if (url.startsWith(clickUrl)) {
             test.ok(URL.parse(url).query.startsWith("h="));
             test.done();
@@ -28,7 +30,7 @@ function standardPageTest(test, pageURL, clickURL) {
     
     page.on('onConsoleMessage', function(msg) {
         console.log('onConsoleMessage');
-        
+    
         if (msg != 'onSuccess')     return;
         
         if (loaded)                 return;
@@ -53,8 +55,7 @@ function standardPageTest(test, pageURL, clickURL) {
                 data = _data;
                 test.equal(data.width   , "320");
                 test.equal(data.height  , "50");
-
-                console.log('click');
+                
                 page.sendEvent('click', data.offset.left + 5, data.offset.top + 5);
             });
 
@@ -92,23 +93,55 @@ function testSecure(test, pageURL) {
 
 //-----------------------------------------
 module.exports.setUp = function (cb) {
-    server = require('http').createServer(function (request, response) {
-        request.addListener('end', function () {
-            fileServer.serve(request, response);
-        }).resume();
-    });
-    server.listen(58080,function(){
     
-        require('phantom').create().then(function(ph) {
-            phantom = ph;
-            ph.createPage().then(function(_page) {
-                page = _page;
-                page.setting('userAgent', 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36');
-                cb();
-            });
-        }); 
     
-    });
+    var request = require("request");
+
+var url = "http://localhost:58080/index.html"
+
+require('http').createServer(function (request, response) {
+    request.addListener('end', function () {
+        fileServer.serve(request, response);
+    }).resume();
+}).listen(58080, function(){
+    console.log('listening..')
+    
+
+request({
+    url: url
+//    json: true
+}, function (error, response, body) {
+    
+//    console.log(error);
+    console.log(response.statusCode);
+//    console.log(body);
+
+    if (!error && response.statusCode === 200) {
+        console.log(body) // Print the json response
+    }
+})
+});
+    
+//    server = require('http').createServer(function (request, response) {
+//        request.addListener('end', function () {
+//            fileServer.serve(request, response);
+//        }).resume();
+//    });
+//    
+//    server.listen(58080,function(){
+//    
+//        console.log('listen');
+//    
+//        require('phantom').create().then(function(ph) {
+//            phantom = ph;
+//            ph.createPage().then(function(_page) {
+//                page = _page;
+//                page.setting('userAgent', 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36');
+//                cb();
+//            });
+//        }); 
+//    
+//    });
 };
 //-----------------------------------------
 module.exports.tearDown = function (cb) {
