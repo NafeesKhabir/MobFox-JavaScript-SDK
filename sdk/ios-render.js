@@ -98,10 +98,12 @@ window.renderAd = once(function(adspace_width,adspace_height,json){
         }
 
         if (document.body) {
+            document.body.style.backgroundColor = "#000000";
             createIFrame(adspace_width,adspace_height,json); 
         }
         else{
             document.addEventListener("DOMContentLoaded",function(){
+                document.body.style.backgroundColor = "#000000";
                 createIFrame(adspace_width,adspace_height,json);
             });
         }
