@@ -1,50 +1,23 @@
-var render_response = function(width, height, json) {
-    
-    try {
-        
-        if (typeof json === 'string') {
-            json = JSON.parse(json);
-        }
-        
-        var ifrm    = document.createElement('iframe');
-        ifrm.id     = 'mobfoxFrame';
 
-        document.body.appendChild(ifrm);
-
-        //css
-        ifrm.frameborder        = '0';
-        ifrm.style.border       = 'none';
-        ifrm.style.width        = width + 'px';
-        ifrm.style.height       = height + 'px';
-        ifrm.style.overflow     = 'hidden';
-        ifrm.style.margin       = 'none';
-        ifrm.setAttribute('scrolling', 'no');
-
-        var html = getHTML(json); 
-
-        if (html.indexOf("<html>") < 0) {
-            html = ["<html><body style='margin:0px;padding:0px;'>", html, "</body></html>"].join("\n");
-        } else {
-            html = html + "<style>body{margin:0px;padding:0px}</style>";
-        }
-
-        ifrm.onload = function() {
-            successLoad(window); 
-        }
-
-        var c = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
-        
-        c.document.open();
-        c.document.write(html);
-        c.document.close();
-    }
-    catch(e) {
-        failLoad(window, e);
-    }
-}
+var once        = require("once"),
+    curScript   = document.currentScript;
 
 //--------------------------------------
-
+var timeout     = false,
+    finished    = false;
+//--------------------------------------
+var failLoad = function(reason) {
+    if (typeof(mobFoxParams.onFail)==="function") {
+        mobFoxParams.onFail(reason);
+    }
+};
+//--------------------------------------
+var successLoad = function() {
+    if (typeof(mobFoxParams.onSuccess)==="function") {
+        mobFoxParams.onSuccess();
+    }
+};
+//--------------------------------------
 var getHTML = function(json) {
 
     var html            = json.request.htmlString,
@@ -57,26 +30,87 @@ var getHTML = function(json) {
 
     return html;
 };
-
 //--------------------------------------
-
-var failLoad = function(window, reason) {
-    try {
-        window.webkit.messageHandlers.mobfox.postMessage({fail:reason});
-    } catch(e) {
-//        console.log(e);
-    }
+var createIFrame = function(width,height,json){
     
+    try{
+        var ifrm = document.createElement('iframe');
+        ifrm.id = "mobfoxFrame";
+
+        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+            curScript.parentNode.appendChild(ifrm);     
+        }
+        else{
+            document.body.appendChild(ifrm);
+        }
+
+        //css
+        ifrm.frameborder = "0";
+        ifrm.style.border    = "none";
+        ifrm.style.width     = width + "px";
+        ifrm.style.height    = height + "px";
+        ifrm.style.overflow  = "hidden";
+        ifrm.style.margin    = "none";
+        ifrm.setAttribute("scrolling","no");
+
+        var html = getHTML(json); 
+
+        if(html.indexOf("<html>") < 0){
+            html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
+        }
+        else{
+            html = html + "<style>body{margin:0px;padding:0px}</style>";
+        }
+
+        ifrm.onload = once(function(){
+            if(timeout) return;
+            finished = true; 
+            successLoad(); 
+        });
+
+        var c = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
+        
+        c.document.open();
+        c.document.write(html);
+        c.document.close();
+    }
+    catch(e) {
+        finished = true; 
+        failLoad({e2:e});
+    }
 };
 
 //--------------------------------------
 
-var successLoad = function(window) {
-    try {
-        document.body.style.backgroundColor = "#000000";
-        window.webkit.messageHandlers.mobfox.postMessage({success:''});
-    } catch(e) {
-//        console.log(e);
-    }
+window.renderAd = once(function(adspace_width,adspace_height,json){
+
+    window.setTimeout(function(){
+        timeout = true;
+        if (finished) return;
+        failLoad("timeout");
+    },3000);
     
-};
+   
+    try {
+        
+        if (typeof(json) === 'string') {
+            json = JSON.parse(json);
+        }
+
+        if (document.body) {
+            createIFrame(adspace_width,adspace_height,json); 
+        }
+        else{
+            document.addEventListener("DOMContentLoaded",function(){
+                createIFrame(adspace_width,adspace_height,json);
+            });
+        }
+    }
+    catch(e) {
+        finished = true; 
+        failLoad({e4:e});
+    }
+                
+});
+//--------------------------------------
+

@@ -2,8 +2,6 @@ var superagent  = require("superagent"),
     once        = require("once"),
     curScript   = document.currentScript;
 
-console.log('before');
-
 //--------------------------------------
 var timeout     = false,
     finished    = false;
@@ -142,8 +140,6 @@ var mobFoxCall = once(function(){
         failLoad("timeout");
     },3000);
     
-    console.log('before');
-        
     superagent
             .get(url)
             .timeout(2500)
