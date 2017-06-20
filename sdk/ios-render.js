@@ -1,4 +1,3 @@
-
 var once        = require("once"),
     curScript   = document.currentScript;
 

@@ -1,0 +1,16 @@
+{
+	"request": {
+		"type": "textAd",
+		"htmlString": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Document</title></head><style>body{margin:0;text-align:center;}</style><body><a id=\"btn\" href=\"http://mobfox.dev:50000/exchange.click.php?h=ed24a82382b6c47efbcf6c522611dd90\"><img style=\"width:70%\" src=\"http://dogg2vbfv32xf.cloudfront.net/testad1.jpg\"/></a><img src=\"http://tracking.yeahmobi.com/event.php?e=10200&adx=mobfox&ad=3335&bid=590E6EFF73B9875DB64651E847E19AE7&imp=1\" style=\"position:absolute;left:-9999px\"/></body><script>function click(){var script=document.createElement('img'); script.src=\"http://tracking.yeahmobi.com/event.php?e=10300&adx=mobfox&ad=3335&bid=590E6EFF73B9875DB64651E847E19AE7&imp=1\"; document.body.appendChild(script);} document.querySelector('#btn').addEventListener('click',click);</script></html><img style=\"position:absolute; left: -10000px;\" width=\"1\" height=\"1\" src=\"http://mobfox.dev:50000/exchange.pixel.php?h=ed24a82382b6c47efbcf6c522611dd90\"/><script type=\"text/javascript\">document.write('<img style=\"position:absolute; left: -10000px;\" width=\"1\" height=\"1\" src=\"http://mobfox.dev:50000/exchange.pixel.php?h=ed24a82382b6c47efbcf6c522611dd90&test=1\"/>');</script>",
+		"clicktype": "safari",
+		"clickurl": "http://mobfox.dev:50000/exchange.click.php?h=ed24a82382b6c47efbcf6c522611dd90",
+		"urltype": "link",
+		"refresh": "30",
+		"scale": "no",
+		"skippreflight": "yes",
+		"demandPartner": {
+			"id": "6",
+			"name": "MobFox DSP"
+		}
+	}
+}
