@@ -31,6 +31,10 @@
             window.webkit.messageHandlers.mobfox.postMessage({success:""}); 
         }
 
+        document.addEventListener("DOMContentLoaded", function(event) {
+            window.webkit.messageHandlers.mobfox.postMessage({ready:""}); 
+        });
+
     </script>
 
 </head>
