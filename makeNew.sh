@@ -4,10 +4,10 @@ browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > d
 browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/new/tag.js
 
 uglifyjs -c -- src/moat-tag.js > dist/moat-tag.js
-uglifyjs -c -- src/moat-tag.js > test/www/new/moat-tag.js
+#uglifyjs -c -- src/moat-tag.js > test/www/new/moat-tag.js
 
-cp -f src/moat.html dist/moat.html
-cp -f src/moat.html test/www/new/moat.html
+cp -f sdk/tagBanneriOSMoat.html dist/tagBanneriOSMoat.html
+#cp -f src/moat.html test/www/new/moat.html
 
 #uglifyjs -c -- src/ios-render.js > dist/ios-render.js
 #uglifyjs -c -- src/ios-render.js > test/www/new/ios-render.js
