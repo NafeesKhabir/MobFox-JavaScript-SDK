@@ -3,7 +3,8 @@ mkdir -p dist
 browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/tag.js
 browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/new/tag.js
 
-uglifyjs -c -- src/moat-tag.js > dist/moat-tag.js
+uglifyjs -- src/moat-tag.js > dist/moat-tag.js
+#uglifyjs -c -- src/moat-tag.js > dist/moat-tag.js
 #uglifyjs -c -- src/moat-tag.js > test/www/new/moat-tag.js
 
 cp -f sdk/tagBanneriOSMoat.html dist/tagBanneriOSMoat.html
