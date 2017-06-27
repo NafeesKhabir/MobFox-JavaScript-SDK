@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <script>
+        window.mobFoxParams = {};
+        window.mobFoxParams.onFail = function(reason) {
+            if(typeof(reason) === "object") reason = JSON.stringify(reason);
+            window.webkit.messageHandlers.mobfox.postMessage({fail:reason}); 
+        }
+        window.mobFoxParams.onSuccess = function() {
+            window.webkit.messageHandlers.mobfox.postMessage({success:""}); 
+        }
+        document.addEventListener("DOMContentLoaded", function(event) {
+            window.webkit.messageHandlers.mobfox.postMessage({ready:""}); 
+        });
+    </script>
+    <script>
+        window.returnNow = function() {
+            return 'returnNow';
+        }
+        window.onlyConsole = function() {
+            console.log('onlyConsole');
+        }
+        window.withArgs = function(invh, bundle, json) {
+            console.log('start');
+            return 'finish';
+        }
+        window.usesOnSuccess = function() {
+            window.mobFoxParams.onSuccess();
+        }
+    </script>
+</head>
+    <body></body>
+</html>
