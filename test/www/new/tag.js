@@ -1,39 +1,2217 @@
-(function e$$0(f,l,b){function d(c,e){if(!l[c]){if(!f[c]){var m="function"==typeof require&&require;if(!e&&m)return m(c,!0);if(a)return a(c,!0);m=Error("Cannot find module '"+c+"'");throw m.code="MODULE_NOT_FOUND",m;}m=l[c]={exports:{}};f[c][0].call(m.exports,function(a){var b=f[c][1][a];return d(b?b:a)},m,m.exports,e$$0,f,l,b)}return l[c].exports}for(var a="function"==typeof require&&require,c=0;c<b.length;c++)d(b[c]);return d})({1:[function(k,f,l){function b(d){if(d){for(var a in b.prototype)d[a]=
-b.prototype[a];return d}}"undefined"!==typeof f&&(f.exports=b);b.prototype.on=b.prototype.addEventListener=function(b,a){this._callbacks=this._callbacks||{};(this._callbacks["$"+b]=this._callbacks["$"+b]||[]).push(a);return this};b.prototype.once=function(b,a){function c(){this.off(b,c);a.apply(this,arguments)}c.fn=a;this.on(b,c);return this};b.prototype.off=b.prototype.removeListener=b.prototype.removeAllListeners=b.prototype.removeEventListener=function(b,a){this._callbacks=this._callbacks||{};
-if(0==arguments.length)return this._callbacks={},this;var c=this._callbacks["$"+b];if(!c)return this;if(1==arguments.length)return delete this._callbacks["$"+b],this;for(var g,e=0;e<c.length;e++)if(g=c[e],g===a||g.fn===a){c.splice(e,1);break}return this};b.prototype.emit=function(b){this._callbacks=this._callbacks||{};var a=[].slice.call(arguments,1),c=this._callbacks["$"+b];if(c)for(var c=c.slice(0),g=0,e=c.length;g<e;++g)c[g].apply(this,a);return this};b.prototype.listeners=function(b){this._callbacks=
-this._callbacks||{};return this._callbacks["$"+b]||[]};b.prototype.hasListeners=function(b){return!!this.listeners(b).length}},{}],2:[function(k,f,l){function b(a){var c=function(){if(c.called)return c.value;c.called=!0;return c.value=a.apply(this,arguments)};c.called=!1;return c}function d(a){var c=function(){if(c.called)throw Error(c.onceError);c.called=!0;return c.value=a.apply(this,arguments)};c.onceError=(a.name||"Function wrapped with `once`")+" shouldn't be called more than once";c.called=
-!1;return c}k=k("wrappy");f.exports=k(b);f.exports.strict=k(d);b.proto=b(function(){Object.defineProperty(Function.prototype,"once",{value:function(){return b(this)},configurable:!0});Object.defineProperty(Function.prototype,"onceStrict",{value:function(){return d(this)},configurable:!0})})},{wrappy:10}],3:[function(k,f,l){function b(){}function d(n){if(!t(n))return n;var c=[],b;for(b in n)a(c,b,n[b]);return c.join("&")}function a(n,c,b){if(null!=b)if(Array.isArray(b))b.forEach(function(b){a(n,c,
-b)});else if(t(b))for(var d in b)a(n,c+"["+d+"]",b[d]);else n.push(encodeURIComponent(c)+"="+encodeURIComponent(b));else null===b&&n.push(encodeURIComponent(c))}function c(a){var b={};a=a.split("&");for(var c,d,g=0,e=a.length;g<e;++g)c=a[g],d=c.indexOf("="),-1==d?b[decodeURIComponent(c)]="":b[decodeURIComponent(c.slice(0,d))]=decodeURIComponent(c.slice(d+1));return b}function g(a){this.req=a;this.xhr=this.req.xhr;this.text="HEAD"!=this.req.method&&(""===this.xhr.responseType||"text"===this.xhr.responseType)||
-"undefined"===typeof this.xhr.responseType?this.xhr.responseText:null;this.statusText=this.req.xhr.statusText;var c=this.xhr.status;1223===c&&(c=204);this._setStatusProperties(c);var c=this.xhr.getAllResponseHeaders().split(/\r?\n/),b={},d,g,e;c.pop();for(var h=0,q=c.length;h<q;++h)g=c[h],d=g.indexOf(":"),e=g.slice(0,d).toLowerCase(),d=x(g.slice(d+1)),b[e]=d;this.header=this.headers=b;this.header["content-type"]=this.xhr.getResponseHeader("content-type");this._setHeaderProperties(this.header);this.body=
-null===this.text&&a._responseType?this.xhr.response:"HEAD"!=this.req.method?this._parseBody(this.text?this.text:this.xhr.response):null}function e(a,c){var b=this;this._query=this._query||[];this.method=a;this.url=c;this.header={};this._header={};this.on("end",function(){var a=null,c=null;try{c=new g(b)}catch(n){return a=Error("Parser is unable to parse the response"),a.parse=!0,a.original=n,b.xhr?(a.rawResponse="undefined"==typeof b.xhr.responseType?b.xhr.responseText:b.xhr.response,a.status=b.xhr.status?
-b.xhr.status:null,a.statusCode=a.status):(a.rawResponse=null,a.status=null),b.callback(a)}b.emit("response",c);var r;try{b._isResponseOK(c)||(r=Error(c.statusText||"Unsuccessful HTTP response"),r.original=a,r.response=c,r.status=c.status)}catch(n){r=n}r?b.callback(r,c):b.callback(null,c)})}function m(a,c,b){a=h("DELETE",a);"function"==typeof c&&(b=c,c=null);c&&a.send(c);b&&a.end(b);return a}var p;"undefined"!==typeof window?p=window:"undefined"!==typeof self?p=self:(console.warn("Using browser-only version of superagent in non-browser environment"),
-p=this);var u=k("component-emitter"),v=k("./request-base"),t=k("./is-object"),w=k("./is-function"),q=k("./response-base"),y=k("./should-retry"),h=l=f.exports=function(a,c){return"function"==typeof c?(new l.Request("GET",a)).end(c):1==arguments.length?new l.Request("GET",a):new l.Request(a,c)};l.Request=e;h.getXHR=function(){if(!p.XMLHttpRequest||p.location&&"file:"==p.location.protocol&&p.ActiveXObject){try{return new ActiveXObject("Microsoft.XMLHTTP")}catch(a){}try{return new ActiveXObject("Msxml2.XMLHTTP.6.0")}catch(a){}try{return new ActiveXObject("Msxml2.XMLHTTP.3.0")}catch(a){}try{return new ActiveXObject("Msxml2.XMLHTTP")}catch(a){}}else return new XMLHttpRequest;
-throw Error("Browser-only verison of superagent could not find XHR");};var x="".trim?function(a){return a.trim()}:function(a){return a.replace(/(^\s*|\s*$)/g,"")};h.serializeObject=d;h.parseString=c;h.types={html:"text/html",json:"application/json",xml:"application/xml",urlencoded:"application/x-www-form-urlencoded",form:"application/x-www-form-urlencoded","form-data":"application/x-www-form-urlencoded"};h.serialize={"application/x-www-form-urlencoded":d,"application/json":JSON.stringify};h.parse=
-{"application/x-www-form-urlencoded":c,"application/json":JSON.parse};q(g.prototype);g.prototype._parseBody=function(a){var c=h.parse[this.type];if(this.req._parser)return this.req._parser(this,a);!c&&/[\/+]json\b/.test(this.type)&&(c=h.parse["application/json"]);return c&&a&&(a.length||a instanceof Object)?c(a):null};g.prototype.toError=function(){var a=this.req,c=a.method,a=a.url,b=Error("cannot "+c+" "+a+" ("+this.status+")");b.status=this.status;b.method=c;b.url=a;return b};h.Response=g;u(e.prototype);
-v(e.prototype);e.prototype.type=function(a){this.set("Content-Type",h.types[a]||a);return this};e.prototype.accept=function(a){this.set("Accept",h.types[a]||a);return this};e.prototype.auth=function(a,c,b){"object"===typeof c&&null!==c&&(b=c);b||(b={type:"function"===typeof btoa?"basic":"auto"});switch(b.type){case "basic":this.set("Authorization","Basic "+btoa(a+":"+c));break;case "auto":this.username=a;this.password=c;break;case "bearer":this.set("Authorization","Bearer "+a)}return this};e.prototype.query=
-function(a){"string"!=typeof a&&(a=d(a));a&&this._query.push(a);return this};e.prototype.attach=function(a,c,b){if(c){if(this._data)throw Error("superagent can't mix .send() and .attach()");this._getFormData().append(a,c,b||c.name)}return this};e.prototype._getFormData=function(){this._formData||(this._formData=new p.FormData);return this._formData};e.prototype.callback=function(a,c){if(this._maxRetries&&this._retries++<this._maxRetries&&y(a,c))return this._retry();var b=this._callback;this.clearTimeout();
-a&&(this._maxRetries&&(a.retries=this._retries-1),this.emit("error",a));b(a,c)};e.prototype.crossDomainError=function(){var a=Error("Request has been terminated\nPossible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.");a.crossDomain=!0;a.status=this.status;a.method=this.method;a.url=this.url;this.callback(a)};e.prototype.buffer=e.prototype.ca=e.prototype.agent=function(){console.warn("This is not supported in browser version of superagent");
-return this};e.prototype.pipe=e.prototype.write=function(){throw Error("Streaming is not supported in browser version of superagent");};e.prototype._appendQueryString=function(){var a=this._query.join("&");a&&(this.url+=(0<=this.url.indexOf("?")?"&":"?")+a);if(this._sort&&(a=this.url.indexOf("?"),0<=a)){var c=this.url.substring(a+1).split("&");w(this._sort)?c.sort(this._sort):c.sort();this.url=this.url.substring(0,a)+"?"+c.join("&")}};e.prototype._isHost=function(a){return a&&"object"===typeof a&&
-!Array.isArray(a)&&"[object Object]"!==Object.prototype.toString.call(a)};e.prototype.end=function(a){this._endCalled&&console.warn("Warning: .end() was called twice. This is not supported in superagent");this._endCalled=!0;this._callback=a||b;this._appendQueryString();return this._end()};e.prototype._end=function(){var a=this,c=this.xhr=h.getXHR(),b=this._formData||this._data;this._setTimeouts();c.onreadystatechange=function(){var b=c.readyState;2<=b&&a._responseTimeoutTimer&&clearTimeout(a._responseTimeoutTimer);
-if(4==b){var d;try{d=c.status}catch(g){d=0}if(!d)return a.timedout||a._aborted?void 0:a.crossDomainError();a.emit("end")}};var d=function(c,b){0<b.total&&(b.percent=b.loaded/b.total*100);b.direction=c;a.emit("progress",b)};if(this.hasListeners("progress"))try{c.onprogress=d.bind(null,"download"),c.upload&&(c.upload.onprogress=d.bind(null,"upload"))}catch(g){}try{this.username&&this.password?c.open(this.method,this.url,!0,this.username,this.password):c.open(this.method,this.url,!0)}catch(g){return this.callback(g)}this._withCredentials&&
-(c.withCredentials=!0);if(!this._formData&&"GET"!=this.method&&"HEAD"!=this.method&&"string"!=typeof b&&!this._isHost(b)){var d=this._header["content-type"],e=this._serializer||h.serialize[d?d.split(";")[0]:""];!e&&/[\/+]json\b/.test(d)&&(e=h.serialize["application/json"]);e&&(b=e(b))}for(var q in this.header)null!=this.header[q]&&this.header.hasOwnProperty(q)&&c.setRequestHeader(q,this.header[q]);this._responseType&&(c.responseType=this._responseType);this.emit("request",this);c.send("undefined"!==
-typeof b?b:null);return this};h.get=function(a,c,b){a=h("GET",a);"function"==typeof c&&(b=c,c=null);c&&a.query(c);b&&a.end(b);return a};h.head=function(a,c,b){a=h("HEAD",a);"function"==typeof c&&(b=c,c=null);c&&a.send(c);b&&a.end(b);return a};h.options=function(a,c,b){a=h("OPTIONS",a);"function"==typeof c&&(b=c,c=null);c&&a.send(c);b&&a.end(b);return a};h.del=m;h["delete"]=m;h.patch=function(a,c,b){a=h("PATCH",a);"function"==typeof c&&(b=c,c=null);c&&a.send(c);b&&a.end(b);return a};h.post=function(a,
-c,b){a=h("POST",a);"function"==typeof c&&(b=c,c=null);c&&a.send(c);b&&a.end(b);return a};h.put=function(a,c,b){a=h("PUT",a);"function"==typeof c&&(b=c,c=null);c&&a.send(c);b&&a.end(b);return a}},{"./is-function":4,"./is-object":5,"./request-base":6,"./response-base":7,"./should-retry":8,"component-emitter":1}],4:[function(k,f,l){var b=k("./is-object");f.exports=function(d){return"[object Function]"===(b(d)?Object.prototype.toString.call(d):"")}},{"./is-object":5}],5:[function(k,f,l){f.exports=function(b){return null!==
-b&&"object"===typeof b}},{}],6:[function(k,f,l){function b(a){if(a){for(var c in b.prototype)a[c]=b.prototype[c];return a}}var d=k("./is-object");f.exports=b;b.prototype.clearTimeout=function(){clearTimeout(this._timer);clearTimeout(this._responseTimeoutTimer);delete this._timer;delete this._responseTimeoutTimer;return this};b.prototype.parse=function(a){this._parser=a;return this};b.prototype.responseType=function(a){this._responseType=a;return this};b.prototype.serialize=function(a){this._serializer=
-a;return this};b.prototype.timeout=function(a){if(!a||"object"!==typeof a)return this._timeout=a,this._responseTimeout=0,this;for(var c in a)switch(c){case "deadline":this._timeout=a.deadline;break;case "response":this._responseTimeout=a.response;break;default:console.warn("Unknown timeout option",c)}return this};b.prototype.retry=function(a){if(0===arguments.length||!0===a)a=1;0>=a&&(a=0);this._maxRetries=a;this._retries=0;return this};b.prototype._retry=function(){this.clearTimeout();this.req&&
-(this.req=null,this.req=this.request());this.timedout=this._aborted=!1;return this._end()};b.prototype.then=function(a,c){if(!this._fullfilledPromise){var b=this;this._endCalled&&console.warn("Warning: superagent request was sent twice, because both .end() and .then() were called. Never call .end() if you use promises");this._fullfilledPromise=new Promise(function(a,c){b.end(function(b,d){b?c(b):a(d)})})}return this._fullfilledPromise.then(a,c)};b.prototype.catch=function(a){return this.then(void 0,
-a)};b.prototype.use=function(a){a(this);return this};b.prototype.ok=function(a){if("function"!==typeof a)throw Error("Callback required");this._okCallback=a;return this};b.prototype._isResponseOK=function(a){return a?this._okCallback?this._okCallback(a):200<=a.status&&300>a.status:!1};b.prototype.get=function(a){return this._header[a.toLowerCase()]};b.prototype.getHeader=b.prototype.get;b.prototype.set=function(a,c){if(d(a)){for(var b in a)this.set(b,a[b]);return this}this._header[a.toLowerCase()]=
-c;this.header[a]=c;return this};b.prototype.unset=function(a){delete this._header[a.toLowerCase()];delete this.header[a];return this};b.prototype.field=function(a,c){if(null===a||void 0===a)throw Error(".field(name, val) name can not be empty");this._data&&console.error(".field() can't be used if .send() is used. Please use only .send() or only .field() & .attach()");if(d(a)){for(var b in a)this.field(b,a[b]);return this}if(Array.isArray(c)){for(var e in c)this.field(a,c[e]);return this}if(null===
-c||void 0===c)throw Error(".field(name, val) val can not be empty");"boolean"===typeof c&&(c=""+c);this._getFormData().append(a,c);return this};b.prototype.abort=function(){if(this._aborted)return this;this._aborted=!0;this.xhr&&this.xhr.abort();this.req&&this.req.abort();this.clearTimeout();this.emit("abort");return this};b.prototype.withCredentials=function(a){void 0==a&&(a=!0);this._withCredentials=a;return this};b.prototype.redirects=function(a){this._maxRedirects=a;return this};b.prototype.toJSON=
-function(){return{method:this.method,url:this.url,data:this._data,headers:this._header}};b.prototype.send=function(a){var c=d(a),b=this._header["content-type"];this._formData&&console.error(".send() can't be used if .attach() or .field() is used. Please use only .send() or only .field() & .attach()");if(c&&!this._data)Array.isArray(a)?this._data=[]:this._isHost(a)||(this._data={});else if(a&&this._data&&this._isHost(this._data))throw Error("Can't merge these send calls");if(c&&d(this._data))for(var e in a)this._data[e]=
-a[e];else"string"==typeof a?(b||this.type("form"),b=this._header["content-type"],this._data="application/x-www-form-urlencoded"==b?this._data?this._data+"&"+a:a:(this._data||"")+a):this._data=a;if(!c||this._isHost(a))return this;b||this.type("json");return this};b.prototype.sortQuery=function(a){this._sort="undefined"===typeof a?!0:a;return this};b.prototype._timeoutError=function(a,c,b){this._aborted||(a=Error(a+c+"ms exceeded"),a.timeout=c,a.code="ECONNABORTED",a.errno=b,this.timedout=!0,this.abort(),
-this.callback(a))};b.prototype._setTimeouts=function(){var a=this;this._timeout&&!this._timer&&(this._timer=setTimeout(function(){a._timeoutError("Timeout of ",a._timeout,"ETIME")},this._timeout));this._responseTimeout&&!this._responseTimeoutTimer&&(this._responseTimeoutTimer=setTimeout(function(){a._timeoutError("Response timeout of ",a._responseTimeout,"ETIMEDOUT")},this._responseTimeout))}},{"./is-object":5}],7:[function(k,f,l){function b(a){if(a){for(var c in b.prototype)a[c]=b.prototype[c];return a}}
-var d=k("./utils");f.exports=b;b.prototype.get=function(a){return this.header[a.toLowerCase()]};b.prototype._setHeaderProperties=function(a){var c=a["content-type"]||"";this.type=d.type(c);var c=d.params(c),b;for(b in c)this[b]=c[b];this.links={};try{a.link&&(this.links=d.parseLinks(a.link))}catch(e){}};b.prototype._setStatusProperties=function(a){var c=a/100|0;this.status=this.statusCode=a;this.statusType=c;this.info=1==c;this.ok=2==c;this.redirect=3==c;this.clientError=4==c;this.serverError=5==
-c;this.error=4==c||5==c?this.toError():!1;this.accepted=202==a;this.noContent=204==a;this.badRequest=400==a;this.unauthorized=401==a;this.notAcceptable=406==a;this.forbidden=403==a;this.notFound=404==a}},{"./utils":9}],8:[function(k,f,l){var b=["ECONNRESET","ETIMEDOUT","EADDRINFO","ESOCKETTIMEDOUT"];f.exports=function(d,a){return d&&d.code&&~b.indexOf(d.code)||a&&a.status&&500<=a.status||d&&"timeout"in d&&"ECONNABORTED"==d.code||d&&"crossDomain"in d?!0:!1}},{}],9:[function(k,f,l){l.type=function(b){return b.split(/ *; */).shift()};
-l.params=function(b){return b.split(/ *; */).reduce(function(b,a){var c=a.split(/ *= */),g=c.shift(),c=c.shift();g&&c&&(b[g]=c);return b},{})};l.parseLinks=function(b){return b.split(/ *, */).reduce(function(b,a){var c=a.split(/ *; */),g=c[0].slice(1,-1),c=c[1].split(/ *= */)[1].slice(1,-1);b[c]=g;return b},{})};l.cleanHeader=function(b,d){delete b["content-type"];delete b["content-length"];delete b["transfer-encoding"];delete b.host;d&&delete b.cookie;return b}},{}],10:[function(k,f,l){function b(d,
-a){function c(){for(var a=Array(arguments.length),c=0;c<a.length;c++)a[c]=arguments[c];var b=d.apply(this,a),f=a[a.length-1];"function"===typeof b&&b!==f&&Object.keys(f).forEach(function(a){b[a]=f[a]});return b}if(d&&a)return b(d)(a);if("function"!==typeof d)throw new TypeError("need wrapper function");Object.keys(d).forEach(function(a){c[a]=d[a]});return c}f.exports=b},{}],11:[function(k,f,l){var b=k("superagent"),d=k("once"),a=document.currentScript,c=!1,g=!1,e=function(a){if("function"===typeof mobFoxParams.onFail)mobFoxParams.onFail(a)},
-m=function(){if("function"===typeof mobFoxParams.onSuccess)mobFoxParams.onSuccess()},p=function(a){var c=a.request.htmlString;(a=a.request.htmlString.match(new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m)))&&(c=window.atob(a[1]));return c},u=function(c){try{var b=document.createElement("div");b.id="mobfoxDiv";a&&"head"!==a.parentNode.tagName.toLowerCase()?a.parentNode.appendChild(b):document.body.appendChild(b);b.style.border="none";b.style.width=mobFoxParams.adspace_width+"px";b.style.height=
-mobFoxParams.adspace_height+"px";b.style.overflow="hidden";b.style.margin="0px";b.style.padding="0px";b.style.display="inline-block";var d=p(c);b.innerHTML=d;g=!0;m()}catch(h){g=!0,e({e1:h})}},v=function(b){try{var f=document.createElement("iframe");f.id="mobfoxFrame";a&&"head"!==a.parentNode.tagName.toLowerCase()?a.parentNode.appendChild(f):document.body.appendChild(f);f.frameborder="0";f.style.border="none";f.style.width=mobFoxParams.adspace_width+"px";f.style.height=mobFoxParams.adspace_height+
-"px";f.style.overflow="hidden";f.style.margin="none";f.setAttribute("scrolling","no");var k=p(b),k=0>k.indexOf("<html>")?["<html><body style='margin:0px;padding:0px;'>",k,"</body></html>"].join("\n"):k+"<style>body{margin:0px;padding:0px}</style>";f.onload=d(function(){c||(g=!0,m())});var h=f.contentWindow||f.contentDocument.document||f.contentDocument;h.document.open();h.document.write(k);h.document.close()}catch(l){g=!0,e({e2:l})}};mobFoxParams.u=navigator.userAgent;mobFoxParams.r_resp="json";mobFoxParams.rt=
-"api-fetchip";mobFoxParams.r_type="banner";var t="http://my.mobfox.com/request.php";try{1==mobFoxParams.imp_secure&&(t="https://my.mobfox.com/request.php")}catch(w){}d(function(){window.setTimeout(function(){c=!0;g||e("timeout")},3E3);b.get(t).timeout(2500).query(mobFoxParams).end(d(function(a,b){if(!c)try{var d=a||b.error||!b.body||b.body.error;if(d)return g=!0,e({e3:d});var f=b.body;document.body?mobFoxParams.noIFrame?u(f):v(f):document.addEventListener("DOMContentLoaded",function(){mobFoxParams.noIFrame?
-u(f):v(f)})}catch(k){g=!0,e({e4:k})}}))})()},{once:2,superagent:3}]},{},[11]);
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+
+/**
+ * Expose `Emitter`.
+ */
+
+if (typeof module !== 'undefined') {
+  module.exports = Emitter;
+}
+
+/**
+ * Initialize a new `Emitter`.
+ *
+ * @api public
+ */
+
+function Emitter(obj) {
+  if (obj) return mixin(obj);
+};
+
+/**
+ * Mixin the emitter properties.
+ *
+ * @param {Object} obj
+ * @return {Object}
+ * @api private
+ */
+
+function mixin(obj) {
+  for (var key in Emitter.prototype) {
+    obj[key] = Emitter.prototype[key];
+  }
+  return obj;
+}
+
+/**
+ * Listen on the given `event` with `fn`.
+ *
+ * @param {String} event
+ * @param {Function} fn
+ * @return {Emitter}
+ * @api public
+ */
+
+Emitter.prototype.on =
+Emitter.prototype.addEventListener = function(event, fn){
+  this._callbacks = this._callbacks || {};
+  (this._callbacks['$' + event] = this._callbacks['$' + event] || [])
+    .push(fn);
+  return this;
+};
+
+/**
+ * Adds an `event` listener that will be invoked a single
+ * time then automatically removed.
+ *
+ * @param {String} event
+ * @param {Function} fn
+ * @return {Emitter}
+ * @api public
+ */
+
+Emitter.prototype.once = function(event, fn){
+  function on() {
+    this.off(event, on);
+    fn.apply(this, arguments);
+  }
+
+  on.fn = fn;
+  this.on(event, on);
+  return this;
+};
+
+/**
+ * Remove the given callback for `event` or all
+ * registered callbacks.
+ *
+ * @param {String} event
+ * @param {Function} fn
+ * @return {Emitter}
+ * @api public
+ */
+
+Emitter.prototype.off =
+Emitter.prototype.removeListener =
+Emitter.prototype.removeAllListeners =
+Emitter.prototype.removeEventListener = function(event, fn){
+  this._callbacks = this._callbacks || {};
+
+  // all
+  if (0 == arguments.length) {
+    this._callbacks = {};
+    return this;
+  }
+
+  // specific event
+  var callbacks = this._callbacks['$' + event];
+  if (!callbacks) return this;
+
+  // remove all handlers
+  if (1 == arguments.length) {
+    delete this._callbacks['$' + event];
+    return this;
+  }
+
+  // remove specific handler
+  var cb;
+  for (var i = 0; i < callbacks.length; i++) {
+    cb = callbacks[i];
+    if (cb === fn || cb.fn === fn) {
+      callbacks.splice(i, 1);
+      break;
+    }
+  }
+  return this;
+};
+
+/**
+ * Emit `event` with the given args.
+ *
+ * @param {String} event
+ * @param {Mixed} ...
+ * @return {Emitter}
+ */
+
+Emitter.prototype.emit = function(event){
+  this._callbacks = this._callbacks || {};
+  var args = [].slice.call(arguments, 1)
+    , callbacks = this._callbacks['$' + event];
+
+  if (callbacks) {
+    callbacks = callbacks.slice(0);
+    for (var i = 0, len = callbacks.length; i < len; ++i) {
+      callbacks[i].apply(this, args);
+    }
+  }
+
+  return this;
+};
+
+/**
+ * Return array of callbacks for `event`.
+ *
+ * @param {String} event
+ * @return {Array}
+ * @api public
+ */
+
+Emitter.prototype.listeners = function(event){
+  this._callbacks = this._callbacks || {};
+  return this._callbacks['$' + event] || [];
+};
+
+/**
+ * Check if this emitter has `event` handlers.
+ *
+ * @param {String} event
+ * @return {Boolean}
+ * @api public
+ */
+
+Emitter.prototype.hasListeners = function(event){
+  return !! this.listeners(event).length;
+};
+
+},{}],2:[function(require,module,exports){
+var wrappy = require('wrappy')
+module.exports = wrappy(once)
+module.exports.strict = wrappy(onceStrict)
+
+once.proto = once(function () {
+  Object.defineProperty(Function.prototype, 'once', {
+    value: function () {
+      return once(this)
+    },
+    configurable: true
+  })
+
+  Object.defineProperty(Function.prototype, 'onceStrict', {
+    value: function () {
+      return onceStrict(this)
+    },
+    configurable: true
+  })
+})
+
+function once (fn) {
+  var f = function () {
+    if (f.called) return f.value
+    f.called = true
+    return f.value = fn.apply(this, arguments)
+  }
+  f.called = false
+  return f
+}
+
+function onceStrict (fn) {
+  var f = function () {
+    if (f.called)
+      throw new Error(f.onceError)
+    f.called = true
+    return f.value = fn.apply(this, arguments)
+  }
+  var name = fn.name || 'Function wrapped with `once`'
+  f.onceError = name + " shouldn't be called more than once"
+  f.called = false
+  return f
+}
+
+},{"wrappy":10}],3:[function(require,module,exports){
+/**
+ * Root reference for iframes.
+ */
+
+var root;
+if (typeof window !== 'undefined') { // Browser window
+  root = window;
+} else if (typeof self !== 'undefined') { // Web Worker
+  root = self;
+} else { // Other environments
+  console.warn("Using browser-only version of superagent in non-browser environment");
+  root = this;
+}
+
+var Emitter = require('component-emitter');
+var RequestBase = require('./request-base');
+var isObject = require('./is-object');
+var isFunction = require('./is-function');
+var ResponseBase = require('./response-base');
+var shouldRetry = require('./should-retry');
+
+/**
+ * Noop.
+ */
+
+function noop(){};
+
+/**
+ * Expose `request`.
+ */
+
+var request = exports = module.exports = function(method, url) {
+  // callback
+  if ('function' == typeof url) {
+    return new exports.Request('GET', method).end(url);
+  }
+
+  // url first
+  if (1 == arguments.length) {
+    return new exports.Request('GET', method);
+  }
+
+  return new exports.Request(method, url);
+}
+
+exports.Request = Request;
+
+/**
+ * Determine XHR.
+ */
+
+request.getXHR = function () {
+  if (root.XMLHttpRequest
+      && (!root.location || 'file:' != root.location.protocol
+          || !root.ActiveXObject)) {
+    return new XMLHttpRequest;
+  } else {
+    try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch(e) {}
+    try { return new ActiveXObject('Msxml2.XMLHTTP.6.0'); } catch(e) {}
+    try { return new ActiveXObject('Msxml2.XMLHTTP.3.0'); } catch(e) {}
+    try { return new ActiveXObject('Msxml2.XMLHTTP'); } catch(e) {}
+  }
+  throw Error("Browser-only verison of superagent could not find XHR");
+};
+
+/**
+ * Removes leading and trailing whitespace, added to support IE.
+ *
+ * @param {String} s
+ * @return {String}
+ * @api private
+ */
+
+var trim = ''.trim
+  ? function(s) { return s.trim(); }
+  : function(s) { return s.replace(/(^\s*|\s*$)/g, ''); };
+
+/**
+ * Serialize the given `obj`.
+ *
+ * @param {Object} obj
+ * @return {String}
+ * @api private
+ */
+
+function serialize(obj) {
+  if (!isObject(obj)) return obj;
+  var pairs = [];
+  for (var key in obj) {
+    pushEncodedKeyValuePair(pairs, key, obj[key]);
+  }
+  return pairs.join('&');
+}
+
+/**
+ * Helps 'serialize' with serializing arrays.
+ * Mutates the pairs array.
+ *
+ * @param {Array} pairs
+ * @param {String} key
+ * @param {Mixed} val
+ */
+
+function pushEncodedKeyValuePair(pairs, key, val) {
+  if (val != null) {
+    if (Array.isArray(val)) {
+      val.forEach(function(v) {
+        pushEncodedKeyValuePair(pairs, key, v);
+      });
+    } else if (isObject(val)) {
+      for(var subkey in val) {
+        pushEncodedKeyValuePair(pairs, key + '[' + subkey + ']', val[subkey]);
+      }
+    } else {
+      pairs.push(encodeURIComponent(key)
+        + '=' + encodeURIComponent(val));
+    }
+  } else if (val === null) {
+    pairs.push(encodeURIComponent(key));
+  }
+}
+
+/**
+ * Expose serialization method.
+ */
+
+ request.serializeObject = serialize;
+
+ /**
+  * Parse the given x-www-form-urlencoded `str`.
+  *
+  * @param {String} str
+  * @return {Object}
+  * @api private
+  */
+
+function parseString(str) {
+  var obj = {};
+  var pairs = str.split('&');
+  var pair;
+  var pos;
+
+  for (var i = 0, len = pairs.length; i < len; ++i) {
+    pair = pairs[i];
+    pos = pair.indexOf('=');
+    if (pos == -1) {
+      obj[decodeURIComponent(pair)] = '';
+    } else {
+      obj[decodeURIComponent(pair.slice(0, pos))] =
+        decodeURIComponent(pair.slice(pos + 1));
+    }
+  }
+
+  return obj;
+}
+
+/**
+ * Expose parser.
+ */
+
+request.parseString = parseString;
+
+/**
+ * Default MIME type map.
+ *
+ *     superagent.types.xml = 'application/xml';
+ *
+ */
+
+request.types = {
+  html: 'text/html',
+  json: 'application/json',
+  xml: 'application/xml',
+  urlencoded: 'application/x-www-form-urlencoded',
+  'form': 'application/x-www-form-urlencoded',
+  'form-data': 'application/x-www-form-urlencoded'
+};
+
+/**
+ * Default serialization map.
+ *
+ *     superagent.serialize['application/xml'] = function(obj){
+ *       return 'generated xml here';
+ *     };
+ *
+ */
+
+ request.serialize = {
+   'application/x-www-form-urlencoded': serialize,
+   'application/json': JSON.stringify
+ };
+
+ /**
+  * Default parsers.
+  *
+  *     superagent.parse['application/xml'] = function(str){
+  *       return { object parsed from str };
+  *     };
+  *
+  */
+
+request.parse = {
+  'application/x-www-form-urlencoded': parseString,
+  'application/json': JSON.parse
+};
+
+/**
+ * Parse the given header `str` into
+ * an object containing the mapped fields.
+ *
+ * @param {String} str
+ * @return {Object}
+ * @api private
+ */
+
+function parseHeader(str) {
+  var lines = str.split(/\r?\n/);
+  var fields = {};
+  var index;
+  var line;
+  var field;
+  var val;
+
+  lines.pop(); // trailing CRLF
+
+  for (var i = 0, len = lines.length; i < len; ++i) {
+    line = lines[i];
+    index = line.indexOf(':');
+    field = line.slice(0, index).toLowerCase();
+    val = trim(line.slice(index + 1));
+    fields[field] = val;
+  }
+
+  return fields;
+}
+
+/**
+ * Check if `mime` is json or has +json structured syntax suffix.
+ *
+ * @param {String} mime
+ * @return {Boolean}
+ * @api private
+ */
+
+function isJSON(mime) {
+  return /[\/+]json\b/.test(mime);
+}
+
+/**
+ * Initialize a new `Response` with the given `xhr`.
+ *
+ *  - set flags (.ok, .error, etc)
+ *  - parse header
+ *
+ * Examples:
+ *
+ *  Aliasing `superagent` as `request` is nice:
+ *
+ *      request = superagent;
+ *
+ *  We can use the promise-like API, or pass callbacks:
+ *
+ *      request.get('/').end(function(res){});
+ *      request.get('/', function(res){});
+ *
+ *  Sending data can be chained:
+ *
+ *      request
+ *        .post('/user')
+ *        .send({ name: 'tj' })
+ *        .end(function(res){});
+ *
+ *  Or passed to `.send()`:
+ *
+ *      request
+ *        .post('/user')
+ *        .send({ name: 'tj' }, function(res){});
+ *
+ *  Or passed to `.post()`:
+ *
+ *      request
+ *        .post('/user', { name: 'tj' })
+ *        .end(function(res){});
+ *
+ * Or further reduced to a single call for simple cases:
+ *
+ *      request
+ *        .post('/user', { name: 'tj' }, function(res){});
+ *
+ * @param {XMLHTTPRequest} xhr
+ * @param {Object} options
+ * @api private
+ */
+
+function Response(req) {
+  this.req = req;
+  this.xhr = this.req.xhr;
+  // responseText is accessible only if responseType is '' or 'text' and on older browsers
+  this.text = ((this.req.method !='HEAD' && (this.xhr.responseType === '' || this.xhr.responseType === 'text')) || typeof this.xhr.responseType === 'undefined')
+     ? this.xhr.responseText
+     : null;
+  this.statusText = this.req.xhr.statusText;
+  var status = this.xhr.status;
+  // handle IE9 bug: http://stackoverflow.com/questions/10046972/msie-returns-status-code-of-1223-for-ajax-request
+  if (status === 1223) {
+      status = 204;
+  }
+  this._setStatusProperties(status);
+  this.header = this.headers = parseHeader(this.xhr.getAllResponseHeaders());
+  // getAllResponseHeaders sometimes falsely returns "" for CORS requests, but
+  // getResponseHeader still works. so we get content-type even if getting
+  // other headers fails.
+  this.header['content-type'] = this.xhr.getResponseHeader('content-type');
+  this._setHeaderProperties(this.header);
+
+  if (null === this.text && req._responseType) {
+    this.body = this.xhr.response;
+  } else {
+    this.body = this.req.method != 'HEAD'
+      ? this._parseBody(this.text ? this.text : this.xhr.response)
+      : null;
+  }
+}
+
+ResponseBase(Response.prototype);
+
+/**
+ * Parse the given body `str`.
+ *
+ * Used for auto-parsing of bodies. Parsers
+ * are defined on the `superagent.parse` object.
+ *
+ * @param {String} str
+ * @return {Mixed}
+ * @api private
+ */
+
+Response.prototype._parseBody = function(str){
+  var parse = request.parse[this.type];
+  if(this.req._parser) {
+    return this.req._parser(this, str);
+  }
+  if (!parse && isJSON(this.type)) {
+    parse = request.parse['application/json'];
+  }
+  return parse && str && (str.length || str instanceof Object)
+    ? parse(str)
+    : null;
+};
+
+/**
+ * Return an `Error` representative of this response.
+ *
+ * @return {Error}
+ * @api public
+ */
+
+Response.prototype.toError = function(){
+  var req = this.req;
+  var method = req.method;
+  var url = req.url;
+
+  var msg = 'cannot ' + method + ' ' + url + ' (' + this.status + ')';
+  var err = new Error(msg);
+  err.status = this.status;
+  err.method = method;
+  err.url = url;
+
+  return err;
+};
+
+/**
+ * Expose `Response`.
+ */
+
+request.Response = Response;
+
+/**
+ * Initialize a new `Request` with the given `method` and `url`.
+ *
+ * @param {String} method
+ * @param {String} url
+ * @api public
+ */
+
+function Request(method, url) {
+  var self = this;
+  this._query = this._query || [];
+  this.method = method;
+  this.url = url;
+  this.header = {}; // preserves header name case
+  this._header = {}; // coerces header names to lowercase
+  this.on('end', function(){
+    var err = null;
+    var res = null;
+
+    try {
+      res = new Response(self);
+    } catch(e) {
+      err = new Error('Parser is unable to parse the response');
+      err.parse = true;
+      err.original = e;
+      // issue #675: return the raw response if the response parsing fails
+      if (self.xhr) {
+        // ie9 doesn't have 'response' property
+        err.rawResponse = typeof self.xhr.responseType == 'undefined' ? self.xhr.responseText : self.xhr.response;
+        // issue #876: return the http status code if the response parsing fails
+        err.status = self.xhr.status ? self.xhr.status : null;
+        err.statusCode = err.status; // backwards-compat only
+      } else {
+        err.rawResponse = null;
+        err.status = null;
+      }
+
+      return self.callback(err);
+    }
+
+    self.emit('response', res);
+
+    var new_err;
+    try {
+      if (!self._isResponseOK(res)) {
+        new_err = new Error(res.statusText || 'Unsuccessful HTTP response');
+        new_err.original = err;
+        new_err.response = res;
+        new_err.status = res.status;
+      }
+    } catch(e) {
+      new_err = e; // #985 touching res may cause INVALID_STATE_ERR on old Android
+    }
+
+    // #1000 don't catch errors from the callback to avoid double calling it
+    if (new_err) {
+      self.callback(new_err, res);
+    } else {
+      self.callback(null, res);
+    }
+  });
+}
+
+/**
+ * Mixin `Emitter` and `RequestBase`.
+ */
+
+Emitter(Request.prototype);
+RequestBase(Request.prototype);
+
+/**
+ * Set Content-Type to `type`, mapping values from `request.types`.
+ *
+ * Examples:
+ *
+ *      superagent.types.xml = 'application/xml';
+ *
+ *      request.post('/')
+ *        .type('xml')
+ *        .send(xmlstring)
+ *        .end(callback);
+ *
+ *      request.post('/')
+ *        .type('application/xml')
+ *        .send(xmlstring)
+ *        .end(callback);
+ *
+ * @param {String} type
+ * @return {Request} for chaining
+ * @api public
+ */
+
+Request.prototype.type = function(type){
+  this.set('Content-Type', request.types[type] || type);
+  return this;
+};
+
+/**
+ * Set Accept to `type`, mapping values from `request.types`.
+ *
+ * Examples:
+ *
+ *      superagent.types.json = 'application/json';
+ *
+ *      request.get('/agent')
+ *        .accept('json')
+ *        .end(callback);
+ *
+ *      request.get('/agent')
+ *        .accept('application/json')
+ *        .end(callback);
+ *
+ * @param {String} accept
+ * @return {Request} for chaining
+ * @api public
+ */
+
+Request.prototype.accept = function(type){
+  this.set('Accept', request.types[type] || type);
+  return this;
+};
+
+/**
+ * Set Authorization field value with `user` and `pass`.
+ *
+ * @param {String} user
+ * @param {String} [pass] optional in case of using 'bearer' as type
+ * @param {Object} options with 'type' property 'auto', 'basic' or 'bearer' (default 'basic')
+ * @return {Request} for chaining
+ * @api public
+ */
+
+Request.prototype.auth = function(user, pass, options){
+  if (typeof pass === 'object' && pass !== null) { // pass is optional and can substitute for options
+    options = pass;
+  }
+  if (!options) {
+    options = {
+      type: 'function' === typeof btoa ? 'basic' : 'auto',
+    }
+  }
+
+  switch (options.type) {
+    case 'basic':
+      this.set('Authorization', 'Basic ' + btoa(user + ':' + pass));
+    break;
+
+    case 'auto':
+      this.username = user;
+      this.password = pass;
+    break;
+      
+    case 'bearer': // usage would be .auth(accessToken, { type: 'bearer' })
+      this.set('Authorization', 'Bearer ' + user);
+    break;  
+  }
+  return this;
+};
+
+/**
+ * Add query-string `val`.
+ *
+ * Examples:
+ *
+ *   request.get('/shoes')
+ *     .query('size=10')
+ *     .query({ color: 'blue' })
+ *
+ * @param {Object|String} val
+ * @return {Request} for chaining
+ * @api public
+ */
+
+Request.prototype.query = function(val){
+  if ('string' != typeof val) val = serialize(val);
+  if (val) this._query.push(val);
+  return this;
+};
+
+/**
+ * Queue the given `file` as an attachment to the specified `field`,
+ * with optional `options` (or filename).
+ *
+ * ``` js
+ * request.post('/upload')
+ *   .attach('content', new Blob(['<a id="a"><b id="b">hey!</b></a>'], { type: "text/html"}))
+ *   .end(callback);
+ * ```
+ *
+ * @param {String} field
+ * @param {Blob|File} file
+ * @param {String|Object} options
+ * @return {Request} for chaining
+ * @api public
+ */
+
+Request.prototype.attach = function(field, file, options){
+  if (file) {
+    if (this._data) {
+      throw Error("superagent can't mix .send() and .attach()");
+    }
+
+    this._getFormData().append(field, file, options || file.name);
+  }
+  return this;
+};
+
+Request.prototype._getFormData = function(){
+  if (!this._formData) {
+    this._formData = new root.FormData();
+  }
+  return this._formData;
+};
+
+/**
+ * Invoke the callback with `err` and `res`
+ * and handle arity check.
+ *
+ * @param {Error} err
+ * @param {Response} res
+ * @api private
+ */
+
+Request.prototype.callback = function(err, res){
+  // console.log(this._retries, this._maxRetries)
+  if (this._maxRetries && this._retries++ < this._maxRetries && shouldRetry(err, res)) {
+    return this._retry();
+  }
+
+  var fn = this._callback;
+  this.clearTimeout();
+
+  if (err) {
+    if (this._maxRetries) err.retries = this._retries - 1;
+    this.emit('error', err);
+  }
+
+  fn(err, res);
+};
+
+/**
+ * Invoke callback with x-domain error.
+ *
+ * @api private
+ */
+
+Request.prototype.crossDomainError = function(){
+  var err = new Error('Request has been terminated\nPossible causes: the network is offline, Origin is not allowed by Access-Control-Allow-Origin, the page is being unloaded, etc.');
+  err.crossDomain = true;
+
+  err.status = this.status;
+  err.method = this.method;
+  err.url = this.url;
+
+  this.callback(err);
+};
+
+// This only warns, because the request is still likely to work
+Request.prototype.buffer = Request.prototype.ca = Request.prototype.agent = function(){
+  console.warn("This is not supported in browser version of superagent");
+  return this;
+};
+
+// This throws, because it can't send/receive data as expected
+Request.prototype.pipe = Request.prototype.write = function(){
+  throw Error("Streaming is not supported in browser version of superagent");
+};
+
+/**
+ * Compose querystring to append to req.url
+ *
+ * @api private
+ */
+
+Request.prototype._appendQueryString = function(){
+  var query = this._query.join('&');
+  if (query) {
+    this.url += (this.url.indexOf('?') >= 0 ? '&' : '?') + query;
+  }
+
+  if (this._sort) {
+    var index = this.url.indexOf('?');
+    if (index >= 0) {
+      var queryArr = this.url.substring(index + 1).split('&');
+      if (isFunction(this._sort)) {
+        queryArr.sort(this._sort);
+      } else {
+        queryArr.sort();
+      }
+      this.url = this.url.substring(0, index) + '?' + queryArr.join('&');
+    }
+  }
+};
+
+/**
+ * Check if `obj` is a host object,
+ * we don't want to serialize these :)
+ *
+ * @param {Object} obj
+ * @return {Boolean}
+ * @api private
+ */
+Request.prototype._isHost = function _isHost(obj) {
+  // Native objects stringify to [object File], [object Blob], [object FormData], etc.
+  return obj && 'object' === typeof obj && !Array.isArray(obj) && Object.prototype.toString.call(obj) !== '[object Object]';
+}
+
+/**
+ * Initiate request, invoking callback `fn(res)`
+ * with an instanceof `Response`.
+ *
+ * @param {Function} fn
+ * @return {Request} for chaining
+ * @api public
+ */
+
+Request.prototype.end = function(fn){
+  if (this._endCalled) {
+    console.warn("Warning: .end() was called twice. This is not supported in superagent");
+  }
+  this._endCalled = true;
+
+  // store callback
+  this._callback = fn || noop;
+
+  // querystring
+  this._appendQueryString();
+
+  return this._end();
+};
+
+Request.prototype._end = function() {
+  var self = this;
+  var xhr = this.xhr = request.getXHR();
+  var data = this._formData || this._data;
+
+  this._setTimeouts();
+
+  // state change
+  xhr.onreadystatechange = function(){
+    var readyState = xhr.readyState;
+    if (readyState >= 2 && self._responseTimeoutTimer) {
+      clearTimeout(self._responseTimeoutTimer);
+    }
+    if (4 != readyState) {
+      return;
+    }
+
+    // In IE9, reads to any property (e.g. status) off of an aborted XHR will
+    // result in the error "Could not complete the operation due to error c00c023f"
+    var status;
+    try { status = xhr.status } catch(e) { status = 0; }
+
+    if (!status) {
+      if (self.timedout || self._aborted) return;
+      return self.crossDomainError();
+    }
+    self.emit('end');
+  };
+
+  // progress
+  var handleProgress = function(direction, e) {
+    if (e.total > 0) {
+      e.percent = e.loaded / e.total * 100;
+    }
+    e.direction = direction;
+    self.emit('progress', e);
+  }
+  if (this.hasListeners('progress')) {
+    try {
+      xhr.onprogress = handleProgress.bind(null, 'download');
+      if (xhr.upload) {
+        xhr.upload.onprogress = handleProgress.bind(null, 'upload');
+      }
+    } catch(e) {
+      // Accessing xhr.upload fails in IE from a web worker, so just pretend it doesn't exist.
+      // Reported here:
+      // https://connect.microsoft.com/IE/feedback/details/837245/xmlhttprequest-upload-throws-invalid-argument-when-used-from-web-worker-context
+    }
+  }
+
+  // initiate request
+  try {
+    if (this.username && this.password) {
+      xhr.open(this.method, this.url, true, this.username, this.password);
+    } else {
+      xhr.open(this.method, this.url, true);
+    }
+  } catch (err) {
+    // see #1149
+    return this.callback(err);
+  }
+
+  // CORS
+  if (this._withCredentials) xhr.withCredentials = true;
+
+  // body
+  if (!this._formData && 'GET' != this.method && 'HEAD' != this.method && 'string' != typeof data && !this._isHost(data)) {
+    // serialize stuff
+    var contentType = this._header['content-type'];
+    var serialize = this._serializer || request.serialize[contentType ? contentType.split(';')[0] : ''];
+    if (!serialize && isJSON(contentType)) {
+      serialize = request.serialize['application/json'];
+    }
+    if (serialize) data = serialize(data);
+  }
+
+  // set header fields
+  for (var field in this.header) {
+    if (null == this.header[field]) continue;
+
+    if (this.header.hasOwnProperty(field))
+      xhr.setRequestHeader(field, this.header[field]);
+  }
+
+  if (this._responseType) {
+    xhr.responseType = this._responseType;
+  }
+
+  // send stuff
+  this.emit('request', this);
+
+  // IE11 xhr.send(undefined) sends 'undefined' string as POST payload (instead of nothing)
+  // We need null here if data is undefined
+  xhr.send(typeof data !== 'undefined' ? data : null);
+  return this;
+};
+
+/**
+ * GET `url` with optional callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed|Function} [data] or fn
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+request.get = function(url, data, fn){
+  var req = request('GET', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.query(data);
+  if (fn) req.end(fn);
+  return req;
+};
+
+/**
+ * HEAD `url` with optional callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed|Function} [data] or fn
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+request.head = function(url, data, fn){
+  var req = request('HEAD', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+
+/**
+ * OPTIONS query to `url` with optional callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed|Function} [data] or fn
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+request.options = function(url, data, fn){
+  var req = request('OPTIONS', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+
+/**
+ * DELETE `url` with optional `data` and callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed} [data]
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+function del(url, data, fn){
+  var req = request('DELETE', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+
+request['del'] = del;
+request['delete'] = del;
+
+/**
+ * PATCH `url` with optional `data` and callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed} [data]
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+request.patch = function(url, data, fn){
+  var req = request('PATCH', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+
+/**
+ * POST `url` with optional `data` and callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed} [data]
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+request.post = function(url, data, fn){
+  var req = request('POST', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+
+/**
+ * PUT `url` with optional `data` and callback `fn(res)`.
+ *
+ * @param {String} url
+ * @param {Mixed|Function} [data] or fn
+ * @param {Function} [fn]
+ * @return {Request}
+ * @api public
+ */
+
+request.put = function(url, data, fn){
+  var req = request('PUT', url);
+  if ('function' == typeof data) fn = data, data = null;
+  if (data) req.send(data);
+  if (fn) req.end(fn);
+  return req;
+};
+
+},{"./is-function":4,"./is-object":5,"./request-base":6,"./response-base":7,"./should-retry":8,"component-emitter":1}],4:[function(require,module,exports){
+/**
+ * Check if `fn` is a function.
+ *
+ * @param {Function} fn
+ * @return {Boolean}
+ * @api private
+ */
+var isObject = require('./is-object');
+
+function isFunction(fn) {
+  var tag = isObject(fn) ? Object.prototype.toString.call(fn) : '';
+  return tag === '[object Function]';
+}
+
+module.exports = isFunction;
+
+},{"./is-object":5}],5:[function(require,module,exports){
+/**
+ * Check if `obj` is an object.
+ *
+ * @param {Object} obj
+ * @return {Boolean}
+ * @api private
+ */
+
+function isObject(obj) {
+  return null !== obj && 'object' === typeof obj;
+}
+
+module.exports = isObject;
+
+},{}],6:[function(require,module,exports){
+/**
+ * Module of mixed-in functions shared between node and client code
+ */
+var isObject = require('./is-object');
+
+/**
+ * Expose `RequestBase`.
+ */
+
+module.exports = RequestBase;
+
+/**
+ * Initialize a new `RequestBase`.
+ *
+ * @api public
+ */
+
+function RequestBase(obj) {
+  if (obj) return mixin(obj);
+}
+
+/**
+ * Mixin the prototype properties.
+ *
+ * @param {Object} obj
+ * @return {Object}
+ * @api private
+ */
+
+function mixin(obj) {
+  for (var key in RequestBase.prototype) {
+    obj[key] = RequestBase.prototype[key];
+  }
+  return obj;
+}
+
+/**
+ * Clear previous timeout.
+ *
+ * @return {Request} for chaining
+ * @api public
+ */
+
+RequestBase.prototype.clearTimeout = function _clearTimeout(){
+  clearTimeout(this._timer);
+  clearTimeout(this._responseTimeoutTimer);
+  delete this._timer;
+  delete this._responseTimeoutTimer;
+  return this;
+};
+
+/**
+ * Override default response body parser
+ *
+ * This function will be called to convert incoming data into request.body
+ *
+ * @param {Function}
+ * @api public
+ */
+
+RequestBase.prototype.parse = function parse(fn){
+  this._parser = fn;
+  return this;
+};
+
+/**
+ * Set format of binary response body.
+ * In browser valid formats are 'blob' and 'arraybuffer',
+ * which return Blob and ArrayBuffer, respectively.
+ *
+ * In Node all values result in Buffer.
+ *
+ * Examples:
+ *
+ *      req.get('/')
+ *        .responseType('blob')
+ *        .end(callback);
+ *
+ * @param {String} val
+ * @return {Request} for chaining
+ * @api public
+ */
+
+RequestBase.prototype.responseType = function(val){
+  this._responseType = val;
+  return this;
+};
+
+/**
+ * Override default request body serializer
+ *
+ * This function will be called to convert data set via .send or .attach into payload to send
+ *
+ * @param {Function}
+ * @api public
+ */
+
+RequestBase.prototype.serialize = function serialize(fn){
+  this._serializer = fn;
+  return this;
+};
+
+/**
+ * Set timeouts.
+ *
+ * - response timeout is time between sending request and receiving the first byte of the response. Includes DNS and connection time.
+ * - deadline is the time from start of the request to receiving response body in full. If the deadline is too short large files may not load at all on slow connections.
+ *
+ * Value of 0 or false means no timeout.
+ *
+ * @param {Number|Object} ms or {response, read, deadline}
+ * @return {Request} for chaining
+ * @api public
+ */
+
+RequestBase.prototype.timeout = function timeout(options){
+  if (!options || 'object' !== typeof options) {
+    this._timeout = options;
+    this._responseTimeout = 0;
+    return this;
+  }
+
+  for(var option in options) {
+    switch(option) {
+      case 'deadline':
+        this._timeout = options.deadline;
+        break;
+      case 'response':
+        this._responseTimeout = options.response;
+        break;
+      default:
+        console.warn("Unknown timeout option", option);
+    }
+  }
+  return this;
+};
+
+/**
+ * Set number of retry attempts on error.
+ *
+ * Failed requests will be retried 'count' times if timeout or err.code >= 500.
+ *
+ * @param {Number} count
+ * @return {Request} for chaining
+ * @api public
+ */
+
+RequestBase.prototype.retry = function retry(count){
+  // Default to 1 if no count passed or true
+  if (arguments.length === 0 || count === true) count = 1;
+  if (count <= 0) count = 0;
+  this._maxRetries = count;
+  this._retries = 0;
+  return this;
+};
+
+/**
+ * Retry request
+ *
+ * @return {Request} for chaining
+ * @api private
+ */
+
+RequestBase.prototype._retry = function() {
+  this.clearTimeout();
+
+  // node
+  if (this.req) {
+    this.req = null;
+    this.req = this.request();
+  }
+
+  this._aborted = false;
+  this.timedout = false;
+
+  return this._end();
+};
+
+/**
+ * Promise support
+ *
+ * @param {Function} resolve
+ * @param {Function} [reject]
+ * @return {Request}
+ */
+
+RequestBase.prototype.then = function then(resolve, reject) {
+  if (!this._fullfilledPromise) {
+    var self = this;
+    if (this._endCalled) {
+      console.warn("Warning: superagent request was sent twice, because both .end() and .then() were called. Never call .end() if you use promises");
+    }
+    this._fullfilledPromise = new Promise(function(innerResolve, innerReject){
+      self.end(function(err, res){
+        if (err) innerReject(err); else innerResolve(res);
+      });
+    });
+  }
+  return this._fullfilledPromise.then(resolve, reject);
+}
+
+RequestBase.prototype.catch = function(cb) {
+  return this.then(undefined, cb);
+};
+
+/**
+ * Allow for extension
+ */
+
+RequestBase.prototype.use = function use(fn) {
+  fn(this);
+  return this;
+}
+
+RequestBase.prototype.ok = function(cb) {
+  if ('function' !== typeof cb) throw Error("Callback required");
+  this._okCallback = cb;
+  return this;
+};
+
+RequestBase.prototype._isResponseOK = function(res) {
+  if (!res) {
+    return false;
+  }
+
+  if (this._okCallback) {
+    return this._okCallback(res);
+  }
+
+  return res.status >= 200 && res.status < 300;
+};
+
+
+/**
+ * Get request header `field`.
+ * Case-insensitive.
+ *
+ * @param {String} field
+ * @return {String}
+ * @api public
+ */
+
+RequestBase.prototype.get = function(field){
+  return this._header[field.toLowerCase()];
+};
+
+/**
+ * Get case-insensitive header `field` value.
+ * This is a deprecated internal API. Use `.get(field)` instead.
+ *
+ * (getHeader is no longer used internally by the superagent code base)
+ *
+ * @param {String} field
+ * @return {String}
+ * @api private
+ * @deprecated
+ */
+
+RequestBase.prototype.getHeader = RequestBase.prototype.get;
+
+/**
+ * Set header `field` to `val`, or multiple fields with one object.
+ * Case-insensitive.
+ *
+ * Examples:
+ *
+ *      req.get('/')
+ *        .set('Accept', 'application/json')
+ *        .set('X-API-Key', 'foobar')
+ *        .end(callback);
+ *
+ *      req.get('/')
+ *        .set({ Accept: 'application/json', 'X-API-Key': 'foobar' })
+ *        .end(callback);
+ *
+ * @param {String|Object} field
+ * @param {String} val
+ * @return {Request} for chaining
+ * @api public
+ */
+
+RequestBase.prototype.set = function(field, val){
+  if (isObject(field)) {
+    for (var key in field) {
+      this.set(key, field[key]);
+    }
+    return this;
+  }
+  this._header[field.toLowerCase()] = val;
+  this.header[field] = val;
+  return this;
+};
+
+/**
+ * Remove header `field`.
+ * Case-insensitive.
+ *
+ * Example:
+ *
+ *      req.get('/')
+ *        .unset('User-Agent')
+ *        .end(callback);
+ *
+ * @param {String} field
+ */
+RequestBase.prototype.unset = function(field){
+  delete this._header[field.toLowerCase()];
+  delete this.header[field];
+  return this;
+};
+
+/**
+ * Write the field `name` and `val`, or multiple fields with one object
+ * for "multipart/form-data" request bodies.
+ *
+ * ``` js
+ * request.post('/upload')
+ *   .field('foo', 'bar')
+ *   .end(callback);
+ *
+ * request.post('/upload')
+ *   .field({ foo: 'bar', baz: 'qux' })
+ *   .end(callback);
+ * ```
+ *
+ * @param {String|Object} name
+ * @param {String|Blob|File|Buffer|fs.ReadStream} val
+ * @return {Request} for chaining
+ * @api public
+ */
+RequestBase.prototype.field = function(name, val) {
+
+  // name should be either a string or an object.
+  if (null === name ||  undefined === name) {
+    throw new Error('.field(name, val) name can not be empty');
+  }
+
+  if (this._data) {
+    console.error(".field() can't be used if .send() is used. Please use only .send() or only .field() & .attach()");
+  }
+
+  if (isObject(name)) {
+    for (var key in name) {
+      this.field(key, name[key]);
+    }
+    return this;
+  }
+
+  if (Array.isArray(val)) {
+    for (var i in val) {
+      this.field(name, val[i]);
+    }
+    return this;
+  }
+
+  // val should be defined now
+  if (null === val || undefined === val) {
+    throw new Error('.field(name, val) val can not be empty');
+  }
+  if ('boolean' === typeof val) {
+    val = '' + val;
+  }
+  this._getFormData().append(name, val);
+  return this;
+};
+
+/**
+ * Abort the request, and clear potential timeout.
+ *
+ * @return {Request}
+ * @api public
+ */
+RequestBase.prototype.abort = function(){
+  if (this._aborted) {
+    return this;
+  }
+  this._aborted = true;
+  this.xhr && this.xhr.abort(); // browser
+  this.req && this.req.abort(); // node
+  this.clearTimeout();
+  this.emit('abort');
+  return this;
+};
+
+/**
+ * Enable transmission of cookies with x-domain requests.
+ *
+ * Note that for this to work the origin must not be
+ * using "Access-Control-Allow-Origin" with a wildcard,
+ * and also must set "Access-Control-Allow-Credentials"
+ * to "true".
+ *
+ * @api public
+ */
+
+RequestBase.prototype.withCredentials = function(on){
+  // This is browser-only functionality. Node side is no-op.
+  if(on==undefined) on = true;
+  this._withCredentials = on;
+  return this;
+};
+
+/**
+ * Set the max redirects to `n`. Does noting in browser XHR implementation.
+ *
+ * @param {Number} n
+ * @return {Request} for chaining
+ * @api public
+ */
+
+RequestBase.prototype.redirects = function(n){
+  this._maxRedirects = n;
+  return this;
+};
+
+/**
+ * Convert to a plain javascript object (not JSON string) of scalar properties.
+ * Note as this method is designed to return a useful non-this value,
+ * it cannot be chained.
+ *
+ * @return {Object} describing method, url, and data of this request
+ * @api public
+ */
+
+RequestBase.prototype.toJSON = function(){
+  return {
+    method: this.method,
+    url: this.url,
+    data: this._data,
+    headers: this._header
+  };
+};
+
+
+/**
+ * Send `data` as the request body, defaulting the `.type()` to "json" when
+ * an object is given.
+ *
+ * Examples:
+ *
+ *       // manual json
+ *       request.post('/user')
+ *         .type('json')
+ *         .send('{"name":"tj"}')
+ *         .end(callback)
+ *
+ *       // auto json
+ *       request.post('/user')
+ *         .send({ name: 'tj' })
+ *         .end(callback)
+ *
+ *       // manual x-www-form-urlencoded
+ *       request.post('/user')
+ *         .type('form')
+ *         .send('name=tj')
+ *         .end(callback)
+ *
+ *       // auto x-www-form-urlencoded
+ *       request.post('/user')
+ *         .type('form')
+ *         .send({ name: 'tj' })
+ *         .end(callback)
+ *
+ *       // defaults to x-www-form-urlencoded
+ *      request.post('/user')
+ *        .send('name=tobi')
+ *        .send('species=ferret')
+ *        .end(callback)
+ *
+ * @param {String|Object} data
+ * @return {Request} for chaining
+ * @api public
+ */
+
+RequestBase.prototype.send = function(data){
+  var isObj = isObject(data);
+  var type = this._header['content-type'];
+
+  if (this._formData) {
+    console.error(".send() can't be used if .attach() or .field() is used. Please use only .send() or only .field() & .attach()");
+  }
+
+  if (isObj && !this._data) {
+    if (Array.isArray(data)) {
+      this._data = [];
+    } else if (!this._isHost(data)) {
+      this._data = {};
+    }
+  } else if (data && this._data && this._isHost(this._data)) {
+    throw Error("Can't merge these send calls");
+  }
+
+  // merge
+  if (isObj && isObject(this._data)) {
+    for (var key in data) {
+      this._data[key] = data[key];
+    }
+  } else if ('string' == typeof data) {
+    // default to x-www-form-urlencoded
+    if (!type) this.type('form');
+    type = this._header['content-type'];
+    if ('application/x-www-form-urlencoded' == type) {
+      this._data = this._data
+        ? this._data + '&' + data
+        : data;
+    } else {
+      this._data = (this._data || '') + data;
+    }
+  } else {
+    this._data = data;
+  }
+
+  if (!isObj || this._isHost(data)) {
+    return this;
+  }
+
+  // default to json
+  if (!type) this.type('json');
+  return this;
+};
+
+
+/**
+ * Sort `querystring` by the sort function
+ *
+ *
+ * Examples:
+ *
+ *       // default order
+ *       request.get('/user')
+ *         .query('name=Nick')
+ *         .query('search=Manny')
+ *         .sortQuery()
+ *         .end(callback)
+ *
+ *       // customized sort function
+ *       request.get('/user')
+ *         .query('name=Nick')
+ *         .query('search=Manny')
+ *         .sortQuery(function(a, b){
+ *           return a.length - b.length;
+ *         })
+ *         .end(callback)
+ *
+ *
+ * @param {Function} sort
+ * @return {Request} for chaining
+ * @api public
+ */
+
+RequestBase.prototype.sortQuery = function(sort) {
+  // _sort default to true but otherwise can be a function or boolean
+  this._sort = typeof sort === 'undefined' ? true : sort;
+  return this;
+};
+
+/**
+ * Invoke callback with timeout error.
+ *
+ * @api private
+ */
+
+RequestBase.prototype._timeoutError = function(reason, timeout, errno){
+  if (this._aborted) {
+    return;
+  }
+  var err = new Error(reason + timeout + 'ms exceeded');
+  err.timeout = timeout;
+  err.code = 'ECONNABORTED';
+  err.errno = errno;
+  this.timedout = true;
+  this.abort();
+  this.callback(err);
+};
+
+RequestBase.prototype._setTimeouts = function() {
+  var self = this;
+
+  // deadline
+  if (this._timeout && !this._timer) {
+    this._timer = setTimeout(function(){
+      self._timeoutError('Timeout of ', self._timeout, 'ETIME');
+    }, this._timeout);
+  }
+  // response timeout
+  if (this._responseTimeout && !this._responseTimeoutTimer) {
+    this._responseTimeoutTimer = setTimeout(function(){
+      self._timeoutError('Response timeout of ', self._responseTimeout, 'ETIMEDOUT');
+    }, this._responseTimeout);
+  }
+}
+
+},{"./is-object":5}],7:[function(require,module,exports){
+
+/**
+ * Module dependencies.
+ */
+
+var utils = require('./utils');
+
+/**
+ * Expose `ResponseBase`.
+ */
+
+module.exports = ResponseBase;
+
+/**
+ * Initialize a new `ResponseBase`.
+ *
+ * @api public
+ */
+
+function ResponseBase(obj) {
+  if (obj) return mixin(obj);
+}
+
+/**
+ * Mixin the prototype properties.
+ *
+ * @param {Object} obj
+ * @return {Object}
+ * @api private
+ */
+
+function mixin(obj) {
+  for (var key in ResponseBase.prototype) {
+    obj[key] = ResponseBase.prototype[key];
+  }
+  return obj;
+}
+
+/**
+ * Get case-insensitive `field` value.
+ *
+ * @param {String} field
+ * @return {String}
+ * @api public
+ */
+
+ResponseBase.prototype.get = function(field){
+    return this.header[field.toLowerCase()];
+};
+
+/**
+ * Set header related properties:
+ *
+ *   - `.type` the content type without params
+ *
+ * A response of "Content-Type: text/plain; charset=utf-8"
+ * will provide you with a `.type` of "text/plain".
+ *
+ * @param {Object} header
+ * @api private
+ */
+
+ResponseBase.prototype._setHeaderProperties = function(header){
+    // TODO: moar!
+    // TODO: make this a util
+
+    // content-type
+    var ct = header['content-type'] || '';
+    this.type = utils.type(ct);
+
+    // params
+    var params = utils.params(ct);
+    for (var key in params) this[key] = params[key];
+
+    this.links = {};
+
+    // links
+    try {
+        if (header.link) {
+            this.links = utils.parseLinks(header.link);
+        }
+    } catch (err) {
+        // ignore
+    }
+};
+
+/**
+ * Set flags such as `.ok` based on `status`.
+ *
+ * For example a 2xx response will give you a `.ok` of __true__
+ * whereas 5xx will be __false__ and `.error` will be __true__. The
+ * `.clientError` and `.serverError` are also available to be more
+ * specific, and `.statusType` is the class of error ranging from 1..5
+ * sometimes useful for mapping respond colors etc.
+ *
+ * "sugar" properties are also defined for common cases. Currently providing:
+ *
+ *   - .noContent
+ *   - .badRequest
+ *   - .unauthorized
+ *   - .notAcceptable
+ *   - .notFound
+ *
+ * @param {Number} status
+ * @api private
+ */
+
+ResponseBase.prototype._setStatusProperties = function(status){
+    var type = status / 100 | 0;
+
+    // status / class
+    this.status = this.statusCode = status;
+    this.statusType = type;
+
+    // basics
+    this.info = 1 == type;
+    this.ok = 2 == type;
+    this.redirect = 3 == type;
+    this.clientError = 4 == type;
+    this.serverError = 5 == type;
+    this.error = (4 == type || 5 == type)
+        ? this.toError()
+        : false;
+
+    // sugar
+    this.accepted = 202 == status;
+    this.noContent = 204 == status;
+    this.badRequest = 400 == status;
+    this.unauthorized = 401 == status;
+    this.notAcceptable = 406 == status;
+    this.forbidden = 403 == status;
+    this.notFound = 404 == status;
+};
+
+},{"./utils":9}],8:[function(require,module,exports){
+var ERROR_CODES = [
+  'ECONNRESET',
+  'ETIMEDOUT',
+  'EADDRINFO',
+  'ESOCKETTIMEDOUT'
+];
+
+/**
+ * Determine if a request should be retried.
+ * (Borrowed from segmentio/superagent-retry)
+ *
+ * @param {Error} err
+ * @param {Response} [res]
+ * @returns {Boolean}
+ */
+module.exports = function shouldRetry(err, res) {
+  if (err && err.code && ~ERROR_CODES.indexOf(err.code)) return true;
+  if (res && res.status && res.status >= 500) return true;
+  // Superagent timeout
+  if (err && 'timeout' in err && err.code == 'ECONNABORTED') return true;
+  if (err && 'crossDomain' in err) return true;
+  return false;
+};
+
+},{}],9:[function(require,module,exports){
+
+/**
+ * Return the mime type for the given `str`.
+ *
+ * @param {String} str
+ * @return {String}
+ * @api private
+ */
+
+exports.type = function(str){
+  return str.split(/ *; */).shift();
+};
+
+/**
+ * Return header field parameters.
+ *
+ * @param {String} str
+ * @return {Object}
+ * @api private
+ */
+
+exports.params = function(str){
+  return str.split(/ *; */).reduce(function(obj, str){
+    var parts = str.split(/ *= */);
+    var key = parts.shift();
+    var val = parts.shift();
+
+    if (key && val) obj[key] = val;
+    return obj;
+  }, {});
+};
+
+/**
+ * Parse Link header fields.
+ *
+ * @param {String} str
+ * @return {Object}
+ * @api private
+ */
+
+exports.parseLinks = function(str){
+  return str.split(/ *, */).reduce(function(obj, str){
+    var parts = str.split(/ *; */);
+    var url = parts[0].slice(1, -1);
+    var rel = parts[1].split(/ *= */)[1].slice(1, -1);
+    obj[rel] = url;
+    return obj;
+  }, {});
+};
+
+/**
+ * Strip content related fields from `header`.
+ *
+ * @param {Object} header
+ * @return {Object} header
+ * @api private
+ */
+
+exports.cleanHeader = function(header, shouldStripCookie){
+  delete header['content-type'];
+  delete header['content-length'];
+  delete header['transfer-encoding'];
+  delete header['host'];
+  if (shouldStripCookie) {
+    delete header['cookie'];
+  }
+  return header;
+};
+},{}],10:[function(require,module,exports){
+// Returns a wrapper function that returns a wrapped callback
+// The wrapper function should do some stuff, and return a
+// presumably different callback function.
+// This makes sure that own properties are retained, so that
+// decorations and such are not lost along the way.
+module.exports = wrappy
+function wrappy (fn, cb) {
+  if (fn && cb) return wrappy(fn)(cb)
+
+  if (typeof fn !== 'function')
+    throw new TypeError('need wrapper function')
+
+  Object.keys(fn).forEach(function (k) {
+    wrapper[k] = fn[k]
+  })
+
+  return wrapper
+
+  function wrapper() {
+    var args = new Array(arguments.length)
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i]
+    }
+    var ret = fn.apply(this, args)
+    var cb = args[args.length-1]
+    if (typeof ret === 'function' && ret !== cb) {
+      Object.keys(cb).forEach(function (k) {
+        ret[k] = cb[k]
+      })
+    }
+    return ret
+  }
+}
+
+},{}],11:[function(require,module,exports){
+var superagent  = require("superagent"),
+    once        = require("once"),
+    curScript   = document.currentScript;
+
+//--------------------------------------
+var timeout     = false,
+    finished    = false;
+//--------------------------------------
+var failLoad = function(reason) {
+    if (typeof(mobFoxParams.onFail)==="function") {
+        mobFoxParams.onFail(reason);
+    }
+};
+//--------------------------------------
+var successLoad = function() {
+    if (typeof(mobFoxParams.onSuccess)==="function") {
+        mobFoxParams.onSuccess();
+    }
+};
+//--------------------------------------
+var getHTML = function(json) {
+
+    var html            = json.request.htmlString,
+        markupRegExp    = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
+        matchMarkup     = json.request.htmlString.match(markupRegExp);
+
+    if (matchMarkup) {
+        html = window.atob(matchMarkup[1]);
+    }
+
+    return html;
+};
+//--------------------------------------
+var createDiv = function(json){
+
+    try {
+
+        var div = document.createElement('div');
+        div.id = "mobfoxDiv";
+
+        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+            curScript.parentNode.appendChild(div);     
+        }
+        else{
+            document.body.appendChild(div);
+        }
+
+        //css
+        div.style.border        = "none";
+        div.style.width         = mobFoxParams.adspace_width + "px";
+        div.style.height        = mobFoxParams.adspace_height + "px";
+        div.style.overflow      = "hidden";
+        div.style.margin        = "0px";
+        div.style.padding       = "0px";
+        div.style.display       = "inline-block";
+
+        var html = getHTML(json); 
+        div.innerHTML = html;
+
+        finished = true; 
+        successLoad(); 
+
+    }
+    catch(e) {
+        finished = true;
+        failLoad({e1:e});
+    }
+
+};
+//--------------------------------------
+var createIFrame = function(json){
+    
+    try{
+        var ifrm = document.createElement('iframe');
+        ifrm.id = "mobfoxFrame";
+
+        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+            curScript.parentNode.appendChild(ifrm);     
+        }
+        else{
+            document.body.appendChild(ifrm);
+        }
+
+        //css
+        ifrm.frameborder = "0";
+        ifrm.style.border    = "none";
+        ifrm.style.width     = mobFoxParams.adspace_width + "px";
+        ifrm.style.height    = mobFoxParams.adspace_height + "px";
+        ifrm.style.overflow  = "hidden";
+        ifrm.style.margin    = "none";
+        ifrm.setAttribute("scrolling","no");
+
+        var html = getHTML(json); 
+
+        if(html.indexOf("<html>") < 0){
+            html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
+        }
+        else{
+            html = html + "<style>body{margin:0px;padding:0px}</style>";
+        }
+
+        ifrm.onload = once(function(){
+            if(timeout) return;
+            finished = true; 
+            successLoad(); 
+        });
+
+        var c = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
+        
+        c.document.open();
+        c.document.write(html);
+        c.document.close();
+    }
+    catch(e) {
+        finished = true; 
+        failLoad({e2:e});
+    }
+};
+
+//--------------------------------------
+
+mobFoxParams.u          = navigator.userAgent;
+mobFoxParams.r_resp     = "json";
+mobFoxParams.rt         = "api-fetchip";
+mobFoxParams.r_type     = "banner";
+
+var url = "http://my.mobfox.com/request.php";
+
+try {
+    if (mobFoxParams.imp_secure == 1) {
+        url = "https://my.mobfox.com/request.php";
+    }
+} catch(e) {}
+
+var mobFoxCall = once(function(){
+
+    window.setTimeout(function(){
+        timeout = true;
+        if (finished) return;
+        failLoad("timeout");
+    },3000);
+    
+    superagent
+            .get(url)
+            .timeout(2500)
+            .query(mobFoxParams)
+            .end(once(function(err,resp) {
+        
+                if (timeout) return;
+                try {
+                    
+                    var problem = err || resp.error || !resp.body || resp.body.error;
+                    if (problem) {
+                        finished = true;
+                        return failLoad({e3:problem});
+                    }
+
+                    var json = resp.body;
+
+                    if (document.body) {
+                        if(mobFoxParams.noIFrame) createDiv(json);
+                        else createIFrame(json); 
+                    }
+                    else{
+                        document.addEventListener("DOMContentLoaded",function(){
+                            if(mobFoxParams.noIFrame) createDiv(json);
+                            else createIFrame(json); 
+                        });
+                    }
+                }
+                catch(e) {
+                    finished = true; 
+                    failLoad({e4:e});
+                }
+                
+            }));
+});
+
+//--------------------------------------
+
+mobFoxCall();
+
+},{"once":2,"superagent":3}]},{},[11]);
