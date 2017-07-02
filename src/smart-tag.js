@@ -47,8 +47,14 @@ var createDiv = function(json){
 
         //css
         div.style.border        = "none";
-        div.style.width         = mobFoxParams.adspace_width + "px";
-        div.style.height        = mobFoxParams.adspace_height + "px";
+        if (mobFoxParams.smart) {
+            div.style.width             = window.screen.width + "px";
+            div.style.height            = window.screen.height + "px";
+            div.style.backgroundColor   = '#000000';
+        } else {
+            div.style.width         = mobFoxParams.adspace_width + "px";
+            div.style.height        = mobFoxParams.adspace_height + "px";
+        }
         div.style.overflow      = "hidden";
         div.style.margin        = "0px";
         div.style.padding       = "0px";
@@ -84,19 +90,36 @@ var createIFrame = function(json){
         //css
         ifrm.frameborder = "0";
         ifrm.style.border    = "none";
-        ifrm.style.width     = mobFoxParams.adspace_width + "px";
-        ifrm.style.height    = mobFoxParams.adspace_height + "px";
+        if (mobFoxParams.smart) {
+            ifrm.style.width             = window.screen.width + "px";
+            ifrm.style.height            = window.screen.height + "px";
+            ifrm.style.backgroundColor   = '#000000';
+        } else {
+            ifrm.style.width         = mobFoxParams.adspace_width + "px";
+            ifrm.style.height        = mobFoxParams.adspace_height + "px";
+        }
         ifrm.style.overflow  = "hidden";
         ifrm.style.margin    = "none";
         ifrm.setAttribute("scrolling","no");
 
         var html = getHTML(json); 
-
-        if(html.indexOf("<html>") < 0){
-            html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
-        }
-        else{
-            html = html + "<style>body{margin:0px;padding:0px}</style>";
+        
+        if (mobFoxParams.smart) {
+            var margin_left = (window.screen.width  - mobFoxParams.adspace_width) / 2 + 'px';
+            var margin_top  = (window.screen.height - mobFoxParams.adspace_height) / 2 + 'px';
+            if (html.indexOf("<html>") < 0) {
+                html = ["<html><body style='margin:0px;padding:0px;margin-left:"+margin_left+";margin-top:"+margin_top+";'>",html,"</body></html>"].join("\n");
+            }
+            else {
+                html = html + "<style>body{margin:0px;padding:0px;margin-left:"+margin_left+";margin-top:"+margin_top+";}</style>";
+            }
+        } else {
+            if (html.indexOf("<html>") < 0) {
+                html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
+            }
+            else {
+                html = html + "<style>body{margin:0px;padding:0px}</style>";
+            }
         }
 
         ifrm.onload = once(function(){
@@ -201,14 +224,17 @@ var url = "http://my.mobfox.com/request.php";
 
 try {
     if (mobFoxParams.smart) {
-        mobFoxParams.adspace_width  = window.screen.width;
+        mobFoxParams.adspace_width = window.screen.width;
         mobFoxParams.adspace_height = window.screen.height;
-        var demand_size = getClosestPoint(DEMAND_SIZES, {width: mobFoxParams.adspace_width, height: mobFoxParams.adspace_height});
-        console.log(demand_size);
+        var size = getClosestPoint(DEMAND_SIZES, {width: mobFoxParams.adspace_width, height: mobFoxParams.adspace_height});
+        if (mobFoxParams.adspace_width / size.width < 1.5 && mobFoxParams.adspace_height / size.height < 1.5) {
+            mobFoxParams.adspace_width  = size.width;
+            mobFoxParams.adspace_height = size.height;
+        }
     }
-//    console.log(mobFoxParams);
 } catch(e) {
-    console.log(e);
+    failLoad({e5:e});
+    return;
 }
 
 try {
