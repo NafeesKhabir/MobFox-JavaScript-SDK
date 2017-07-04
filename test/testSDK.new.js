@@ -9,6 +9,8 @@ var fileServer = new static.Server('./test/www'),
 var domain      = 'http://my.mobfox.com/request.php';
 var clickUrl    = 'http://tokyo-my.mobfox.com/exchange.click.php';
 
+var self = this;
+
 function standardPageTest(test, pageURL, clickURL) {
     console.log('standardPageTest');
     
@@ -83,6 +85,7 @@ function testSecure(test, pageURL) {
     page.on('onResourceRequested', function(requestData, networkRequest) {
 //        https://my.mobfox.com/request.php
         if (requestData.url.startsWith("https")) {
+//            console.log('done');
             test.ok(requestData.url.indexOf('my.mobfox.com') > -1);
             test.done();
         }
@@ -93,33 +96,30 @@ function testSecure(test, pageURL) {
 
 //-----------------------------------------
 module.exports.setUp = function (cb) {
-    
-    
-    var request = require("request");
-
+var request = require("request");
 var url = "http://localhost:58080/index.html"
-
-require('http').createServer(function (request, response) {
+server = require('http').createServer(function (request, response) {
     request.addListener('end', function () {
         fileServer.serve(request, response);
     }).resume();
-}).listen(58080, function(){
-    console.log('listening..')
-    
-
-request({
-    url: url
-//    json: true
-}, function (error, response, body) {
-    
-//    console.log(error);
-    console.log(response.statusCode);
-//    console.log(body);
-
-    if (!error && response.statusCode === 200) {
-        console.log(body) // Print the json response
-    }
-})
+}).listen(58080, function() {
+    console.log('listening..');
+    request({
+        url: url
+    }, function (error, response, body) {
+        console.log(response.statusCode);
+        if (!error && response.statusCode === 200) {
+            console.log(body) // Print the json response
+        }
+    });
+    require('phantom').create().then(function(ph) {
+        phantom = ph;
+        ph.createPage().then(function(_page) {
+            page = _page;
+            page.setting('userAgent', 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36');
+            cb();
+        });
+    }); 
 });
     
 //    server = require('http').createServer(function (request, response) {
@@ -145,8 +145,13 @@ request({
 };
 //-----------------------------------------
 module.exports.tearDown = function (cb) {
-    phantom.exit();
-    server.close(cb);
+//    phantom.exit();
+//    server.close(cb);
+    
+    setTimeout(function() {
+        phantom.exit();
+        server.close(cb);
+    }, 500);
 };
 //-----------------------------------------
 //module.exports.testBanner = function(test){
