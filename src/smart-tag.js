@@ -48,8 +48,8 @@ var createDiv = function(json){
         //css
         div.style.border        = "none";
         if (mobFoxParams.smart) {
-            div.style.width             = window.screen.width + "px";
-            div.style.height            = window.screen.height + "px";
+            div.style.width             = window.innerWidth + "px";
+            div.style.height            = window.innerHeight + "px";
             div.style.backgroundColor   = '#000000';
         } else {
             div.style.width         = mobFoxParams.adspace_width + "px";
@@ -91,8 +91,8 @@ var createIFrame = function(json){
         ifrm.frameborder = "0";
         ifrm.style.border    = "none";
         if (mobFoxParams.smart) {
-            ifrm.style.width             = window.screen.width + "px";
-            ifrm.style.height            = window.screen.height + "px";
+            ifrm.style.width             = window.innerWidth + "px";
+            ifrm.style.height            = window.innerHeight + "px";
             ifrm.style.backgroundColor   = '#000000';
         } else {
             ifrm.style.width         = mobFoxParams.adspace_width + "px";
@@ -105,8 +105,8 @@ var createIFrame = function(json){
         var html = getHTML(json); 
         
         if (mobFoxParams.smart) {
-            var margin_left = (window.screen.width  - mobFoxParams.adspace_width) / 2 + 'px';
-            var margin_top  = (window.screen.height - mobFoxParams.adspace_height) / 2 + 'px';
+            var margin_left = (window.innerWidth  - mobFoxParams.adspace_width) / 2 + 'px';
+            var margin_top  = (window.innerHeight - mobFoxParams.adspace_height) / 2 + 'px';
             if (html.indexOf("<html>") < 0) {
                 html = ["<html><body style='margin:0px;padding:0px;margin-left:"+margin_left+";margin-top:"+margin_top+";'>",html,"</body></html>"].join("\n");
             }
@@ -224,8 +224,8 @@ var url = "http://my.mobfox.com/request.php";
 
 try {
     if (mobFoxParams.smart) {
-        mobFoxParams.adspace_width = window.screen.width;
-        mobFoxParams.adspace_height = window.screen.height;
+        mobFoxParams.adspace_width = window.innerWidth;
+        mobFoxParams.adspace_height = window.innerHeight;
         var size = getClosestPoint(DEMAND_SIZES, {width: mobFoxParams.adspace_width, height: mobFoxParams.adspace_height});
         if (mobFoxParams.adspace_width / size.width < 1.5 && mobFoxParams.adspace_height / size.height < 1.5) {
             mobFoxParams.adspace_width  = size.width;

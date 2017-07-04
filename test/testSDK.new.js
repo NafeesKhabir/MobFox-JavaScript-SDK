@@ -101,17 +101,9 @@ function testSmart(test, pageURL) {
     
     var loaded = false,
         data;
-    
-    page.on('onLoadFinished', function(status) {
-        page.evaluate(function() {
-            window.resizeTo(500,500);
-        }).then(function(_data){
-            console.log('window.resizeTo(500,500)');
-        });
-    });
 
     page.on('onNavigationRequested',function(url, type, willNavigate, main) {
-        console.log('onNavigationRequested');
+        console.log('onNavigationRequested, url ' + url);
         
         //ad clicked, finish test
         if (url.startsWith(clickUrl)) {
@@ -122,22 +114,12 @@ function testSmart(test, pageURL) {
     });
     
     page.on('onConsoleMessage', function(msg) {
-        console.log('onConsoleMessage ' + msg);
-        
-        if (msg === '{"e3":"No Ad Available"}') {
-            test.ok(true, 'err');
-            test.ok(true, 'err');
-            test.ok(true, 'err');
-            test.done();
-        }
+        console.log(msg);
     
-//        if (msg != 'onSuccess')     return;
-//        
-        if (loaded)                 return;
-        loaded = true;
-//        if (msg === "onSuccess")    loaded = true;
+        if (msg != 'success')     return;
         
-//        return console.log('page');
+        if (loaded)                 return;
+        if (msg === "success")    loaded = true;
         
         page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function() {
             console.log('includeJs');
@@ -146,7 +128,7 @@ function testSmart(test, pageURL) {
                 console.log('evaluate');
 
                 var iframe = document.querySelector('iframe');
-
+                
                 return {
                     width   : $(iframe).width(),
                     height  : $(iframe).height(),
@@ -154,14 +136,13 @@ function testSmart(test, pageURL) {
                 };
 
             }).then(function(_data) {
-                
-                return;
-                
+//                console.log(_data);
                 data = _data;
-                test.equal(data.width   , "320");
-                test.equal(data.height  , "50");
+                test.equal(data.width   , 350);
+                test.equal(data.height  , 300);
                 
-                page.sendEvent('click', data.offset.left + 5, data.offset.top + 5);
+                console.log('click');
+                page.sendEvent('click', data.offset.left + 100, data.offset.top + 100);
             });
 
         });
@@ -177,7 +158,7 @@ function testSmart(test, pageURL) {
 //    });
     
 //    page.viewportSize = {width: 350, height: 350};
-    page.property('viewportSize', {width: 350, height: 350}).then(function() {
+    page.property('viewportSize', {width: 350, height: 300}).then(function() {
         console.log('viewportSize');
         page.open(pageURL);
     });
