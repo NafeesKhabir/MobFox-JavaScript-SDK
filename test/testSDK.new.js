@@ -94,6 +94,97 @@ function testSecure(test, pageURL) {
     page.open(pageURL);
 }
 
+function testSmart(test, pageURL) {
+    console.log('testSmart');
+    
+    test.expect(3);
+    
+    var loaded = false,
+        data;
+    
+    page.on('onLoadFinished', function(status) {
+        page.evaluate(function() {
+            window.resizeTo(500,500);
+        }).then(function(_data){
+            console.log('window.resizeTo(500,500)');
+        });
+    });
+
+    page.on('onNavigationRequested',function(url, type, willNavigate, main) {
+        console.log('onNavigationRequested');
+        
+        //ad clicked, finish test
+        if (url.startsWith(clickUrl)) {
+            test.ok(URL.parse(url).query.startsWith("h="));
+            test.done();
+        }
+
+    });
+    
+    page.on('onConsoleMessage', function(msg) {
+        console.log('onConsoleMessage ' + msg);
+        
+        if (msg === '{"e3":"No Ad Available"}') {
+            test.ok(true, 'err');
+            test.ok(true, 'err');
+            test.ok(true, 'err');
+            test.done();
+        }
+    
+//        if (msg != 'onSuccess')     return;
+//        
+        if (loaded)                 return;
+        loaded = true;
+//        if (msg === "onSuccess")    loaded = true;
+        
+//        return console.log('page');
+        
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function() {
+            console.log('includeJs');
+            
+            page.evaluate(function() {
+                console.log('evaluate');
+
+                var iframe = document.querySelector('iframe');
+
+                return {
+                    width   : $(iframe).width(),
+                    height  : $(iframe).height(),
+                    offset  : $(iframe).offset()
+                };
+
+            }).then(function(_data) {
+                
+                return;
+                
+                data = _data;
+                test.equal(data.width   , "320");
+                test.equal(data.height  , "50");
+                
+                page.sendEvent('click', data.offset.left + 5, data.offset.top + 5);
+            });
+
+        });
+    });
+    
+//    page.on('onResourceReceived',function(response){
+//        console.log('Response (#' + response.id + ', stage "' + response.stage + '"): ' + JSON.stringify(response));
+//    });
+//    page.on('onResourceRequested', true, function(requestData, networkRequest) {
+//            networkRequest.abort();
+//            networkRequest.changeUrl(url); 
+//        }
+//    });
+    
+//    page.viewportSize = {width: 350, height: 350};
+    page.property('viewportSize', {width: 350, height: 350}).then(function() {
+        console.log('viewportSize');
+        page.open(pageURL);
+    });
+    
+//    page.open(pageURL);
+}
+
 //-----------------------------------------
 module.exports.setUp = function (cb) {
 var request = require("request");
@@ -117,6 +208,7 @@ server = require('http').createServer(function (request, response) {
         ph.createPage().then(function(_page) {
             page = _page;
             page.setting('userAgent', 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Mobile Safari/537.36');
+//            page.set('viewportSize', {width: 320, height: 480});
             cb();
         });
     }); 
@@ -458,6 +550,14 @@ module.exports.validateSecureParam = function (test) {
     testSecure(
         test,
         'http://localhost:58080/new/banner-secure.html'
+    );
+
+};
+//-----------------------------------------
+module.exports.validateSmart = function (test) {
+    testSmart(
+        test,
+        'http://localhost:58080/new/smart-tag.html'
     );
 
 };

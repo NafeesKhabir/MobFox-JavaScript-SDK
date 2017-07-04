@@ -12,6 +12,9 @@ cp -f sdk/tagBanneriOSMoat.html dist/tagBanneriOSMoat.html
 
 browserify src/smart-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/smart-tag.js
 cp -f src/smart-tag.html dist/smart-tag.html
+
+browserify src/smart-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/new/smart-tag.js
+cp -f src/smart-tag.html test/www/new/smart-tag.html
 #uglifyjs -c -- src/smart-tag.js > dist/smart-tag.js
 
 #uglifyjs -c -- src/ios-render.js > dist/ios-render.js
