@@ -18,15 +18,16 @@
             justify-content : center;
         }
     </style>
+<!--tag start   -->
     <script>
         var mobFoxParams = {
             "r_type": "banner",
             "s": "fe96717d9875b9da4339ea5367eff1ec",
-            "o_iosadvid": "[o_iosadvid]",
             "smart": true
         };
     </script>
-    <script src="http://sdk-origin.starbolt.io/dist/smart.js"></script>
+    <script src="http://sdk.starbolt.io/dist/smart.js"></script>
+<!--tag end     -->
     <script>
         window.mobFoxParams.onFail = function(reason) {
             if(typeof(reason) === "object") reason = JSON.stringify(reason);
