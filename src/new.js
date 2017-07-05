@@ -3,150 +3,6 @@ var superagent  = require("superagent"),
     curScript   = document.currentScript;
 
 //--------------------------------------
-var timeout     = false,
-    finished    = false;
-//--------------------------------------
-var failLoad = function(reason) {
-    if (typeof(mobFoxParams.onFail)==="function") {
-        mobFoxParams.onFail(reason);
-    }
-};
-//--------------------------------------
-var successLoad = function() {
-    if (typeof(mobFoxParams.onSuccess)==="function") {
-        mobFoxParams.onSuccess();
-    }
-};
-//--------------------------------------
-var getHTML = function(json) {
-
-    var html            = json.request.htmlString,
-        markupRegExp    = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
-        matchMarkup     = json.request.htmlString.match(markupRegExp);
-
-    if (matchMarkup) {
-        html = window.atob(matchMarkup[1]);
-    }
-
-    return html;
-};
-//--------------------------------------
-var createDiv = function(json){
-
-    try {
-
-        var div = document.createElement('div');
-        div.id = "mobfoxDiv";
-
-        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
-            curScript.parentNode.appendChild(div);     
-        }
-        else{
-            document.body.appendChild(div);
-        }
-
-        //css
-        div.style.border        = "none";
-        if (mobFoxParams.smart) {
-            div.style.width             = window.innerWidth + "px";
-            div.style.height            = window.innerHeight + "px";
-            div.style.backgroundColor   = '#000000';
-        } else {
-            div.style.width         = mobFoxParams.adspace_width + "px";
-            div.style.height        = mobFoxParams.adspace_height + "px";
-        }
-        div.style.overflow      = "hidden";
-        div.style.margin        = "0px";
-        div.style.padding       = "0px";
-        div.style.display       = "inline-block";
-
-        var html = getHTML(json); 
-        div.innerHTML = html;
-
-        finished = true; 
-        successLoad(); 
-
-    }
-    catch(e) {
-        finished = true;
-        failLoad({e1:e});
-    }
-
-};
-//--------------------------------------
-var createIFrame = function(json){
-    
-    try{
-        var ifrm = document.createElement('iframe');
-        ifrm.id = "mobfoxFrame";
-
-        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
-            curScript.parentNode.appendChild(ifrm);     
-        }
-        else{
-            document.body.appendChild(ifrm);
-        }
-
-        //css
-        ifrm.frameborder = "0";
-        ifrm.style.border    = "none";
-        if (mobFoxParams.smart) {
-            ifrm.style.width             = window.innerWidth + "px";
-            ifrm.style.height            = window.innerHeight + "px";
-            ifrm.style.backgroundColor   = '#000000';
-        } else {
-            ifrm.style.width         = mobFoxParams.adspace_width + "px";
-            ifrm.style.height        = mobFoxParams.adspace_height + "px";
-        }
-        ifrm.style.overflow  = "hidden";
-        ifrm.style.margin    = "none";
-        ifrm.setAttribute("scrolling","no");
-
-        var html = getHTML(json); 
-        
-        if (mobFoxParams.smart) {
-            var margin_left = (window.innerWidth  - mobFoxParams.adspace_width) / 2 + 'px';
-            var margin_top  = (window.innerHeight - mobFoxParams.adspace_height) / 2 + 'px';
-            if (html.indexOf("<html>") < 0) {
-                html = ["<html><body style='margin:0px;padding:0px;margin-left:"+margin_left+";margin-top:"+margin_top+";'>",html,"</body></html>"].join("\n");
-            }
-            else {
-                html = html + "<style>body{margin:0px;padding:0px;margin-left:"+margin_left+";margin-top:"+margin_top+";}</style>";
-            }
-        } else {
-            if (html.indexOf("<html>") < 0) {
-                html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
-            }
-            else {
-                html = html + "<style>body{margin:0px;padding:0px}</style>";
-            }
-        }
-
-        ifrm.onload = once(function(){
-            if(timeout) return;
-            finished = true; 
-            successLoad(); 
-        });
-
-        var c = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
-        
-        c.document.open();
-        c.document.write(html);
-        c.document.close();
-    }
-    catch(e) {
-        finished = true; 
-        failLoad({e2:e});
-    }
-};
-
-//--------------------------------------
-
-mobFoxParams.u          = navigator.userAgent;
-mobFoxParams.r_resp     = "json";
-mobFoxParams.rt         = "api-fetchip";
-mobFoxParams.r_type     = "banner";
-
 var DEMAND_SIZES = {
 	"300x50": {
 		"width": 300,
@@ -192,14 +48,14 @@ var DEMAND_SIZES = {
 		"width": 1024,
 		"height": 768
 	}
-}
-
+};
+//--------------------------------------
 var getDist = function(point1, point2) {
     var a = point1.width    - point2.width;
     var b = point1.height   - point2.height;
     return Math.sqrt( a*a + b*b );
-}
-
+};
+//--------------------------------------
 var getClosestPoint = function(points, point) {
     var min     = -1;
     var closest = {};
@@ -218,9 +74,142 @@ var getClosestPoint = function(points, point) {
         }
     }
     return closest;
-}
+};
+//--------------------------------------
+var center = function(adspace_width, adspace_height) {
+    var margin_left = (window.innerWidth  - adspace_width) / 2 + 'px';
+    var margin_top  = (window.innerHeight - adspace_height) / 2 + 'px';
+    return {
+        "margin-left": margin_left,
+        "margin-top": margin_top
+    }
+};
+//--------------------------------------
+var timeout     = false,
+    finished    = false;
+//--------------------------------------
+var failLoad = function(reason) {
+    if (typeof(mobFoxParams.onFail)==="function") {
+        mobFoxParams.onFail(reason);
+    }
+};
+//--------------------------------------
+var successLoad = function() {
+    if (typeof(mobFoxParams.onSuccess)==="function") {
+        mobFoxParams.onSuccess();
+    }
+};
+//--------------------------------------
+var getHTML = function(json) {
 
-var url = "http://my.mobfox.com/request.php";
+    var html            = json.request.htmlString,
+        markupRegExp    = new RegExp(/var markupB64\s*=\s*[\"\'](.*?)[\"\']/m),
+        matchMarkup     = json.request.htmlString.match(markupRegExp);
+
+    if (matchMarkup) {
+        html = window.atob(matchMarkup[1]);
+    }
+
+    return html;
+};
+//--------------------------------------
+var createDiv = function(json){
+
+    try {
+
+        var div = document.createElement('div');
+        div.id = "mobfoxDiv";
+
+        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+            curScript.parentNode.appendChild(div);     
+        }
+        else{
+            document.body.appendChild(div);
+        }
+
+        //css
+        div.style.border        = "none";
+        div.style.width         = mobFoxParams.adspace_width + "px";
+        div.style.height        = mobFoxParams.adspace_height + "px";
+        div.style.overflow      = "hidden";
+        div.style.margin        = "0px";
+        div.style.padding       = "0px";
+        div.style.display       = "inline-block";
+        
+        var margins = center(mobFoxParams.adspace_width, mobFoxParams.adspace_height);
+
+        var html = getHTML(json); 
+        div.innerHTML = "<div style='margin-top:"+margins["margin-top"]+";margin-left:"+margins["margin-left"]+";'>" + html + "</div>";
+
+        finished = true; 
+        successLoad(); 
+
+    }
+    catch(e) {
+        finished = true;
+        failLoad({e1:e});
+    }
+
+};
+//--------------------------------------
+var createIFrame = function(json){
+    
+    try{
+        var ifrm = document.createElement('iframe');
+        ifrm.id = "mobfoxFrame";
+
+        if(curScript && curScript.parentNode.tagName.toLowerCase() !== "head"){
+            curScript.parentNode.appendChild(ifrm);     
+        }
+        else{
+            document.body.appendChild(ifrm);
+        }
+
+        //css
+        ifrm.frameborder            = "0";
+        ifrm.style.border           = "none";
+        ifrm.style.width            = mobFoxParams.adspace_width + "px";
+        ifrm.style.height           = mobFoxParams.adspace_height + "px";
+        ifrm.style.backgroundColor  = '#000000';
+        ifrm.style.overflow         = "hidden";
+        ifrm.style.margin           = "none";
+        ifrm.setAttribute("scrolling","no");
+        
+        var margins = center(mobFoxParams.adspace_width, mobFoxParams.adspace_height);
+
+        var html = getHTML(json); 
+
+        if(html.indexOf("<html>") < 0){
+            html = ["<html><body style='margin-top:"+margins["margin-top"]+";margin-left:"+margins["margin-left"]+";padding:0px;'>",html,"</body></html>"].join("\n");
+        }
+        else{
+            html = html + "<style>body{margin-top:"+margins["margin-top"]+";margin-left:"+margins["margin-left"]+";padding:0px}</style>";
+        }
+
+        ifrm.onload = once(function(){
+            if(timeout) return;
+            finished = true; 
+            successLoad(); 
+        });
+
+        var c = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
+        
+        c.document.open();
+        c.document.write(html);
+        c.document.close();
+    }
+    catch(e) {
+        finished = true; 
+        failLoad({e2:e});
+    }
+};
+
+//--------------------------------------
+
+mobFoxParams.u          = navigator.userAgent;
+mobFoxParams.r_resp     = "json";
+mobFoxParams.rt         = "api-fetchip";
+mobFoxParams.r_type     = "banner";
 
 try {
     if (mobFoxParams.smart) {
@@ -237,12 +226,10 @@ try {
     return;
 }
 
-try {
-    if (mobFoxParams.imp_secure == 1) {
-        url = "https://my.mobfox.com/request.php";
-    }
-} catch(e) {}
-
+var url = "http://my.mobfox.com/request.php";
+if (mobFoxParams.imp_secure == 1) {
+    url = "https://my.mobfox.com/request.php";
+}
 var mobFoxCall = once(function(){
 
     window.setTimeout(function(){
