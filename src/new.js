@@ -76,6 +76,15 @@ var getClosestPoint = function(points, point) {
     return closest;
 };
 //--------------------------------------
+var center = function(adspace_width, adspace_height) {
+    var margin_left = (window.innerWidth  - adspace_width) / 2 + 'px';
+    var margin_top  = (window.innerHeight - adspace_height) / 2 + 'px';
+    return {
+        "margin-left": margin_left,
+        "margin-top": margin_top
+    }
+};
+//--------------------------------------
 var timeout     = false,
     finished    = false;
 //--------------------------------------
@@ -126,9 +135,11 @@ var createDiv = function(json){
         div.style.margin        = "0px";
         div.style.padding       = "0px";
         div.style.display       = "inline-block";
+        
+        var margins = center(mobFoxParams.adspace_width, mobFoxParams.adspace_height);
 
         var html = getHTML(json); 
-        div.innerHTML = html;
+        div.innerHTML = "<div style='margin-top:"+margins["margin-top"]+";margin-left:"+margins["margin-left"]+";'>" + html + "</div>";
 
         finished = true; 
         successLoad(); 
@@ -155,21 +166,24 @@ var createIFrame = function(json){
         }
 
         //css
-        ifrm.frameborder = "0";
-        ifrm.style.border    = "none";
-        ifrm.style.width     = mobFoxParams.adspace_width + "px";
-        ifrm.style.height    = mobFoxParams.adspace_height + "px";
-        ifrm.style.overflow  = "hidden";
-        ifrm.style.margin    = "none";
+        ifrm.frameborder            = "0";
+        ifrm.style.border           = "none";
+        ifrm.style.width            = mobFoxParams.adspace_width + "px";
+        ifrm.style.height           = mobFoxParams.adspace_height + "px";
+        ifrm.style.backgroundColor  = '#000000';
+        ifrm.style.overflow         = "hidden";
+        ifrm.style.margin           = "none";
         ifrm.setAttribute("scrolling","no");
+        
+        var margins = center(mobFoxParams.adspace_width, mobFoxParams.adspace_height);
 
         var html = getHTML(json); 
 
         if(html.indexOf("<html>") < 0){
-            html = ["<html><body style='margin:0px;padding:0px;'>",html,"</body></html>"].join("\n");
+            html = ["<html><body style='margin-top:"+margins["margin-top"]+";margin-left:"+margins["margin-left"]+";padding:0px;'>",html,"</body></html>"].join("\n");
         }
         else{
-            html = html + "<style>body{margin:0px;padding:0px}</style>";
+            html = html + "<style>body{margin-top:"+margins["margin-top"]+";margin-left:"+margins["margin-left"]+";padding:0px}</style>";
         }
 
         ifrm.onload = once(function(){
@@ -197,14 +211,25 @@ mobFoxParams.r_resp     = "json";
 mobFoxParams.rt         = "api-fetchip";
 mobFoxParams.r_type     = "banner";
 
-var url = "http://my.mobfox.com/request.php";
-
 try {
-    if (mobFoxParams.imp_secure == 1) {
-        url = "https://my.mobfox.com/request.php";
+    if (mobFoxParams.smart) {
+        mobFoxParams.adspace_width = window.innerWidth;
+        mobFoxParams.adspace_height = window.innerHeight;
+        var size = getClosestPoint(DEMAND_SIZES, {width: mobFoxParams.adspace_width, height: mobFoxParams.adspace_height});
+        if (mobFoxParams.adspace_width / size.width < 1.5 && mobFoxParams.adspace_height / size.height < 1.5) {
+            mobFoxParams.adspace_width  = size.width;
+            mobFoxParams.adspace_height = size.height;
+        }
     }
-} catch(e) {}
+} catch(e) {
+    failLoad({e5:e});
+    return;
+}
 
+var url = "http://my.mobfox.com/request.php";
+if (mobFoxParams.imp_secure == 1) {
+    url = "https://my.mobfox.com/request.php";
+}
 var mobFoxCall = once(function(){
 
     window.setTimeout(function(){
