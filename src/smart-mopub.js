@@ -94,19 +94,14 @@ mobFoxParams.r_resp     = "json";
 mobFoxParams.rt         = "api-fetchip";
 mobFoxParams.r_type     = "banner";
 
-try {
-    if (mobFoxParams.smart) {
-        mobFoxParams.adspace_width = window.innerWidth;
-        mobFoxParams.adspace_height = window.innerHeight;
-        var size = getClosestPoint(DEMAND_SIZES, {width: mobFoxParams.adspace_width, height: mobFoxParams.adspace_height});
-        if (mobFoxParams.adspace_width / size.width < 1.5 && mobFoxParams.adspace_height / size.height < 1.5) {
-            mobFoxParams.adspace_width  = size.width;
-            mobFoxParams.adspace_height = size.height;
-        }
+if (mobFoxParams.smart) {
+    mobFoxParams.adspace_width = window.innerWidth;
+    mobFoxParams.adspace_height = window.innerHeight;
+    var size = getClosestPoint(DEMAND_SIZES, {width: mobFoxParams.adspace_width, height: mobFoxParams.adspace_height});
+    if (mobFoxParams.adspace_width / size.width < 1.5 && mobFoxParams.adspace_height / size.height < 1.5) {
+        mobFoxParams.adspace_width  = size.width;
+        mobFoxParams.adspace_height = size.height;
     }
-} catch(e) {
-    failLoad({e5:e});
-    return;
 }
 
 //mopub parameters
@@ -154,7 +149,7 @@ superagent
                 matchMarkup  = json.request.htmlString.match(markupRegExp);
 
             if (matchMarkup) {
-                html = window.atob(matchMarkup[1]) + "<style>body{margin-top:"+margins["margin-top"]+";margin-left:"+margins["margin-left"]+";}</style>";
+                html = window.atob(matchMarkup[1]) + "<style>body{margin:0;}</style>";
             }
 
             ifrm.onload = function(){
