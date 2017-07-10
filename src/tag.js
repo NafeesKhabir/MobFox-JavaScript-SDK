@@ -76,15 +76,6 @@ var getClosestPoint = function(points, point) {
     return closest;
 };
 //--------------------------------------
-var margins_center = function(adspace_width, adspace_height) {
-    var margin_left = (window.innerWidth  - adspace_width) / 2 + 'px';
-    var margin_top  = (window.innerHeight - adspace_height) / 2 + 'px';
-    return {
-        "margin-left": margin_left,
-        "margin-top": margin_top
-    }
-};
-//--------------------------------------
 var timeout     = false,
     finished    = false;
 //--------------------------------------

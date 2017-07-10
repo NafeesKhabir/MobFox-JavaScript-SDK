@@ -2,7 +2,7 @@
 mkdir -p dist
 
 #combined tag
-browserify src/tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/new-tag.js
+browserify src/tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/mobfox-combined.js
 cp -f src/smart-tag.html dist/smart-tag.html
 
 #browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/tag.js
