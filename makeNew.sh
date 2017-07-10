@@ -3,7 +3,9 @@ mkdir -p dist
 
 #combined tag
 browserify src/tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/mobfox-combined.js
-cp -f src/smart-tag.html dist/smart-tag.html
+
+#combined mopub
+browserify src/mopub-combined.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/mopub-combined.js
 
 #browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/tag.js
 #browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/new/tag.js
