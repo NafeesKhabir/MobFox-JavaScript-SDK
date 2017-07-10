@@ -1,21 +1,26 @@
 #!/usr/bin/env bash
 mkdir -p dist
-browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/tag.js
-browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/new/tag.js
 
-cp -f src/moat-tag.js dist/moat-tag.js
+#combined tag
+browserify src/tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/new-tag.js
+cp -f src/smart-tag.html dist/smart-tag.html
+
+#browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/tag.js
+#browserify src/new-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/new/tag.js
+
+#cp -f src/moat-tag.js dist/moat-tag.js
 #uglifyjs -c -- src/moat-tag.js > dist/moat-tag.js
 #uglifyjs -c -- src/moat-tag.js > test/www/new/moat-tag.js
 
-cp -f sdk/tagBanneriOSMoat.html dist/tagBanneriOSMoat.html
+#cp -f sdk/tagBanneriOSMoat.html dist/tagBanneriOSMoat.html
 #cp -f src/moat.html test/www/new/moat.html
 
-browserify src/smart-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/smart-tag.js
-cp -f src/smart-tag.html dist/smart-tag.html
-browserify src/smart-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/new/smart-tag.js
-cp -f src/smart-tag.html test/www/new/smart-tag.html
-browserify src/new.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/new.js
-cp -f src/new.html dist/new.html
+#browserify src/smart-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/smart-tag.js
+#cp -f src/smart-tag.html dist/smart-tag.html
+#browserify src/smart-tag.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/new/smart-tag.js
+#cp -f src/smart-tag.html test/www/new/smart-tag.html
+#browserify src/new.js | java -jar compiler.jar --language_in ECMASCRIPT5 > dist/new.js
+#cp -f src/new.html dist/new.html
 #uglifyjs -c -- src/smart-tag.js > dist/smart-tag.js
 
 #uglifyjs -c -- src/ios-render.js > dist/ios-render.js
