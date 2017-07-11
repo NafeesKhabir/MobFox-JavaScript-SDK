@@ -124,13 +124,15 @@ mobFoxParams.r_resp     = "json";
 mobFoxParams.rt         = "api-fetchip";
 mobFoxParams.r_type     = "banner";
 
-var url = "http://my.mobfox.com/request.php";
+var url = "//my.mobfox.com/request.php";
 
+/*
 try {
     if (mobFoxParams.imp_secure == 1) {
         url = "https://my.mobfox.com/request.php";
     }
 } catch(e) {}
+*/
 
 var mobFoxCall = once(function(){
 
@@ -140,10 +142,17 @@ var mobFoxCall = once(function(){
         failLoad("timeout");
     },3000);
     
+    var cleanParams = {};
+    Object.keys(mobFoxParams).forEach(function(k){
+        if(typeof(mobFoxParams[k]) !== "function"){
+            cleanParams[k] = mobFoxParams[k];
+        }
+    });
+
     superagent
             .get(url)
             .timeout(2500)
-            .query(mobFoxParams)
+            .query(cleanParams)
             .end(once(function(err,resp) {
         
                 if (timeout) return;
