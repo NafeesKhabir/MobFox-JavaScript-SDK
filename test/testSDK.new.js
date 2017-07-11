@@ -512,7 +512,7 @@ module.exports.tearDown = function (cb) {
 module.exports.validateTagInBody = function (test) {
     standardPageTest(
         test,
-        'http://localhost:58080/new/banner-in-body.html',
+        'http://localhost:58080/banner-in-body.html',
         'http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f'
     );
 
@@ -521,7 +521,7 @@ module.exports.validateTagInBody = function (test) {
 module.exports.validateTagInHead = function (test) {
     standardPageTest(
         test,
-        'http://localhost:58080/new/banner-in-head.html',
+        'http://localhost:58080/banner-in-head.html',
         'http://my.mobfox.com/exchange.click.php?h=c9400133ac5b182d10a130c99bf9035f'
     );
 
@@ -530,7 +530,7 @@ module.exports.validateTagInHead = function (test) {
 module.exports.validateSecureParam = function (test) {
     testSecure(
         test,
-        'http://localhost:58080/new/banner-secure.html'
+        'http://localhost:58080/banner-secure.html'
     );
 
 };
@@ -538,7 +538,7 @@ module.exports.validateSecureParam = function (test) {
 module.exports.validateSmart = function (test) {
     testSmart(
         test,
-        'http://localhost:58080/new/smart-tag.html'
+        'http://localhost:58080/banner-smart.html'
     );
 
 };

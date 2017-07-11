@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title></title>
+    <style>
+        html {
+            height:100%;
+        }
+        body {
+            margin          : 0;
+            padding         : 0;
+            background      : transparent;
+            height          : 100%;
+        }
+    </style>
+    <script>
+        var mobFoxParams = {
+            "r_type": "banner",
+            "s": "fe96717d9875b9da4339ea5367eff1ec",
+            "smart": true
+        };
+    </script>
+    <script src="mobfox-combined.js" type="text/javascript"></script>
+    <script>
+        window.mobFoxParams.onFail = function(reason) {
+            if(typeof(reason) === "object") reason = JSON.stringify(reason);
+            console.log(reason);
+        }
+
+        window.mobFoxParams.onSuccess = function() {
+            console.log('success');
+        }
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            console.log('ready');
+        });
+    </script>
+</head>
+<body></body>
+</html>
