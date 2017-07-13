@@ -31,6 +31,10 @@
             window.webkit.messageHandlers.mobfox.postMessage({success:""}); 
         }
 
+        window.mobFoxParams.onClose = function(){
+            window.webkit.messageHandlers.mobfox.postMessage({close:""}); 
+        }
+
         document.addEventListener("DOMContentLoaded", function(event) {
             window.webkit.messageHandlers.mobfox.postMessage({ready:""}); 
         });

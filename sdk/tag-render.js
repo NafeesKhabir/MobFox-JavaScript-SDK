@@ -17,6 +17,12 @@ var successLoad = function() {
     }
 };
 //--------------------------------------
+var onClose = function(){
+    if (typeof(mobFoxParams.onClose)==="function") {
+        mobFoxParams.onClose();
+    }
+};
+//--------------------------------------
 var getHTML = function(json) {
 
     var html            = json.request.htmlString,
@@ -30,7 +36,7 @@ var getHTML = function(json) {
     return html;
 };
 //--------------------------------------
-var createIFrame = function(width,height,json){
+var createIFrame = function(width,height,json,isCloseButton){
     
     try{
         var ifrm = document.createElement('iframe');
@@ -51,6 +57,25 @@ var createIFrame = function(width,height,json){
         ifrm.style.overflow  = "hidden";
         ifrm.style.margin    = "none";
         ifrm.setAttribute("scrolling","no");
+
+        if(isCloseButton){
+            var close = window.document.createElement("div");
+            close.id                        = "close";
+            close.style.backgroundImage     = "url(button_close_55x55.png)";
+            close.style.backgroundSize      = "55px 55px";
+            close.style.width               = "55px";
+            close.style.height              = "55px";
+            close.style.position            = "absolute";
+            close.style.top                 = "0px";
+            close.style.right               = "0px";
+            document.body.appendChild(close);        
+            close.addEventListener("click",function(e){
+                e.stopPropagation();
+                onClose();
+                return false;
+            },false);
+        }
+
 
         var html = getHTML(json); 
 
@@ -81,7 +106,7 @@ var createIFrame = function(width,height,json){
 
 //--------------------------------------
 
-window.renderAd = once(function(adspace_width,adspace_height,json){
+window.renderAd = once(function(adspace_width,adspace_height,json,isCloseButton){
 
     window.setTimeout(function(){
         timeout = true;
@@ -98,7 +123,7 @@ window.renderAd = once(function(adspace_width,adspace_height,json){
 
         //if (document.body) {
             document.body.style.backgroundColor = "#000000";
-            createIFrame(adspace_width,adspace_height,json); 
+            createIFrame(adspace_width,adspace_height,json,isCloseButton); 
         /*}
         else{
             document.addEventListener("DOMContentLoaded",function(){
