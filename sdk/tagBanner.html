@@ -31,7 +31,9 @@
         }
 
         window.mobFoxParams.onSuccess = function(){
-            document.body.style.backgroundColor = "#000000";
+            if(!window.mobFoxParams.transparent){
+                document.body.style.backgroundColor = "#000000";
+            }
             mobfox.onSuccess();
         }
 
