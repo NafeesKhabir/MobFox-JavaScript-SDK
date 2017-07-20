@@ -6,9 +6,9 @@ var X2JS        = require('./res/js/x2js.js'),
 
 
 var createVideoTag = function(arr) {
-    
+    console.log(arr);
 }
 
-var xml_str2json = function(url, params, vastObj, cb) {
-    
+var xml_str2json = function(vastObj) {
+    console.log(vastObj);
 }

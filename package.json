@@ -22,6 +22,7 @@
     "node-static": "^0.7.9",
     "phantom": "^4.0.3",
     "qs": "^2.3.3",
+    "stringify": "^3.2.1",
     "superagent": "^3.5.2"
   },
   "devDependencies": {
