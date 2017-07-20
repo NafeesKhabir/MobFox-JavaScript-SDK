@@ -12,5 +12,5 @@ mkdir -p test/www
 #browserify src/mopub-combined.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/mopub-combined.js
 
 #video
-browserify -t stringify src/video.js | java -jar compiler.jar --language_in ECMASCRIPT5 > test/www/video.js
+browserify -t stringify src/video.js > test/www/video.js
 cp -f src/video.html test/www/video.html

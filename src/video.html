@@ -15,11 +15,13 @@
             height          : 100%;
         }
     </style>
-    <script src="video.js" type="text/javascript"></script>
-    <script>
-        var xml_str = '<?xml version="1.0" encoding="UTF-8"?> <VAST version="2.0"> <Ad id="1"> <InLine> <AdSystem version="1.0">MobFox DSP</AdSystem> <AdTitle><![CDATA[MobFox Video Creative]]></AdTitle> <Impression><![CDATA[http://my.mobfox.com/rtb.impression.pixel.php?rid=c2fae25aa14c2560c47c337fe5af344a&price=2.271]]></Impression> <Impression>http://my.mobfox.com/exchange.pixel.php?h=ac2931d2c9ca1f1c542c91a7b9061ef4</Impression> <Creatives> <Creative sequence="1" id="1"> <Linear> <Duration>00:01:23</Duration> <TrackingEvents> <Tracking event="complete"><![CDATA[http://www.compleate.com]]></Tracking> <Tracking event="firstQuartile"><![CDATA[http://www.FirstQuartile.com]]></Tracking> <Tracking event="midpoint"><![CDATA[http://www.midpoint.com]]></Tracking> <Tracking event="mute"><![CDATA[http://www.mute.com]]></Tracking> <Tracking event="pause"><![CDATA[http://www.Pause.com]]></Tracking> <Tracking event="resume"><![CDATA[http://www.resume.com]]></Tracking> <Tracking event="start"><![CDATA[http://video_start.com]]></Tracking> <Tracking event="thirdQuartile"><![CDATA[http://www.Thirdquartile.com]]></Tracking> <Tracking event="unmute"><![CDATA[http://www.unmute.com]]></Tracking> <Tracking event="start">http://my.mobfox.com/sendcookie.php</Tracking> </TrackingEvents> <VideoClicks> <ClickThrough>http://my.mobfox.com/exchange.click.php?h=ac2931d2c9ca1f1c542c91a7b9061ef4</ClickThrough> </VideoClicks> <MediaFiles> <MediaFile delivery="progressive" width="640" height="360" type="video/mp4"><![CDATA[http://creative1cdn.mobfox.com/a5d96c7f0987d2644bdcef11bc24deb4.mp4]]></MediaFile> </MediaFiles> </Linear> </Creative> </Creatives> </InLine> </Ad> </VAST>';
-        console.log(typeof xml_str2json);
-    </script>
 </head>
-<body></body>
+<body>
+    <script>
+        (function() {
+            console.log('ready');
+        })();
+    </script>
+    <script src="video.js" type="text/javascript"></script>
+</body>
 </html>

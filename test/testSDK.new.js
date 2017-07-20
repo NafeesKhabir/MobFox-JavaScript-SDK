@@ -11,6 +11,8 @@ var clickUrl    = 'http://tokyo-my.mobfox.com/exchange.click.php';
 
 var self = this;
 
+//-----------------------------------------
+
 function standardPageTest(test, pageURL, clickURL) {
     console.log('standardPageTest');
     
@@ -76,6 +78,8 @@ function standardPageTest(test, pageURL, clickURL) {
     page.open(pageURL);
 }
 
+//-----------------------------------------
+
 function testSecure(test, pageURL) {
     test.expect(1);
     
@@ -93,6 +97,8 @@ function testSecure(test, pageURL) {
     
     page.open(pageURL);
 }
+
+//-----------------------------------------
 
 function testSmart(test, pageURL) {
     console.log('testSmart');
@@ -167,6 +173,68 @@ function testSmart(test, pageURL) {
 }
 
 //-----------------------------------------
+
+function testVideoCollect(test, pageURL) {
+    console.log('testVideoCollect');
+    
+    test.expect(2);
+    
+    var loaded = false;
+    
+    page.on('onConsoleMessage', function(msg) {
+        console.log(msg);
+    
+        if (msg != 'ready') return;
+        if (loaded) return;
+        loaded = true;
+        
+        page.includeJs('https://code.jquery.com/jquery-2.1.3.min.js').then(function() {
+            console.log('includeJs');
+            
+            var xml_arr = require('./res/xml_array.json');
+            var callback = function(err, results) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(results);
+                    console.log(test);
+                }
+            }
+            page.evaluateAsync(function(xml_arr, cb) {
+                console.log('evaluate');
+                
+                collect(xml_arr, function(err, vasts) {
+                    if (err) {
+//                        window.callPhantom(err);
+                        console.log(err);
+//                        cb(err);
+                    } else {
+//                        window.callPhantom(null, vasts);
+                        console.log(vasts);
+//                        cb(null, vasts);
+                    }
+                });
+            }, 500, xml_arr, callback);
+        });
+    });
+    
+    page.property('onCallback', function(err, vasts) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(vasts.arr.length == 3);
+            
+            test.ok(vasts.arr.length == 3);
+            test.ok(vasts.errorTrackers.length == 0);
+            return 'success';
+        }
+    });
+    
+    page.open(pageURL);
+}
+    
+//-----------------------------------------
+
 module.exports.setUp = function (cb) {
 var request = require("request");
 var url = "http://localhost:58080/index.html"
@@ -539,6 +607,14 @@ module.exports.validateSmart = function (test) {
     testSmart(
         test,
         'http://localhost:58080/banner-smart.html'
+    );
+
+};
+//-----------------------------------------
+module.exports.validateVideoCollect = function (test) {
+    testVideoCollect(
+        test,
+        'http://localhost:58080/video.html'
     );
 
 };
